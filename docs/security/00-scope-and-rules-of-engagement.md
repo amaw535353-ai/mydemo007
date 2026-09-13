@@ -53,6 +53,8 @@ Synthetic-credential requirements: Only fake or locally generated test passwords
 
 ## Resource and Cost Limits
 
+Test windows: Active security testing is permitted only during attended local-lab sessions under the authorized tester's supervision. Unattended or overnight active testing is prohibited unless separately reviewed and approved. Each individual active test remains subject to the documented 60-second maximum.
+
 Rate limits: Maximum 100 requests per individual active security test unless a lower test-specific ceiling is defined.
 Concurrency limits: Maximum 10 simultaneous requests during active security testing.
 Token limits: No unbounded token-generation or agent loops. Test-specific token ceilings must be defined before model or agent stress testing.
@@ -66,6 +68,8 @@ Cost restrictions: No paid APIs, billable cloud resources, paid SaaS, metered ex
 
 Stop immediately if a test reaches an external or out-of-scope service; encounters real customer data or a real production credential; exceeds approved request, concurrency, time, token, memory, storage, or network limits; may create an unapproved charge; causes unexpected instability; or if authorization or scope becomes uncertain.
 
+Escalation contacts: Primary local escalation contact is Ahmed — repository owner and local lab operator. Testing must stop and be escalated to the authorization owner if scope, authorization, safety, data classification, network exposure, cost, or system stability becomes uncertain. Upstream or third-party security issues must be escalated through the project's verified official private security-reporting channel.
+
 ## Evidence Handling
 
 Preserve reproducible commands, timestamps, relevant logs, synthetic identifiers, diffs, test outputs, and screenshots with sufficient context. Evidence must not contain real credentials, production secrets, real customer data, or unnecessary personal data. Sanitize sensitive values before sharing or publishing.
@@ -78,6 +82,8 @@ Teardown procedure: Stop local test services and containers; remove temporary sy
 ## Responsible Disclosure
 
 Security findings that affect an upstream or third-party project must be reported privately through its official security or vulnerability-reporting channel after checking the applicable disclosure policy. Preserve a synthetic reproduction and evidence, avoid public exploit details during the private investigation window, coordinate remediation and retesting, and document residual risk. Findings confined to this authorized local learning copy may remain private portfolio evidence after sanitization.
+
+Communication rules: Security findings and evidence are private by default. Share only the minimum necessary sanitized evidence with authorized recipients. Do not publish credentials, personal data, exploit details, or unresolved third-party vulnerabilities. Public portfolio material must be sanitized and must not violate an active disclosure investigation, embargo, or confidentiality requirement.
 
 ## Approval Gate
 
@@ -118,3 +124,13 @@ Approved working branch: security/phase-0-scope
 Approval boundary: Local loopback lab only; synthetic identities, data, and credentials only; no real external providers, third-party accounts, public targets, paid services, or unapproved costs.
 Approval limits: Maximum 100 requests per individual active test, maximum 10 concurrent requests, maximum 60 seconds per individual active test, maximum 1 MB individual test file, and no unbounded resource or agent loops.
 Reapproval requirement: Any material change to scope, network boundary, targets, data classification, external integrations, cost exposure, or testing limits requires review before testing continues.
+
+## Approval Amendment — Phase 0 Closure
+
+Amendment status: APPROVED
+Amendment date: 2026-09-13
+Change: Added explicit test-window, escalation-contact, and communication-rule requirements required for Phase 0 closure.
+Scope effect: No expansion of authorized targets, networks, data, identities, credentials, external integrations, cost exposure, or testing techniques.
+Authorization owner approval: amaw535353-ai — repository owner
+Authorized tester acknowledgement: Ahmed — local lab operator
+Previous approved Phase 0 commit: 5c95ca3180ebb00ff760ecd3657ce39a75854e15
