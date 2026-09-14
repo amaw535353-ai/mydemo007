@@ -77,16 +77,16 @@ recorded without displaying their contents.
 | Token inventory | FILENAME DISCOVERY ONLY |
 | Key inventory | FILENAME DISCOVERY ONLY |
 | Certificate inventory | FILENAME DISCOVERY ONLY |
-| Dependency inventory | MANIFEST DISCOVERY STARTED |
-| Container inventory | DEFINITION DISCOVERY STARTED |
-| Image inventory | NOT YET ENUMERATED |
-| Infrastructure inventory | DEFINITION DISCOVERY STARTED |
-| Cloud-resource inventory | NOT YET ENUMERATED |
-| Vendor inventory | NOT YET ENUMERATED |
-| Supplier inventory | NOT YET ENUMERATED |
-| License inventory | DISCOVERY STARTED |
+| Dependency inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Container inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Image inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Infrastructure inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Cloud-resource inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Vendor inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Supplier inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| License inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Ownership inventory | PARTIAL FROM PHASE 1 |
-| Data-lineage inventory | NOT YET ENUMERATED |
+| Data-lineage inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | AI-BOM planning | NOT YET COMPLETED |
 | SBOM planning | NOT YET COMPLETED |
 | CBOM planning | NOT YET COMPLETED |
@@ -228,6 +228,24 @@ Evidence:
 These counts identify static source candidates only. They do not prove
 that any agent, tool, action, MCP component, A2A component, or connector
 is enabled, authorized, reachable, or isolated correctly at runtime.
+
+## Action 2.7 - Supply Chain and Infrastructure Static Inventory
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+Static candidate-file counts:
+- Dependency: 834
+- Container: 883
+- Image: 257
+- Infrastructure: 677
+- Cloud resource: 694
+- Vendor: 67
+- Supplier: 2
+- License: 200
+- Data lineage: 8
+Evidence:
+`docs/security/evidence/phase2-supply-chain-infrastructure-evidence.md`
+These are static discovery candidates only. Runtime deployment,
+ownership, provenance, supplier trust, patch status, license
+compliance, and lineage integrity remain unverified.
 ## Phase 2 Completion Gate
 
 Phase 2 remains IN PROGRESS.
