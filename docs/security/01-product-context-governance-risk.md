@@ -213,50 +213,156 @@ Evidence source:
 
 ## 9. AI-System Classification
 
-Classification:
-- TO DETERMINE
+Evidence-supported working classification:
+- Onyx is an AI application/platform and orchestration layer for LLM-based functionality.
+- It is not evidenced here as a foundation-model developer itself.
+- It can consume both self-hosted and proprietary model providers.
+- It combines conventional application components with AI-specific capabilities including RAG, agents, actions, MCP, web retrieval, code execution, and generated artifacts.
+- It supports both Lite and Standard deployment profiles.
 
-Evidence:
-- TO RECORD
+Working system categories:
+- AI-enabled application platform.
+- LLM application/orchestration layer.
+- Retrieval-augmented application.
+- Agent-capable application.
+- Tool/action-capable application.
+- Multi-provider model-consumer application.
+- Enterprise knowledge and collaboration application.
+
+Classification limitations:
+- Exact deployed classification depends on enabled features, deployment mode, model providers, connectors, tools, data, tenants, and organizational use.
+- This is a product-level working classification, not a legal or regulatory classification.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-risk-context-evidence.md
 
 ## 10. Impact Classification
 
-Impact level:
-- TO DETERMINE
+Evidence-supported impact analysis:
 
-Affected parties:
-- TO IDENTIFY
+Confidentiality:
+- Potentially material.
+- RAG, connectors, organizational knowledge, chats, agents, provider requests, generated artifacts, and code execution may process information whose unintended disclosure could affect users or organizations.
 
-Confidentiality impact:
-- TO DETERMINE
+Integrity:
+- Potentially material.
+- Agent instructions, retrieved content, actions, MCP calls, generated outputs, access-control decisions, and connected knowledge can influence system behavior and downstream decisions.
 
-Integrity impact:
-- TO DETERMINE
+Availability:
+- Potentially material.
+- Chat, retrieval, indexing, connectors, model access, background workers, and other application services may become operational dependencies for users or organizations.
 
-Availability impact:
-- TO DETERMINE
+Privacy:
+- Potentially material.
+- User queries, documents, organizational knowledge, logs, provider requests, and generated content can involve personal or sensitive information depending on deployment.
 
-Privacy impact:
-- TO DETERMINE
+Delegated-authority impact:
+- Potentially material.
+- Agents, actions, MCP, code execution, connectors, and enterprise permissions can allow AI-mediated operations beyond simple text generation.
 
-Safety impact:
-- TO DETERMINE
+Safety:
+- Context dependent and NOT YET CLASSIFIED.
+- Current repository evidence does not establish a specific safety-critical deployment such as medical, transportation, industrial-control, or other high-consequence use.
+
+Affected parties potentially include:
+- End users.
+- Organization members.
+- Administrators.
+- Data subjects whose information is indexed or processed.
+- Organizations operating the deployment.
+- Connected-service owners and users where integrations are enabled.
+
+Formal impact level:
+- NOT YET ASSIGNED.
+- A formal level requires an adopted impact methodology, deployment context, data classification, business criticality, and accountable approval.
+
+Evidence source:
+- README.md
+- SECURITY.md
+- docs/security/evidence/phase1-risk-context-evidence.md
 
 ## 11. Risk Tier
 
-Risk tier:
-- TO DETERMINE
+Formal risk tier:
+- NOT YET ASSIGNED.
 
-Rationale:
-- TO DOCUMENT
+Reason:
+- The current evidence does not establish an approved organizational risk-tier methodology or risk appetite.
+- Assigning Low, Medium, High, Critical, or a numeric score without such a method would create false precision.
+
+Working security posture:
+- ELEVATED SECURITY ATTENTION WARRANTED.
+
+Evidence-supported reasons:
+- The product can process organizational knowledge.
+- It supports identity and authorization controls.
+- It supports external model providers.
+- It supports connectors and external integrations.
+- It supports autonomous or semi-autonomous agent functionality.
+- It supports actions and MCP capabilities.
+- It supports sandboxed code execution.
+- It can operate in multi-user organizational environments.
+- It includes audit/query-history and enterprise administration features.
+
+Interpretation:
+- These properties create multiple trust boundaries and delegated-capability surfaces.
+- They justify substantial security engineering effort but do not by themselves define a formal enterprise risk tier.
+
+Required before formal tier assignment:
+- Approved risk methodology.
+- Business criticality.
+- Data classification.
+- Deployment exposure.
+- Tenant model.
+- Regulatory and contractual applicability.
+- Impact thresholds.
+- Risk appetite.
+- Accountable risk owner.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-risk-context-evidence.md
 
 ## 12. Threat Environment
 
-- Relevant threat actors: TO IDENTIFY
-- Capabilities: TO IDENTIFY
-- Motives: TO IDENTIFY
-- Preconditions: TO IDENTIFY
-- Exposure assumptions: TO VERIFY
+Evidence-supported candidate threat environment:
+
+Potential threat actors:
+- Unauthenticated external attackers where a deployment exposes reachable application surfaces.
+- Malicious or compromised authenticated users.
+- Users attempting to exceed their assigned authorization.
+- Compromised user accounts or credentials.
+- Malicious or compromised connected content sources.
+- Untrusted web content encountered by web-search or retrieval capabilities.
+- Malicious documents or retrieved content intended to influence AI behavior.
+- Compromised or malicious connectors, MCP servers, tools, or external integrations.
+- Compromised model-provider or dependency relationships.
+- Software-supply-chain attackers affecting application dependencies, images, or deployment artifacts.
+- Insiders with legitimate access but malicious or unsafe intent.
+
+Relevant attacker objectives may include:
+- Unauthorized information disclosure.
+- Cross-user or cross-tenant access.
+- Privilege or capability escalation.
+- Unauthorized action or tool invocation.
+- Manipulation of AI instructions, context, retrieval, or outputs.
+- Abuse of code execution.
+- Credential or token theft.
+- Persistence through stored content or configuration.
+- Availability degradation.
+- Audit or monitoring evasion.
+
+Important scope distinction:
+- These are product threat hypotheses for threat modeling.
+- They do not assert that the current local lab is Internet-exposed.
+- Active testing remains restricted by the Phase 0 local, synthetic, loopback-only authorization.
+- No threat hypothesis is a confirmed vulnerability without later evidence.
+
+Evidence source:
+- README.md
+- SECURITY.md
+- docs/security/evidence/phase1-risk-context-evidence.md
 
 ## 13. Risk Appetite
 
