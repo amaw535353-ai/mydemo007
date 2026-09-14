@@ -89,11 +89,32 @@ Evidence source:
 
 ## 4. Ownership
 
-- System owner: TO VERIFY
-- Security owner: TO VERIFY
-- Data owner(s): TO VERIFY
-- Lifecycle owner: TO VERIFY
-- End-of-life owner: TO VERIFY
+Repository-supported governance evidence:
+- CONTRIBUTING.md shows that proposed features or enhancements require approval before contribution.
+- The contribution guide identifies Yuhong as a review contact for contribution approval.
+- Design approval is performed by the Onyx team, which may provide or request a design document and PRD.
+- Approved contribution work can involve design, product-management, and engineering resources from the Onyx team.
+- SECURITY.md routes vulnerability reports to the repository maintainers through GitHub Private Vulnerability Reporting.
+
+What this evidence does NOT establish:
+- It does not prove that Yuhong is the accountable product owner for the entire Onyx product.
+- It does not identify an accountable security owner.
+- It does not identify accountable data owners.
+- It does not establish lifecycle or end-of-life ownership.
+
+Current status:
+- System owner: NOT YET VERIFIED.
+- Product owner: NOT YET VERIFIED.
+- Engineering owner: NOT YET VERIFIED.
+- Security owner: NOT YET VERIFIED.
+- Data owner(s): NOT YET VERIFIED.
+- Lifecycle owner: NOT YET VERIFIED.
+- End-of-life owner: NOT YET VERIFIED.
+
+Evidence source:
+- CONTRIBUTING.md
+- SECURITY.md
+- docs/security/evidence/phase1-governance-context-evidence.md
 
 ## 5. Intended Uses
 
@@ -121,15 +142,74 @@ Evidence source:
 
 ## 6. Prohibited Uses
 
-- TO IDENTIFY FROM POLICY OR PRODUCT EVIDENCE
+Product prohibited-use evidence:
+- No authoritative general product prohibited-use policy has been established from the local repository evidence reviewed so far.
+
+Security-research policy exclusions identified in SECURITY.md:
+- Do not report vulnerabilities through public GitHub issues, pull requests, or discussions.
+- Third-party services and integrations are outside the upstream Onyx vulnerability-reporting scope.
+- Findings requiring access to another user's account or device, social engineering, or physical attacks are outside that policy's scope.
+- High-volume denial-of-service findings without additional exploitable impact are outside that policy's scope.
+- Automated scanner output without demonstrated exploitable impact is outside that policy's scope.
+- Safe-harbor expectations include avoiding privacy violations, data destruction, and service degradation.
+
+Important distinction:
+- These are vulnerability-research and disclosure constraints, not proof of a general end-user acceptable-use policy.
+- Our local Phase 0 authorization remains stricter than the upstream policy and continues to control our testing.
+
+Evidence source:
+- SECURITY.md
+- docs/security/evidence/phase1-governance-context-evidence.md
 
 ## 7. Foreseeable Misuse
 
-- TO THREAT-MODEL AFTER INTENDED USE IS ESTABLISHED
+Evidence basis:
+- Onyx supports agents, actions, MCP integrations, web access, RAG, connectors, code execution, file generation, multiple model providers, collaboration, SSO, and RBAC.
+
+Candidate foreseeable misuse scenarios derived from those capabilities:
+- An agent could be induced to invoke an action or MCP capability outside the user's intended task.
+- Retrieved or connected content could contain instructions intended to manipulate an agent or model.
+- Code-execution functionality could be abused to access unintended files, resources, or network destinations if controls fail.
+- Connector permissions or retrieval filtering failures could expose information to unauthorized users or tenants.
+- Misconfigured RBAC or identity integration could grant capabilities to an unintended user or group.
+- Generated files or artifacts could contain sensitive or misleading information.
+- External model or integration providers could receive data that a user or organization did not intend to disclose.
+- Web-retrieved content could influence agent behavior through untrusted instructions or data.
+
+Classification:
+- These are threat hypotheses derived from documented functionality.
+- They are not confirmed vulnerabilities.
+- Each hypothesis requires later architecture analysis, threat modeling, and bounded verification.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-product-context-evidence.md
+- docs/security/evidence/phase1-governance-context-evidence.md
 
 ## 8. Critical Workflows
 
-- TO IDENTIFY
+Evidence-supported candidate critical workflows:
+- User authentication and enterprise identity integration.
+- Authorization and RBAC decisions for sensitive resources.
+- Chat and LLM request processing.
+- RAG ingestion, indexing, retrieval, and answer generation.
+- Connector synchronization and knowledge ingestion.
+- Custom-agent creation and execution.
+- Action and MCP invocation.
+- Web-search and web-content retrieval.
+- Sandboxed code execution.
+- File and artifact generation.
+- Model-provider selection and request routing.
+- Collaboration and sharing of chats or agents.
+- Audit/query-history collection used for organizational oversight.
+
+Security significance:
+- Compromise of these workflows could affect confidentiality, integrity, availability, privacy, or delegated authority.
+- Exact architecture, trust boundaries, data flows, and failure consequences remain to be established in later phases.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-governance-context-evidence.md
 
 ## 9. AI-System Classification
 
