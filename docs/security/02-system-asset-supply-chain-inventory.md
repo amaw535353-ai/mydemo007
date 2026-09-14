@@ -62,10 +62,10 @@ recorded without displaying their contents.
 | Cache inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Prompt inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Template inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
-| Model inventory | DISCOVERY STARTED |
-| Provider inventory | DISCOVERY STARTED |
-| Model-weight inventory | NOT YET ENUMERATED |
-| Adapter inventory | NOT YET ENUMERATED |
+| Model inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Provider inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Model-weight inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Adapter inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Agent inventory | DISCOVERY STARTED |
 | Tool inventory | DISCOVERY STARTED |
 | Action inventory | DISCOVERY STARTED |
@@ -199,6 +199,19 @@ These counts identify static source candidates only. They do not
 prove runtime data flow, access control, retrieval authorization,
 tenant isolation, memory isolation, cache isolation, prompt
 provenance, or template safety.
+
+## Action 2.5 - Model, Provider, Model-Weight, and Adapter Static Inventory
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+Static candidate-file counts:
+- Model: 2196
+- Provider: 1204
+- Model weight/checkpoint: 122
+- Adapter: 46
+Evidence:
+`docs/security/evidence/phase2-model-provider-weight-adapter-evidence.md`
+These counts are static discovery candidates only. They do not prove
+that a model, provider, checkpoint, weight file, or adapter is active
+or trusted at runtime.
 ## Phase 2 Completion Gate
 
 Phase 2 remains IN PROGRESS.
