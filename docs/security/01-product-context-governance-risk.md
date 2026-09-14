@@ -28,31 +28,64 @@ privacy, safety, or risk conclusions as facts.
 ## 1. Product Mission
 
 Evidence:
-- TO INVESTIGATE
+- README identifies Onyx as an open-source AI platform and the application layer for LLMs.
+- README states that it provides a feature-rich interface that can be self-hosted.
+- Supported capabilities include RAG, web search, custom agents, deep research, code execution, file/artifact creation, actions, MCP, voice, and image generation.
+- README states that Onyx can connect applications through more than 50 indexing-based connectors or MCP.
 
-Interpretation:
-- TO DETERMINE
+Evidence-supported interpretation:
+- Onyx's product mission is to provide a deployable application layer through which individuals and organizations can use LLM capabilities, enterprise knowledge, agents, tools, and external integrations.
 
-Open questions:
-- TO RECORD
+Limitations:
+- This interpretation is derived from repository documentation and is not a substitute for an authoritative internal product-strategy statement.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-product-context-evidence.md
 
 ## 2. Business Value
 
 Evidence:
-- TO INVESTIGATE
+- Lite mode provides a lower-resource chat and agent experience for quick evaluation or limited use.
+- Standard Onyx provides the broader feature set, including RAG indexing, connector synchronization workers, inference services, caching, and object storage.
+- Enterprise-oriented capabilities include collaboration, SSO, SCIM-related provisioning, RBAC, analytics, query history, and custom code controls.
+- Community Edition provides core Chat, RAG, Agent, and Action capabilities.
 
-Interpretation:
-- TO DETERMINE
+Evidence-supported interpretation:
+- Onyx creates value by providing one application layer for organizational LLM use, enterprise knowledge retrieval, agent workflows, integrations, governance-related controls, and multiple deployment profiles.
+- Its deployment choices allow use cases ranging from individual experimentation to larger organizational deployments.
+
+Unresolved business questions:
+- Revenue model and commercial priorities are not established by this local evidence.
+- Customer segments beyond the README descriptions require additional evidence.
+- Business-critical workflows and quantitative business impact remain to be determined.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-product-context-evidence.md
 
 ## 3. Stakeholders
 
-- Product stakeholders: TO IDENTIFY
-- Engineering stakeholders: TO IDENTIFY
-- Security stakeholders: TO IDENTIFY
-- Operators/administrators: TO IDENTIFY
-- End users: TO IDENTIFY
-- Data subjects: TO IDENTIFY
-- Third parties/providers: TO IDENTIFY
+Evidence-supported stakeholder categories:
+- End users: individual users and members of organizational teams using chat, agents, RAG, research, tools, and other AI capabilities.
+- Organizational customers/operators: teams ranging from small groups to large enterprises deploying or operating Onyx.
+- Administrators: organizational roles managing authentication, provisioning, permissions, agents, actions, and enterprise configuration.
+- AI/model providers: self-hosted and proprietary model-provider ecosystems supported by the application.
+- Integration providers: connector, MCP, web-search, and other external-service ecosystems.
+- Open-source contributors: contributors interacting through the repository contribution process.
+
+Not yet established from current evidence:
+- Accountable product owner.
+- Accountable engineering owner.
+- Accountable security owner.
+- Data owner(s).
+- Specific data-subject categories.
+- Named commercial, legal, privacy, or compliance stakeholders.
+
+Evidence source:
+- README.md
+- CONTRIBUTING.md where applicable
+- docs/security/evidence/phase1-product-context-evidence.md
 
 ## 4. Ownership
 
@@ -64,7 +97,27 @@ Interpretation:
 
 ## 5. Intended Uses
 
-- TO IDENTIFY FROM EVIDENCE
+Evidence-supported intended uses:
+- LLM chat and assistant interaction.
+- Retrieval-augmented generation over indexed knowledge.
+- Deep research and multi-step research workflows.
+- Custom agent creation with instructions, knowledge, and actions.
+- Web search and web-content retrieval.
+- Actions and MCP-based application interaction.
+- Sandboxed code execution for analysis and file manipulation.
+- Artifact and document generation.
+- Voice interaction.
+- Image generation.
+- Organizational collaboration and controlled enterprise AI adoption.
+- Self-hosted or organization-managed deployments using supported model providers.
+
+Limitations:
+- These are documented product capabilities, not permission for unrestricted security testing.
+- Phase 0 authorization and synthetic/local testing restrictions remain controlling.
+
+Evidence source:
+- README.md
+- docs/security/evidence/phase1-product-context-evidence.md
 
 ## 6. Prohibited Uses
 
