@@ -81,6 +81,63 @@ Runtime behavior remains deliberately unverified and will be tested only in late
 - Source-vs-runtime distinction preserved: PASS
 - No external active testing performed: PASS
 
+## Action 3.3 - DNS, IP, Ports, Sockets, and Routing
+
+Status: **COMPLETE**.
+
+### Foundations
+
+- **DNS** maps names to network destinations; security concerns include
+  resolver trust, rebinding, spoofing, internal-name exposure, and SSRF
+  destination changes.
+- **IP addressing** describes network location and reachability. Loopback,
+  private, public, wildcard, IPv4, and IPv6 addresses have different
+  exposure implications.
+- **Ports** identify transport endpoints, not applications by themselves.
+  A configured port does not prove that a service is running.
+- **Sockets** join an address, transport protocol and port into a
+  communication endpoint.
+- **Routing** determines where traffic travels between networks and trust
+  boundaries.
+- **Proxies** can terminate, forward, transform or authorize traffic and
+  therefore frequently become security boundaries.
+
+### Static observations
+
+- dns: 1172 candidate files, 5955 matching lines.
+- ipv4: 177 candidate files, 689 matching lines.
+- ipv6: 625 candidate files, 4477 matching lines.
+- localhost: 238 candidate files, 593 matching lines.
+- wildcard_bind: 80 candidate files, 126 matching lines.
+- port: 1131 candidate files, 6888 matching lines.
+- socket: 85 candidate files, 273 matching lines.
+- listen_bind: 183 candidate files, 613 matching lines.
+- routing: 852 candidate files, 3379 matching lines.
+- proxy: 375 candidate files, 1568 matching lines.
+
+### Security interpretation
+
+This action maps source-level addressing, name-resolution, port, socket,
+routing and proxy surfaces. Static candidates must not be treated as proof
+of actual runtime exposure.
+
+Runtime listeners, DNS resolution, active routes, firewall policy and
+reachability remain unverified.
+
+### Evidence
+
+`docs/security/evidence/phase3-dns-ip-port-socket-routing-evidence.md`
+
+### Completion criteria
+
+- DNS candidates enumerated: PASS
+- IP-address candidates enumerated: PASS
+- Port candidates enumerated: PASS
+- Socket candidates enumerated: PASS
+- Routing/proxy candidates enumerated: PASS
+- No active network probing performed: PASS
+- Source-vs-runtime distinction preserved: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
