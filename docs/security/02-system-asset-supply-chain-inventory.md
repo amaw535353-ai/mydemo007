@@ -52,16 +52,16 @@ recorded without displaying their contents.
 | Role inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Permission inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Tenant inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
-| Data inventory | NOT YET ENUMERATED |
-| Dataset inventory | NOT YET ENUMERATED |
-| Document inventory | NOT YET ENUMERATED |
-| Index inventory | DISCOVERY STARTED |
-| Embedding inventory | DISCOVERY STARTED |
-| Vector-store inventory | DISCOVERY STARTED |
-| Memory inventory | DISCOVERY STARTED |
-| Cache inventory | NOT YET ENUMERATED |
-| Prompt inventory | DISCOVERY STARTED |
-| Template inventory | NOT YET ENUMERATED |
+| Data inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Dataset inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Document inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Index inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Embedding inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Vector-store inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Memory inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Cache inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Prompt inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Template inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Model inventory | DISCOVERY STARTED |
 | Provider inventory | DISCOVERY STARTED |
 | Model-weight inventory | NOT YET ENUMERATED |
@@ -179,6 +179,26 @@ Evidence:
 
 These counts identify source locations for deeper security analysis. They do not prove runtime authentication, authorization, RBAC, permission enforcement, or tenant isolation.
 
+
+## Action 2.4 - Data, Retrieval, Memory, and Prompt Static Inventory
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+Static candidate-file counts:
+- Data: 1931
+- Dataset: 37
+- Document: 1211
+- Index: 824
+- Embedding: 198
+- Vector store: 5
+- Memory: 299
+- Cache: 816
+- Prompt: 463
+- Template: 292
+Evidence:
+`docs/security/evidence/phase2-data-retrieval-memory-prompt-evidence.md`
+These counts identify static source candidates only. They do not
+prove runtime data flow, access control, retrieval authorization,
+tenant isolation, memory isolation, cache isolation, prompt
+provenance, or template safety.
 ## Phase 2 Completion Gate
 
 Phase 2 remains IN PROGRESS.
