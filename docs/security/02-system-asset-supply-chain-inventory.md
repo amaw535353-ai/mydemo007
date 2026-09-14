@@ -44,10 +44,10 @@ recorded without displaying their contents.
 | --- | --- |
 | Source-code inventory | DISCOVERY BASELINE ESTABLISHED |
 | Repository inventory | DISCOVERY BASELINE ESTABLISHED |
-| Service inventory | DISCOVERY STARTED |
-| Client inventory | DISCOVERY STARTED |
-| API inventory | DISCOVERY STARTED |
-| Endpoint inventory | NOT YET ENUMERATED |
+| Service inventory | STATIC DEFINITIONS ENUMERATED; RUNTIME UNVERIFIED |
+| Client inventory | STATIC SOURCE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
+| API inventory | STATIC ROUTE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
+| Endpoint inventory | STATIC ROUTE DEFINITIONS ENUMERATED; RUNTIME UNVERIFIED |
 | Identity inventory | DISCOVERY STARTED |
 | Role inventory | DISCOVERY STARTED |
 | Permission inventory | DISCOVERY STARTED |
@@ -134,6 +134,32 @@ Their contents were not collected.
 ## Evidence
 
 docs/security/evidence/phase2-repository-manifest-evidence.md
+
+## Service, Client, API and Endpoint Static Inventory
+
+Static enumeration results:
+
+- Compose service definitions: 144
+- Helm/Kubernetes resource-kind definitions: 123
+- Client source surfaces: 6
+- Client API/transport filename candidates: 136
+- Backend static route definitions: 716
+- Next.js static route handlers: 22
+
+Interpretation:
+
+These values represent source/configuration definitions at the current
+repository commit.
+
+They do not prove that a service is deployed, an endpoint is reachable,
+a route has no additional parent prefix, or a client is enabled in the
+eventual local deployment.
+
+Runtime reconciliation remains required.
+
+Evidence:
+
+docs/security/evidence/phase2-service-client-api-endpoint-evidence.md
 
 ## Phase 2 Completion Gate
 
