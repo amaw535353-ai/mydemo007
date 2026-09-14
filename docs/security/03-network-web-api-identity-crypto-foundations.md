@@ -138,6 +138,60 @@ reachability remain unverified.
 - No active network probing performed: PASS
 - Source-vs-runtime distinction preserved: PASS
 
+## Action 3.4 - HTTP, HTTPS, and TLS
+
+Status: **COMPLETE**.
+
+### Foundations
+
+- HTTP uses request/response semantics.
+- Requests contain methods, targets, headers and optionally bodies.
+- Responses contain status codes, headers and optionally bodies.
+- HTTPS is HTTP transported through TLS.
+- TLS provides confidentiality and integrity when correctly configured.
+- Certificate validation helps establish peer identity.
+- Cookies, CORS, HSTS, redirects and forwarded headers are
+  security-relevant controls.
+- Reverse proxies and TLS termination points can form trust boundaries.
+
+### Static observations
+
+- http_url: 744 candidate files, 1574 matching lines.
+- https_url: 867 candidate files, 7898 matching lines.
+- http_methods: 3064 candidate files, 25980 matching lines.
+- http_headers: 1071 candidate files, 4041 matching lines.
+- cookies: 78 candidate files, 153 matching lines.
+- cors: 19 candidate files, 29 matching lines.
+- hsts: 1 candidate files, 1 matching lines.
+- tls_ssl: 108 candidate files, 405 matching lines.
+- certificate_trust: 55 candidate files, 192 matching lines.
+- tls_verify_disabled: 6 candidate files, 12 matching lines.
+- proxy_forwarding: 89 candidate files, 305 matching lines.
+- redirects: 196 candidate files, 479 matching lines.
+
+### Security interpretation
+
+Static discovery does not prove runtime exposure, HTTPS enforcement,
+TLS negotiation, certificate validity, cookie behavior, CORS policy,
+HSTS enforcement or proxy-header trust.
+
+TLS-verification-disable matches are review candidates only.
+
+### Evidence
+
+`docs/security/evidence/phase3-http-https-tls-evidence.md`
+
+### Completion criteria
+
+- HTTP candidates enumerated: PASS
+- HTTPS candidates enumerated: PASS
+- HTTP method/header candidates enumerated: PASS
+- Cookie/CORS/HSTS candidates enumerated: PASS
+- TLS/certificate candidates enumerated: PASS
+- TLS-verification-disable candidates identified: PASS
+- No active HTTP/TLS probing performed: PASS
+- Source-vs-runtime distinction preserved: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
