@@ -573,56 +573,216 @@ Evidence source:
 
 ## 20. Policy Requirements
 
-- TO IDENTIFY
+Repository-supported policy evidence:
+- SECURITY.md defines vulnerability reporting, supported-version guidance, research scope, disclosure coordination, and safe-harbor expectations.
+- CONTRIBUTING.md defines contribution approval, design approval, testing, review, and release-related engineering processes.
+- LICENSE defines repository licensing conditions.
+- Phase 0 defines the controlling authorization and safety requirements for this local assessment.
+
+Local rule:
+- The approved Phase 0 boundary controls this engagement even where an upstream policy is less restrictive.
+
+Not established from current evidence:
+- Complete upstream internal information-security policies.
+- Internal privacy or secure-development policies not published in this repository.
+- Customer-specific security policies.
+
+Evidence:
+- SECURITY.md
+- CONTRIBUTING.md
+- LICENSE
+- docs/security/00-scope-and-rules-of-engagement.md
+- docs/security/evidence/phase1-policy-risk-lifecycle-evidence.md
 
 ## 21. Legal Requirements
 
-- TO IDENTIFY APPLICABLE REQUIREMENTS
-- Do not infer applicability without evidence.
+Established evidence:
+- The repository contains licensing terms.
+- README describes Community Edition as MIT licensed.
+- LICENSE shows mixed licensing: specified enterprise directories use the Onyx Enterprise License, while content outside the listed restrictions uses the MIT Expat license.
+
+Legal applicability not established:
+- Applicable national law for a real deployment.
+- Privacy-law jurisdiction.
+- Sector-specific law.
+- AI-specific statutory obligations.
+- Employment or monitoring law.
+- International data-transfer requirements.
+- Other intellectual-property obligations.
+
+Local training position:
+- No real customer, production operator, regulated dataset, or deployment jurisdiction is assumed.
+- Product functionality alone is insufficient to make a legal-applicability conclusion.
+
+Real-engagement requirement:
+- Identify legal entity, deployment jurisdiction, user and data-subject jurisdictions, relevant data categories, and obtain appropriate legal/privacy review.
+
+Evidence:
+- README.md
+- LICENSE
+- docs/security/evidence/phase1-policy-risk-lifecycle-evidence.md
 
 ## 22. Regulatory Requirements
 
-- TO IDENTIFY APPLICABLE REQUIREMENTS
-- Do not infer applicability without evidence.
+Formal regulatory applicability:
+- NOT YET ESTABLISHED.
+
+Reason:
+- Applicability depends on operator, geography, sector, affected people, data categories, intended use, deployment context, and AI functionality.
+
+Future applicability questions:
+- Is the operator in a regulated sector?
+- Is regulated or specially protected data processed?
+- Is AI used in a regulated decision process?
+- Are jurisdiction-specific AI obligations applicable?
+- Are incident, audit, retention, resilience, or reporting controls mandated?
+
+Current local lab:
+- No regulatory-compliance claim is made.
+- Security standards used for assurance or learning are not automatically legal requirements.
+
+Evidence status:
+- Current repository evidence does not establish a mandatory regulatory regime for this local project.
 
 ## 23. Contractual Requirements
 
-- TO IDENTIFY IF APPLICABLE
-- No customer contract is assumed for this local training environment.
+Current local environment:
+- No customer contract is assumed.
+- No SLA, DPA, BAA, security addendum, vendor agreement, or customer-specific security requirement has been established.
+
+Repository context:
+- Onyx documents Community and Enterprise editions and enterprise-oriented features.
+- That does not establish contractual obligations for this local training environment.
+
+A real engagement should collect applicable:
+- master service agreement;
+- security addendum;
+- data-processing agreement;
+- service-level commitments;
+- customer security requirements;
+- subprocessors requirements;
+- data-location requirements;
+- incident-notification terms;
+- audit rights;
+- retention/deletion obligations;
+- vulnerability-remediation commitments.
+
+Status:
+- CONTRACTUAL APPLICABILITY NOT ESTABLISHED FOR THIS LOCAL TRAINING PROJECT.
 
 ## 24. Risk Exceptions
 
-Future exceptions must record:
-- exception ID;
-- affected asset/control;
-- reason;
+Local risk-exception process:
+
+A security requirement must not be silently bypassed.
+
+Each exception must record:
+- unique exception ID;
+- date;
+- affected requirement or control;
+- affected asset or workflow;
+- justification;
+- supporting evidence;
+- risk description;
+- impact/likelihood rationale where an approved methodology exists;
 - compensating controls;
-- owner;
-- approver;
+- responsible owner;
+- accountable approver;
 - start date;
 - expiry date;
+- remediation plan;
+- retest requirement;
 - residual risk;
-- retest requirement.
+- closure decision.
+
+Rules:
+- Exceptions are time bounded.
+- Expired exceptions must be reviewed rather than silently retained.
+- Exceptions cannot override Phase 0 authorization, scope, cost, network, data, or safety boundaries without explicit reapproval.
+- An exception does not mean the underlying risk is remediated.
+
+Boundary:
+- This is the local assessment process, not an asserted upstream Onyx corporate process.
 
 ## 25. Risk Acceptance
 
-Risk acceptance must record:
-- risk;
-- evidence;
-- severity;
-- owner;
-- accountable accepter;
-- expiry/review date;
+Local risk acceptance must be explicit rather than inferred from inaction.
+
+Required record:
+- risk ID;
+- evidence or finding reference;
+- affected asset/workflow;
+- affected security objective;
+- severity or qualitative impact;
+- available remediation;
+- compensating controls;
+- uncertainty;
 - residual risk;
-- release consequence.
+- acceptance rationale;
+- responsible owner;
+- accountable accepter;
+- review or expiry date;
+- testing/release consequence;
+- required monitoring;
+- required retest.
+
+Decision boundary:
+- Ahmed may accept residual risk only for this authorized local learning environment.
+- Ahmed cannot accept risk for upstream Onyx maintainers, customers, users, or third parties.
+- Phase 0 prohibited activities cannot become permitted through a local risk-acceptance record.
+- Material boundary changes require review and reapproval.
+
+Status:
+- No upstream product risk acceptance is claimed.
 
 ## 26. Lifecycle Ownership
 
-- TO DEFINE
+Upstream lifecycle owner:
+- NOT VERIFIED FROM CURRENT EVIDENCE.
+
+Repository lifecycle evidence:
+- SECURITY.md states that security fixes are applied to main and the latest tagged release and recommends the most recent release.
+- CONTRIBUTING.md documents engineering contribution and release processes.
+
+Local security-artifact lifecycle owner:
+- Ahmed.
+
+Local lifecycle responsibilities:
+- Keep evidence tied to immutable commits.
+- Update assessments when material assumptions change.
+- Refresh threat models after relevant product or architecture changes.
+- Retest remediations.
+- Expire temporary exceptions.
+- Remove obsolete synthetic credentials and test data.
+- Preserve appropriately sanitized portfolio evidence.
+
+Boundary:
+- Local lifecycle ownership does not create upstream product lifecycle authority.
 
 ## 27. End-of-Life Ownership
 
-- TO DEFINE
+Upstream product end-of-life owner:
+- NOT VERIFIED FROM CURRENT EVIDENCE.
+
+Repository evidence:
+- SECURITY.md warns that older releases are not guaranteed to receive backported security fixes and recommends the most recent release.
+- This provides lifecycle guidance but does not identify an accountable upstream end-of-life owner.
+
+Local-lab end-of-life owner:
+- Ahmed.
+
+Local closure responsibilities:
+- Stop local test services.
+- Remove temporary synthetic credentials and data when no longer required.
+- Verify no unintended listeners or external connections remain.
+- Preserve required sanitized evidence.
+- Record final Git state.
+- Retire obsolete branches or fixtures only after evidence requirements are satisfied.
+- Record residual limitations and unresolved risks before project closure.
+
+Evidence:
+- SECURITY.md
+- docs/security/00-scope-and-rules-of-engagement.md
 
 ## 28. NIST AI RMF - Govern
 
