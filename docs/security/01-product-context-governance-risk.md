@@ -366,42 +366,210 @@ Evidence source:
 
 ## 13. Risk Appetite
 
-- TO BE DEFINED BY ACCOUNTABLE OWNER
+Upstream/product organizational risk appetite:
+- NOT ESTABLISHED FROM CURRENT EVIDENCE.
+- No claim is made about the risk appetite of the upstream Onyx organization.
+
+Authorized local-assessment risk appetite:
+- Very low tolerance for uncertainty about authorization or scope.
+- Zero tolerance for intentional access to real customer data or production credentials.
+- Zero tolerance for testing public or otherwise unapproved targets.
+- Zero tolerance for unapproved external-service or paid-resource use.
+- Zero tolerance for unbounded resource-consumption or denial-of-service testing.
+- Low tolerance for unexpected instability; testing stops when instability appears.
+- Active testing must remain within approved local, synthetic, bounded conditions.
+- Material changes to scope, network boundaries, targets, data classification, external integrations, cost exposure, or test limits require review before continuation.
+
+Risk decision principle:
+- Safety, authorization, evidence integrity, and containment take priority over completing a test.
+- When scope or impact is uncertain, stop rather than assume permission.
+
+Evidence source:
+- docs/security/00-scope-and-rules-of-engagement.md
+- docs/security/evidence/phase1-governance-objectives-evidence.md
 
 ## 14. Security Objectives
 
-- TO DEFINE
+Working assessment security objectives:
+
+Identity and authorization:
+- Ensure authenticated identities receive only intended permissions.
+- Preserve least privilege across users, groups, agents, actions, connectors, and administrative capabilities.
+- Prevent cross-user and cross-tenant authorization failures where tenant boundaries exist.
+
+Data and retrieval:
+- Protect organizational knowledge, documents, chats, prompts, retrieval results, logs, and generated artifacts from unauthorized disclosure or modification.
+- Preserve authorization throughout ingestion, indexing, retrieval, caching, and answer generation.
+
+Agent and delegated capability:
+- Constrain agents to explicitly authorized tools, actions, MCP capabilities, resources, and destinations.
+- Prevent untrusted instructions or retrieved content from silently expanding authority.
+
+Code execution:
+- Maintain effective sandbox boundaries.
+- Prevent unintended filesystem, process, credential, or network access.
+
+External integrations:
+- Make data destinations and provider boundaries explicit.
+- Prevent accidental transmission to unapproved model providers, connectors, tools, or third parties.
+
+Auditability:
+- Preserve sufficient evidence to reconstruct material security-sensitive actions and decisions.
+
+Resilience:
+- Bound time, retries, concurrency, resource consumption, and failure propagation.
+- Fail safely where authorization or security-critical dependencies are uncertain.
+
+Supply-chain integrity:
+- Preserve traceability of source, dependencies, configuration, deployment artifacts, and security-relevant changes.
+
+Classification:
+- These are working security-assessment objectives.
+- They are not represented as official upstream Onyx security commitments.
+
+Evidence source:
+- README.md
+- SECURITY.md
+- docs/security/evidence/phase1-governance-objectives-evidence.md
 
 ## 15. Privacy Objectives
 
-- TO DEFINE
+Working privacy objectives:
+
+Data minimization:
+- Process and retain only information needed for the intended workflow.
+
+Authorization:
+- Restrict access to prompts, chats, documents, retrieval results, generated artifacts, logs, and administrative data according to intended identity and tenant boundaries.
+
+Provider and integration privacy:
+- Make external data destinations explicit.
+- Prevent unintended disclosure to model providers, connectors, MCP servers, tools, web services, or other integrations.
+
+Sensitive-data handling:
+- Avoid unnecessary exposure of credentials, secrets, personal data, and confidential organizational information.
+- Sanitize evidence before sharing.
+
+Logging and evidence:
+- Collect sufficient security evidence without unnecessarily duplicating sensitive content.
+
+Lifecycle:
+- Define retention, deletion, revocation, and cleanup behavior for security-relevant data where applicable.
+
+Local-lab requirement:
+- Current security-testing evidence and fixtures remain synthetic-only under Phase 0.
+
+Limitations:
+- These are assessment objectives.
+- They do not establish an upstream privacy policy, legal basis, retention schedule, or regulatory conclusion.
+
+Evidence source:
+- docs/security/00-scope-and-rules-of-engagement.md
+- README.md
+- SECURITY.md
+- docs/security/evidence/phase1-governance-objectives-evidence.md
 
 ## 16. Safety Objectives
 
-- TO DEFINE
+Working safety objectives:
+
+Delegated actions:
+- Prevent AI-mediated actions from exceeding user intent or approved authority.
+
+Human control:
+- Preserve meaningful human control for security-sensitive decisions and irreversible or high-impact actions where applicable.
+
+Failure behavior:
+- Stop or fail safely when authorization, scope, destination, data classification, or system state is uncertain.
+
+Resource safety:
+- Prevent uncontrolled loops, resource exhaustion, runaway tool execution, and cascading failures.
+
+Integration safety:
+- Prevent untrusted content, tools, connectors, or external services from silently changing the effective security boundary.
+
+Recovery:
+- Maintain bounded rollback, teardown, and recovery procedures for local security work.
+
+Formal safety classification:
+- NOT YET ASSIGNED.
+- No current evidence establishes that the assessed deployment is a regulated safety-critical system.
+
+Evidence source:
+- docs/security/00-scope-and-rules-of-engagement.md
+- README.md
+- docs/security/evidence/phase1-governance-objectives-evidence.md
 
 ## 17. Governance Roles
 
-- Product owner: TO VERIFY
-- Engineering owner: TO VERIFY
-- Security owner: TO VERIFY
-- Reviewer: TO VERIFY
-- Approver: TO VERIFY
+Local security-engagement roles:
+
+Authorization owner:
+- amaw535353-ai, as recorded in the approved Phase 0 authorization.
+
+Authorized tester/local operator:
+- Ahmed.
+
+Local security decision owner:
+- Ahmed is accountable for deciding whether testing remains within the approved local scope and for stopping when authorization, safety, cost, or scope becomes uncertain.
+
+Upstream security-reporting recipient:
+- Onyx maintainers through the project's private vulnerability-reporting process when a verified upstream finding requires disclosure.
+
+Upstream organizational roles NOT established from current evidence:
+- Product owner.
+- Engineering owner.
+- Security owner.
+- Privacy owner.
+- Legal/compliance owner.
+- Data owner.
+- Enterprise risk owner.
+- Release approver.
+
+Important boundary:
+- Local repository ownership and local testing authorization do not make Ahmed an upstream Onyx product owner or upstream release authority.
+
+Evidence source:
+- docs/security/00-scope-and-rules-of-engagement.md
+- SECURITY.md
+- docs/security/evidence/phase1-governance-objectives-evidence.md
 
 ## 18. RACI
 
+This RACI applies only to the authorized local learning/security engagement.
+It does not assign roles inside the upstream Onyx organization.
+
 | Activity | Responsible | Accountable | Consulted | Informed |
 | --- | --- | --- | --- | --- |
-| Product decisions | TBD | TBD | TBD | TBD |
-| Security requirements | TBD | TBD | TBD | TBD |
-| Risk acceptance | TBD | TBD | TBD | TBD |
-| Remediation | TBD | TBD | TBD | TBD |
-| Release decision | TBD | TBD | TBD | TBD |
-| Incident response | TBD | TBD | TBD | TBD |
+| Define local test scope | Ahmed | Ahmed as local authorization owner | Security references/tooling as needed | N/A |
+| Approve material scope change | Ahmed | Ahmed as local authorization owner | Relevant evidence/reference material | N/A |
+| Execute authorized local tests | Ahmed | Ahmed | Security tooling/AI assistance as applicable | N/A |
+| Interpret security evidence | Ahmed | Ahmed | Security tooling/AI assistance as applicable | N/A |
+| Implement local remediation | Ahmed | Ahmed | Engineering/security assistance as applicable | N/A |
+| Retest local remediation | Ahmed | Ahmed | Security tooling/AI assistance as applicable | N/A |
+| Accept residual local-lab risk | Ahmed | Ahmed | Relevant evidence/reference material | N/A |
+| Stop unsafe or uncertain testing | Ahmed | Ahmed | N/A | N/A |
+| Submit verified upstream finding | Ahmed | Ahmed | Upstream security policy | Onyx maintainers through private reporting |
+
+Governance limitation:
+- AI tools, scanners, scripts, and other automation may provide evidence or assistance but are not accountable risk owners or approval authorities.
+- Upstream product release decisions remain outside this local RACI.
 
 ## 19. Security Champions
 
-- TO IDENTIFY OR MARK NOT APPLICABLE FOR LOCAL TRAINING
+Upstream organizational security champion:
+- NOT IDENTIFIED FROM CURRENT EVIDENCE.
+
+Local engagement:
+- Ahmed performs the local security-engineering role for this authorized learning project.
+- This local role should not be represented as an official upstream Onyx organizational title.
+
+Future real-world expectation:
+- For an organizational engagement, identify named security champions or equivalent engineering contacts for affected product areas and record escalation paths.
+
+Evidence source:
+- Current local Phase 0 authorization.
+- Current repository evidence does not identify an upstream security-champion program.
 
 ## 20. Policy Requirements
 
