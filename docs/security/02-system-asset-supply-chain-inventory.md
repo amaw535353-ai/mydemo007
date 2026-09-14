@@ -66,13 +66,13 @@ recorded without displaying their contents.
 | Provider inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Model-weight inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Adapter inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
-| Agent inventory | DISCOVERY STARTED |
-| Tool inventory | DISCOVERY STARTED |
-| Action inventory | DISCOVERY STARTED |
-| MCP client inventory | DISCOVERY STARTED |
-| MCP server inventory | DISCOVERY STARTED |
-| A2A component inventory | NOT YET ENUMERATED |
-| Connector inventory | DISCOVERY STARTED |
+| Agent inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Tool inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Action inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| MCP client inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| MCP server inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| A2A component inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Connector inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Secret inventory | FILENAME DISCOVERY ONLY |
 | Token inventory | FILENAME DISCOVERY ONLY |
 | Key inventory | FILENAME DISCOVERY ONLY |
@@ -212,6 +212,22 @@ Evidence:
 These counts are static discovery candidates only. They do not prove
 that a model, provider, checkpoint, weight file, or adapter is active
 or trusted at runtime.
+
+## Action 2.6 - Agent, Tool, Action, MCP, A2A, and Connector Static Inventory
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+Static candidate-file counts:
+- Agent: 695
+- Tool: 913
+- Action: 807
+- MCP client: 14
+- MCP server: 191
+- A2A component: 0
+- Connector: 1399
+Evidence:
+`docs/security/evidence/phase2-agent-tool-action-mcp-a2a-connector-evidence.md`
+These counts identify static source candidates only. They do not prove
+that any agent, tool, action, MCP component, A2A component, or connector
+is enabled, authorized, reachable, or isolated correctly at runtime.
 ## Phase 2 Completion Gate
 
 Phase 2 remains IN PROGRESS.
