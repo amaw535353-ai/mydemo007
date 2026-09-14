@@ -786,19 +786,100 @@ Evidence:
 
 ## 28. NIST AI RMF - Govern
 
-- TO MAP
+Phase 1 working mapping:
+- Authorization, scope, and local accountability are documented.
+- Local risk appetite is documented without claiming upstream organizational risk appetite.
+- Security, privacy, and safety objectives are documented.
+- Local governance roles and RACI are defined.
+- Policy, legal, regulatory, and contractual applicability are tracked with explicit evidence gaps.
+- Risk exceptions and risk acceptance require explicit records.
+- Lifecycle and end-of-life responsibilities are documented.
+- Responsible disclosure and evidence governance are defined.
+
+Status:
+- GOVERN FUNCTION MAPPED FOR THE AUTHORIZED LOCAL ENGAGEMENT.
+
+Limitations:
+- Upstream organizational ownership and risk appetite remain unverified.
+- Deployment-specific legal and regulatory applicability remains unresolved.
+
+Evidence:
+- docs/security/00-scope-and-rules-of-engagement.md
+- docs/security/evidence/phase1-nist-ai-rmf-mapping.md
 
 ## 29. NIST AI RMF - Map
 
-- TO MAP
+Phase 1 working mapping:
+- Product mission and business value are documented.
+- Stakeholder categories are documented.
+- Intended uses are documented.
+- Upstream prohibited-use evidence limitations are explicit.
+- Foreseeable misuse hypotheses are documented.
+- Critical workflows are identified.
+- AI-system classification is documented.
+- Impact dimensions and potentially affected parties are documented.
+- Threat actors and attacker objectives are documented as hypotheses.
+
+Status:
+- MAP FUNCTION MAPPED FOR THE CURRENT PRODUCT-CONTEXT EVIDENCE.
+
+Limitations:
+- Later phases must establish complete inventories, architecture,
+  trust boundaries, deployment state, and detailed data flows.
+
+Evidence:
+- docs/security/01-product-context-governance-risk.md
+- docs/security/evidence/phase1-nist-ai-rmf-mapping.md
 
 ## 30. NIST AI RMF - Measure
 
-- TO MAP
+Phase 1 working mapping:
+- Confidentiality, integrity, availability, privacy, delegated-authority,
+  and safety impacts have been considered.
+- Formal impact level remains unassigned where evidence is insufficient.
+- Formal risk tier remains unassigned because no approved organizational
+  risk-scoring methodology has been established.
+- Evidence quality is supported through Git history and SHA-256 fingerprints.
+- Assumptions, uncertainty, and limitations are explicitly preserved.
+
+Status:
+- MEASURE FUNCTION BASELINE MAPPED FOR PHASE 1.
+
+Limitations:
+- No production measurements are available.
+- No statistical AI security evaluation is claimed in Phase 1.
+- Quantitative security testing and control-effectiveness measurement
+  belong to later phases.
+
+Evidence:
+- docs/security/01-product-context-governance-risk.md
+- docs/security/evidence/phase1-nist-ai-rmf-mapping.md
 
 ## 31. NIST AI RMF - Manage
 
-- TO MAP
+Phase 1 working mapping:
+- Stop conditions are defined.
+- Material changes require review and reapproval.
+- Local test activity is bounded.
+- Risk exceptions are time bounded and documented.
+- Risk acceptance must be explicit.
+- Remediation and retest expectations are defined.
+- Rollback and teardown are defined.
+- Responsible disclosure is defined.
+- Lifecycle refresh and local closure responsibilities are documented.
+
+Status:
+- MANAGE FUNCTION MAPPED FOR THE AUTHORIZED LOCAL ENGAGEMENT.
+
+Limitations:
+- Local risk decisions do not bind the upstream Onyx organization.
+- Production release authority, monitoring operations, and real incident
+  ownership remain outside the authorized training environment.
+
+Evidence:
+- docs/security/00-scope-and-rules-of-engagement.md
+- docs/security/01-product-context-governance-risk.md
+- docs/security/evidence/phase1-nist-ai-rmf-mapping.md
 
 ## Current Evidence Sources
 
@@ -827,3 +908,31 @@ Phase 1 is not complete until:
 - lifecycle and end-of-life ownership are recorded;
 - NIST AI RMF Govern, Map, Measure, and Manage mappings are completed;
 - assumptions, limitations, and unresolved questions remain explicit.
+
+## Phase 1 Closure Record
+
+Status: COMPLETE FOR THE AUTHORIZED LOCAL TRAINING ENGAGEMENT
+
+Closure basis:
+- Product context is evidence backed.
+- Business value and stakeholder categories are documented.
+- Intended uses, foreseeable misuse, and critical workflows are documented.
+- AI-system and impact classifications are documented with limitations.
+- Formal risk tier is deliberately unassigned where methodology is absent.
+- Local risk appetite and security, privacy, and safety objectives are documented.
+- Local governance roles and RACI are documented.
+- Policy, legal, regulatory, and contractual applicability is documented
+  without inventing unsupported conclusions.
+- Risk exceptions, risk acceptance, lifecycle, and end-of-life processes
+  are documented.
+- NIST AI RMF Govern, Map, Measure, and Manage are mapped at function level.
+- Evidence gaps and residual limitations remain explicit.
+
+Important boundary:
+- Phase 1 completion means the local engineering/governance learning
+  objectives are complete.
+- It does not assert upstream Onyx organizational approval,
+  certification, legal compliance, or production risk acceptance.
+
+Next roadmap phase:
+- Phase 2 - Complete System, Asset, and Supply-Chain Inventory.
