@@ -48,10 +48,10 @@ recorded without displaying their contents.
 | Client inventory | STATIC SOURCE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
 | API inventory | STATIC ROUTE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
 | Endpoint inventory | STATIC ROUTE DEFINITIONS ENUMERATED; RUNTIME UNVERIFIED |
-| Identity inventory | DISCOVERY STARTED |
-| Role inventory | DISCOVERY STARTED |
-| Permission inventory | DISCOVERY STARTED |
-| Tenant inventory | DISCOVERY STARTED |
+| Identity inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Role inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Permission inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
+| Tenant inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Data inventory | NOT YET ENUMERATED |
 | Dataset inventory | NOT YET ENUMERATED |
 | Document inventory | NOT YET ENUMERATED |
@@ -160,6 +160,24 @@ Runtime reconciliation remains required.
 Evidence:
 
 docs/security/evidence/phase2-service-client-api-endpoint-evidence.md
+
+
+## Action 2.3 - Identity, Role, Permission, and Tenant Static Inventory
+
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+
+Static candidate-file counts:
+
+- Identity candidate files: 1136
+- Role candidate files: 403
+- Permission/authorization candidate files: 956
+- Tenant-boundary candidate files: 844
+
+Evidence:
+
+`docs/security/evidence/phase2-identity-role-permission-tenant-evidence.md`
+
+These counts identify source locations for deeper security analysis. They do not prove runtime authentication, authorization, RBAC, permission enforcement, or tenant isolation.
 
 ## Phase 2 Completion Gate
 
