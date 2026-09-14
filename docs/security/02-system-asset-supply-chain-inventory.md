@@ -42,8 +42,8 @@ recorded without displaying their contents.
 
 | Domain | Status |
 | --- | --- |
-| Source-code inventory | DISCOVERY BASELINE ESTABLISHED |
-| Repository inventory | DISCOVERY BASELINE ESTABLISHED |
+| Source-code inventory | STATIC SOURCE FILES ENUMERATED; RUNTIME UNVERIFIED |
+| Repository inventory | STATIC TRACKED REPOSITORY ENUMERATED; RUNTIME UNVERIFIED |
 | Service inventory | STATIC DEFINITIONS ENUMERATED; RUNTIME UNVERIFIED |
 | Client inventory | STATIC SOURCE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
 | API inventory | STATIC ROUTE SURFACES ENUMERATED; RUNTIME UNVERIFIED |
@@ -73,10 +73,10 @@ recorded without displaying their contents.
 | MCP server inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | A2A component inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Connector inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
-| Secret inventory | FILENAME DISCOVERY ONLY |
-| Token inventory | FILENAME DISCOVERY ONLY |
-| Key inventory | FILENAME DISCOVERY ONLY |
-| Certificate inventory | FILENAME DISCOVERY ONLY |
+| Secret inventory | STATIC CONTENT CANDIDATES ENUMERATED; VALUES NOT EXPOSED; RUNTIME UNVERIFIED |
+| Token inventory | STATIC CONTENT CANDIDATES ENUMERATED; VALUES NOT EXPOSED; RUNTIME UNVERIFIED |
+| Key inventory | STATIC CONTENT CANDIDATES ENUMERATED; VALUES NOT EXPOSED; RUNTIME UNVERIFIED |
+| Certificate inventory | STATIC CONTENT CANDIDATES ENUMERATED; VALUES NOT EXPOSED; RUNTIME UNVERIFIED |
 | Dependency inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Container inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Image inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
@@ -85,7 +85,7 @@ recorded without displaying their contents.
 | Vendor inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | Supplier inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | License inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
-| Ownership inventory | PARTIAL FROM PHASE 1 |
+| Ownership inventory | STATIC OWNERSHIP SIGNALS ENUMERATED; RUNTIME UNVERIFIED; ORGANIZATIONAL OWNERSHIP UNVERIFIED |
 | Data-lineage inventory | STATIC SOURCE CANDIDATES ENUMERATED; RUNTIME UNVERIFIED |
 | AI-BOM planning | NOT YET COMPLETED |
 | SBOM planning | NOT YET COMPLETED |
@@ -246,6 +246,27 @@ Evidence:
 These are static discovery candidates only. Runtime deployment,
 ownership, provenance, supplier trust, patch status, license
 compliance, and lineage integrity remain unverified.
+
+## Action 2.8 - Repository, Sensitive Material, and Ownership Static Inventory
+Observation class: **SOURCE-OBSERVED; RUNTIME UNVERIFIED**
+Repository/source counts:
+- Tracked regular files: 7662
+- Source-code files: 6508
+Sensitive-material candidate-file counts:
+- Secret: 1163
+- Token: 1060
+- Key: 436
+- Certificate: 66
+Static ownership signals:
+- CODEOWNERS files: 0
+- CODEOWNERS entries: 0
+- Distinct Git commit-author names: 2
+Evidence:
+`docs/security/evidence/phase2-sensitive-material-ownership-evidence.md`
+No sensitive values are included in the evidence. Static matches are
+discovery candidates only. Runtime credential validity, secret-store
+configuration, key custody, certificate validity, and organizational
+ownership remain unverified.
 ## Phase 2 Completion Gate
 
 Phase 2 remains IN PROGRESS.
