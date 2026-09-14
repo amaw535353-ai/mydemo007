@@ -61,7 +61,7 @@ recorded without displaying their contents.
 | Memory inventory | DISCOVERY STARTED |
 | Cache inventory | NOT YET ENUMERATED |
 | Prompt inventory | DISCOVERY STARTED |
-| Template inventoNOT YET ENUMERATED |
+| Template inventory | NOT YET ENUMERATED |
 | Model inventory | DISCOVERY STARTED |
 | Provider inventory | DISCOVERY STARTED |
 | Model-weight inventory | NOT YET ENUMERATED |
