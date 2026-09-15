@@ -387,6 +387,29 @@ Static repository evidence only; runtime effectiveness remains unverified.
 - No real data/credentials used: PASS
 - No external/billable AI service used: PASS
 
+## Action 5.13 - Apply Phase 5 to mydemo007
+
+Status: **COMPLETE**.
+
+### Purpose
+Apply Phase 5 AI-security foundations to the static structure of `mydemo007`.
+
+### Integrated boundaries
+Model/provider, prompt, embedding/vector, RAG, memory, agent, tool, MCP, privacy and evaluation surfaces were integrated into one trust-path review.
+
+### Evidence
+`docs/security/evidence/phase5-mydemo007-integrated-ai-review-evidence.md`
+
+### Boundary
+Static integration only. Runtime AI-security behavior remains unverified.
+
+### Completion criteria
+- Integrated trust path documented: PASS
+- Security-critical boundaries identified: PASS
+- Practical-verification targets defined: PASS
+- Runtime claims not overstated: PASS
+- Safety boundary preserved: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
