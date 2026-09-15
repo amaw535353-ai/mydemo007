@@ -452,6 +452,35 @@ Runtime verification remains required.
 - No active runtime testing: PASS
 - Static/runtime distinction: PASS
 
+## Action 3.10 - Identity, Roles, Permissions & Trust Boundaries
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Human/service identities, principals, roles, permissions, tenants, trust boundaries, delegation, impersonation and external identity providers.
+
+### Static observations
+
+- Candidate files: 3198
+- Matching lines: 40168
+
+### Security interpretation
+
+Static discovery identifies review candidates only.
+Runtime verification remains required.
+
+### Evidence
+
+`docs/security/evidence/phase3-identity-roles-trust-boundaries-evidence.md`
+
+### Completion criteria
+
+- Static mapping: PASS
+- Evidence recorded: PASS
+- No active runtime testing: PASS
+- Static/runtime distinction: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
