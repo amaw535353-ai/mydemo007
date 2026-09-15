@@ -321,6 +321,79 @@ Static source discovery alone does not prove these controls.
 - Webhook/callback candidates mapped: PASS
 - No active API testing performed: PASS
 - Static-vs-runtime distinction preserved: PASS
+## Action 3.7 - Authentication Foundations
+
+Status: **COMPLETE**.
+
+### Foundations
+
+Authentication establishes or verifies **who or what is acting**.
+
+Relevant mechanisms include:
+
+1. Username/password authentication.
+2. Password hashing.
+3. API keys.
+4. Bearer tokens.
+5. JWT.
+6. OAuth.
+7. OpenID Connect.
+8. SAML.
+9. Sessions.
+10. MFA and WebAuthn.
+11. Token expiry.
+12. Refresh tokens.
+13. Password-reset flows.
+14. Identity claims.
+15. Authentication middleware.
+
+Authentication is distinct from authorization. Successful
+authentication does not automatically grant permission to a resource.
+
+### Static observations
+
+- login_logout: 299 candidate files, 1105 matching lines.
+- password: 299 candidate files, 1158 matching lines.
+- password_hashing: 3 candidate files, 81 matching lines.
+- api_key: 512 candidate files, 3197 matching lines.
+- bearer_token: 392 candidate files, 1276 matching lines.
+- jwt: 54 candidate files, 185 matching lines.
+- oauth: 363 candidate files, 2299 matching lines.
+- oidc: 93 candidate files, 469 matching lines.
+- saml: 69 candidate files, 240 matching lines.
+- mfa: 3 candidate files, 11 matching lines.
+- session_auth: 1356 candidate files, 13003 matching lines.
+- auth_middleware: 246 candidate files, 664 matching lines.
+- identity_claims: 307 candidate files, 1070 matching lines.
+- token_expiry: 288 candidate files, 965 matching lines.
+- refresh_token: 80 candidate files, 418 matching lines.
+- password_reset: 29 candidate files, 68 matching lines.
+
+### Security interpretation
+
+Later controlled testing must verify credential validation, password
+storage, enumeration resistance, brute-force protection, MFA, token
+signature/issuer/audience/expiry validation, refresh-token handling,
+session invalidation, logout/revocation and password-reset integrity.
+
+Static source discovery alone does not prove those controls.
+
+### Evidence
+
+`docs/security/evidence/phase3-authentication-foundations-evidence.md`
+
+### Completion criteria
+
+- Authentication mechanisms mapped: PASS
+- Password/password-hashing candidates mapped: PASS
+- API-key/token candidates mapped: PASS
+- OAuth/OIDC/SAML candidates mapped: PASS
+- MFA/WebAuthn candidates mapped: PASS
+- Sessions and identity claims mapped: PASS
+- Expiry/refresh/reset candidates mapped: PASS
+- No active authentication testing performed: PASS
+- Static-vs-runtime distinction preserved: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
