@@ -101,3 +101,24 @@ boundaries were kept as separate concepts.
 Trace the security-critical request path:
 external request -> ingress/web -> API -> authentication -> tenant context ->
 authorization decision -> protected resource.
+## Action 6.5 - Identity and Request-Context Flow Trace
+Status: **COMPLETE**.
+Static source analysis traced the major security layers between request entry
+and protected-resource access:
+- application/router entry;
+- authentication backend;
+- user identity;
+- tenant context;
+- route/feature permissions;
+- tenant-aware data access;
+- object/document access control.
+The analysis explicitly separates authentication, tenant resolution,
+feature-level authorization and object-level authorization.
+No runtime authorization claim or vulnerability claim was made.
+### Evidence
+`docs/security/evidence/phase6-identity-request-context-flow.md`
+### Next reverse-engineering question
+Trace the complete document lifecycle:
+connector or upload -> fetch -> processing -> embedding/indexing -> search ->
+retrieval -> user access filtering -> context supplied to AI.
+This will establish the core RAG data-flow model.
