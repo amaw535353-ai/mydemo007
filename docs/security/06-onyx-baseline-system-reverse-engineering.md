@@ -194,3 +194,19 @@ providers, credentials/secrets, queues, caches, files, external services and
 trust dependencies.
 This will prepare Phase 6 for synthetic runtime fixtures and controlled
 verification.
+## Action 6.10 - Security Asset, Data, Secret and Dependency Inventory
+Status: **COMPLETE**.
+Static analysis produced a consolidated inventory of data stores, identity
+state, AI/model assets, RAG-derived data, tools/MCP capabilities, credential
+mechanisms, external connectors, queues/caches, file/blob storage,
+observability data, dependency manifests and deployment/container inputs.
+Secret-related configuration was recorded by identifier only; secret values
+were not collected.
+### Evidence
+`docs/security/evidence/phase6-security-asset-data-secret-dependency-inventory.md`
+### Next reverse-engineering question
+Create controlled synthetic tenant, user, group, document, credential and
+capability fixtures that map directly onto the architecture discovered in
+Actions 6.1 through 6.10.
+Those fixtures will become the reusable test identities and data for later
+authorization, RAG, agent, MCP, deletion and isolation verification.
