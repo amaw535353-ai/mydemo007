@@ -166,5 +166,25 @@ unverified until controlled practical verification.
 - No real credential used: PASS
 - No external pipeline or infrastructure triggered: PASS
 - No billable resource used: PASS
+## Action 4.8 - Dependency & Software Supply-Chain Foundations
+Status: **COMPLETE**.
+### Review scope
+Package manifests, lockfiles, version constraints, hashes, package installation, dependency update automation, source dependencies and third-party software trust.
+### Static observations
+- Candidate files: 535
+- Matching lines: 11220
+### Evidence
+`docs/security/evidence/phase4-dependency-supply-chain-evidence.md`
+### Security interpretation
+The action maps source and configuration candidates only.
+Execution, enforcement and real security effectiveness remain
+unverified until controlled practical verification.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No real credential used: PASS
+- No external pipeline or infrastructure triggered: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
