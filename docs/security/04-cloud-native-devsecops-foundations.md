@@ -1,0 +1,54 @@
+# Phase 4 - Cloud-Native & DevSecOps Foundations
+## Phase status
+Phase 4 status: **IN PROGRESS**.
+## Baseline
+- Phase 3 completion commit: `a10f928e88d29a5a3c225b29371a87886cda2a64`
+- Phase 4 starting branch: `security/phase-4-cloud-devsecops`
+- Phase 4 starting commit: `a10f928e88d29a5a3c225b29371a87886cda2a64`
+- Phase 3 status: COMPLETE
+- Phase 4 runtime deployment verification: NOT YET PERFORMED
+## Action 4.1 - Baseline & Cloud/DevSecOps Security Surface Inventory
+Status: **COMPLETE**.
+### Purpose
+Establish the immutable Phase 4 starting point and identify the
+repository locations relevant to Cloud-Native, DevSecOps and software
+supply-chain security.
+### Surfaces mapped
+1. Docker.
+2. Docker Compose.
+3. Kubernetes.
+4. Helm.
+5. CI/CD workflows.
+6. Infrastructure as Code.
+7. Dependencies and lockfiles.
+8. Dependency-security automation.
+9. Secrets and credentials.
+10. Environment configuration.
+11. Container privilege.
+12. Filesystem mounts.
+13. Network exposure.
+14. Registries and artifacts.
+15. SBOM generation.
+16. Artifact signing and provenance.
+17. Security scanners.
+18. Build and supply-chain behavior.
+19. Logging and observability.
+### Evidence
+`docs/security/evidence/phase4-baseline-inventory-evidence.md`
+### Security interpretation
+The inventory identifies static review candidates only.
+No runtime, deployment, cloud, cluster, pipeline or artifact-security
+claim is established by this action.
+### Completion criteria
+- Phase 3 handoff verified: PASS
+- Phase 4 branch created from exact Phase 3 closure SHA: PASS
+- Cloud-native surfaces inventoried: PASS
+- CI/CD surfaces inventoried: PASS
+- IaC surfaces inventoried: PASS
+- Dependency/supply-chain surfaces inventoried: PASS
+- Secrets/configuration surfaces inventoried: PASS
+- Artifact/SBOM/signing surfaces inventoried: PASS
+- Static/runtime distinction preserved: PASS
+- No billable/external infrastructure used: PASS
+## Phase 4 Completion Gate
+Phase 4 remains **IN PROGRESS**.
