@@ -2,7 +2,7 @@
 
 ## Phase status
 
-Phase 5 status: **IN PROGRESS**.
+Phase 5 status: **COMPLETE**.
 
 ## Baseline
 
@@ -10,7 +10,8 @@ Phase 5 status: **IN PROGRESS**.
 - Phase 5 branch: `security/phase-5-ai-foundations`
 - Phase 5 starting commit: `c3e04ac7be016fde9af23893116e7bf33e11fbc4`
 - Phase 4 status: COMPLETE
-- AI runtime verification: NOT YET PERFORMED
+- Controlled local synthetic AI-security verification: COMPLETE
+- Production LLM/RAG/vector/agent/tool/MCP runtime security: NOT VERIFIED
 
 ## Action 5.1 - Baseline & AI Security Surface Inventory
 
@@ -439,6 +440,23 @@ They do not establish security of a production LLM, RAG, vector, agent, tool or 
 
 Controlled practical AI verification: **PASS**
 
-## Phase 5 Completion Gate
+## Action 5.15 - Phase 5 Completion Gate
 
-Phase 5 remains **IN PROGRESS**.
+Status: **COMPLETE**.
+
+### Evidence
+
+`docs/security/evidence/phase5-completion-gate-evidence.md`
+
+### Gate result
+
+Phase 5 completion gate: **PASS - COMPLETE**.
+
+### Residual limitations
+
+- Production LLM/model behavior remains unverified.
+- Real vector/RAG infrastructure and authorization remain unverified.
+- Real memory implementation remains unverified.
+- Real agent and tool execution remain unverified.
+- Real MCP runtime enforcement remains unverified.
+- Commit signing remains a supply-chain maturity item.
