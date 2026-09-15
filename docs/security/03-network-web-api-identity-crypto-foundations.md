@@ -423,6 +423,35 @@ Runtime verification remains required.
 - No active runtime testing: PASS
 - Static/runtime distinction: PASS
 
+## Action 3.9 - Authorization Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Function/object authorization, RBAC, ACLs, permissions, ownership, tenant isolation, policy enforcement and administrative privilege.
+
+### Static observations
+
+- Candidate files: 3347
+- Matching lines: 40128
+
+### Security interpretation
+
+Static discovery identifies review candidates only.
+Runtime verification remains required.
+
+### Evidence
+
+`docs/security/evidence/phase3-authorization-foundations-evidence.md`
+
+### Completion criteria
+
+- Static mapping: PASS
+- Evidence recorded: PASS
+- No active runtime testing: PASS
+- Static/runtime distinction: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
