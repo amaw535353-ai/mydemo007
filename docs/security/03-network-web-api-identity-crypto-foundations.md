@@ -510,6 +510,37 @@ Runtime verification remains required.
 - No active runtime testing: PASS
 - Static/runtime distinction: PASS
 
+## Action 3.12 - Apply Foundations to mydemo007
+Status: **COMPLETE**.
+### Purpose
+The networking, web, API, identity, authentication, session,
+authorization and cryptographic foundations were applied directly to
+the static source structure of `mydemo007`.
+The resulting map identifies where later controlled verification should
+trace trust, identity, authority and sensitive data.
+### Security surfaces mapped
+1. Web/API ingress.
+2. Authentication.
+3. Sessions and tokens.
+4. Authorization and ownership.
+5. Tenant boundaries.
+6. Persistence.
+7. Downstream integrations.
+8. Cryptography and secrets.
+9. Deployment and transport.
+10. Logging and error handling.
+### Evidence
+`docs/security/evidence/phase3-mydemo007-application-evidence.md`
+### Interpretation
+This remains static evidence. Candidate locations do not establish
+runtime reachability, correct control enforcement or vulnerability
+status.
+### Completion criteria
+- Foundations applied to repository structure: PASS
+- Security surfaces mapped: PASS
+- Security questions documented: PASS
+- Runtime verification targets documented: PASS
+- Static/runtime distinction preserved: PASS
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
