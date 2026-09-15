@@ -57,6 +57,38 @@ No model, RAG pipeline, agent, tool or MCP runtime behavior is proven.
 - Static/runtime distinction preserved: PASS
 - No external/billable AI service used: PASS
 
+## Action 5.2 - Model & ML Lifecycle Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Model artifacts, training and fine-tuning references, datasets, checkpoints, weights, serialization, loading, inference, model registries and model-version lifecycle boundaries.
+
+### Static observations
+
+- Candidate files: 540
+- Matching lines: 5565
+
+### Evidence
+
+`docs/security/evidence/phase5-model-ml-lifecycle-evidence.md`
+
+### Evidence boundary
+
+This is static repository evidence only.
+Actual AI runtime behavior and enforcement remain unverified.
+
+### Completion criteria
+
+- Relevant candidates mapped: PASS
+- Security questions documented: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No external AI system contacted: PASS
+- No real credential/data used: PASS
+- No billable service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
