@@ -40,3 +40,26 @@ Status: **COMPLETE**.
 - Git history outside the pinned shallow revision was not acquired.
 ### Evidence
 `docs/security/evidence/phase6-target-provenance-evidence.md`
+## Action 6.2 - Documentation and Repository Topology Reconnaissance
+Status: **COMPLETE**.
+The exact pinned Onyx working tree was inspected without executing the
+application.
+Observed inventory:
+- root objects: 44
+- root directories: 20
+- tracked files: 7751
+- documentation/governance candidates captured: 200
+- build/package candidates captured: 25
+- deployment/infrastructure candidates captured: 250
+- security-relevant path candidates captured: 300
+- AI/RAG/agent path candidates captured: 400
+- data/queue/storage path candidates captured: 300
+Path-name searches were treated only as reconnaissance heuristics. They do
+not yet establish component purpose, trust boundaries, security guarantees,
+or vulnerabilities.
+### Evidence
+`docs/security/evidence/phase6-repository-topology-evidence.md`
+### Next reverse-engineering question
+Determine the actual major application components, their responsibilities,
+their startup/deployment relationships, and the first candidate trust
+boundaries using source and configuration evidence.
