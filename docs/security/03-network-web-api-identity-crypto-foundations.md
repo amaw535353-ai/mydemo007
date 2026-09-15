@@ -541,6 +541,31 @@ status.
 - Security questions documented: PASS
 - Runtime verification targets documented: PASS
 - Static/runtime distinction preserved: PASS
+## Action 3.13 - Build Evidence & Diagrams
+Status: **COMPLETE**.
+### Evidence discipline
+Phase 3 evidence artifacts were indexed with SHA-256 integrity
+references.
+### Architecture reasoning
+Three diagrams were created:
+1. Request and security-control flow.
+2. Identity and authorization decision model.
+3. Application trust-boundary model.
+### Evidence
+`docs/security/evidence/phase3-evidence-manifest.md`
+### Diagrams
+`docs/security/diagrams/phase3-foundations-diagrams.md`
+### Limitations
+The diagrams represent static security-analysis models. They do not
+claim that runtime architecture or control enforcement has been
+verified.
+### Completion criteria
+- Phase 3 evidence indexed: PASS
+- Evidence hashes recorded: PASS
+- Request/control-flow diagram created: PASS
+- Identity/authorization diagram created: PASS
+- Trust-boundary diagram created: PASS
+- Runtime limitations documented: PASS
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
