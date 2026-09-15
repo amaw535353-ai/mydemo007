@@ -89,6 +89,38 @@ Actual AI runtime behavior and enforcement remain unverified.
 - No real credential/data used: PASS
 - No billable service used: PASS
 
+## Action 5.3 - LLM, Token & Context Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+LLM invocation configuration, providers, model selection, tokenization, context windows, truncation, generation limits, sampling controls and input/output accounting.
+
+### Static observations
+
+- Candidate files: 1722
+- Matching lines: 16850
+
+### Evidence
+
+`docs/security/evidence/phase5-llm-token-context-evidence.md`
+
+### Evidence boundary
+
+This is static repository evidence only.
+Actual AI runtime behavior and enforcement remain unverified.
+
+### Completion criteria
+
+- Relevant candidates mapped: PASS
+- Security questions documented: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No external AI system contacted: PASS
+- No real credential/data used: PASS
+- No billable service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
