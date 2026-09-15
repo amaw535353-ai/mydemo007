@@ -121,6 +121,38 @@ Actual AI runtime behavior and enforcement remain unverified.
 - No real credential/data used: PASS
 - No billable service used: PASS
 
+## Action 5.4 - Prompts & Instruction Hierarchy Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+System/developer/user instructions, prompt templates, prompt construction, message roles, retrieved instructions and trust-boundary questions related to prompt injection.
+
+### Static observations
+
+- Candidate files: 745
+- Matching lines: 4942
+
+### Evidence
+
+`docs/security/evidence/phase5-prompts-instruction-hierarchy-evidence.md`
+
+### Evidence boundary
+
+This is static repository evidence only.
+Actual AI runtime behavior and enforcement remain unverified.
+
+### Completion criteria
+
+- Relevant candidates mapped: PASS
+- Security questions documented: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No external AI system contacted: PASS
+- No real credential/data used: PASS
+- No billable service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
