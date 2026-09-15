@@ -394,6 +394,35 @@ Static source discovery alone does not prove those controls.
 - No active authentication testing performed: PASS
 - Static-vs-runtime distinction preserved: PASS
 
+## Action 3.8 - Sessions, Cookies & Tokens
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Sessions, cookie security, CSRF, bearer/JWT/access/refresh tokens, expiry, rotation, revocation and browser storage.
+
+### Static observations
+
+- Candidate files: 2035
+- Matching lines: 40287
+
+### Security interpretation
+
+Static discovery identifies review candidates only.
+Runtime verification remains required.
+
+### Evidence
+
+`docs/security/evidence/phase3-session-cookie-token-evidence.md`
+
+### Completion criteria
+
+- Static mapping: PASS
+- Evidence recorded: PASS
+- No active runtime testing: PASS
+- Static/runtime distinction: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
