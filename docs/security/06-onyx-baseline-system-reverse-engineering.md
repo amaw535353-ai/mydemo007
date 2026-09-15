@@ -228,3 +228,19 @@ No Onyx runtime state was created.
 Design the local mock-service contract for LLM, embedding, reranking, MCP,
 webhook, email and file boundaries so later runtime verification can exercise
 Onyx without paid APIs or uncontrolled external calls.
+## Action 6.12 - Local Mock-Service Contract and Safety Design
+Status: **COMPLETE**.
+A deterministic loopback-only safety contract was defined for local LLM,
+embedding, reranking, MCP, webhook, email and file/object mocks.
+The contract establishes synthetic-only inputs, bounded resources,
+deterministic adversarial and failure scenarios, loopback-only endpoints,
+evidence requirements, stop conditions and prohibition of intentional
+external forwarding.
+No mock service was implemented or started.
+### Contract
+`docs/security/fixtures/phase6-local-mock-service-contract.md`
+### Evidence
+`docs/security/evidence/phase6-local-mock-service-contract-safety-design.md`
+### Next reverse-engineering question
+Determine the exact Onyx edition/deployment mode and whether this local host
+can safely support the selected baseline before any application startup.
