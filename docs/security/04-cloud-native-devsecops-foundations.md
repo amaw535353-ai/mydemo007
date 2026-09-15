@@ -186,5 +186,25 @@ unverified until controlled practical verification.
 - No real credential used: PASS
 - No external pipeline or infrastructure triggered: PASS
 - No billable resource used: PASS
+## Action 4.9 - SBOM, Signing & Provenance Foundations
+Status: **COMPLETE**.
+### Review scope
+Software bills of materials, package inventories, artifact digests, signing, signature verification, attestations, build provenance and SLSA-related supply-chain evidence.
+### Static observations
+- Candidate files: 328
+- Matching lines: 10523
+### Evidence
+`docs/security/evidence/phase4-sbom-signing-provenance-evidence.md`
+### Security interpretation
+The action maps source and configuration candidates only.
+Execution, enforcement and real security effectiveness remain
+unverified until controlled practical verification.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No real credential used: PASS
+- No external pipeline or infrastructure triggered: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
