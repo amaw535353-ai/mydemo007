@@ -566,6 +566,38 @@ verified.
 - Identity/authorization diagram created: PASS
 - Trust-boundary diagram created: PASS
 - Runtime limitations documented: PASS
+## Action 3.14 - Practical Verification
+Status: **COMPLETE**.
+### Verification performed
+A bounded loopback-only synthetic runtime harness verified
+representative Phase 3 foundation concepts:
+1. HTTP request/response behavior.
+2. Authentication.
+3. Authorization.
+4. Role checks.
+5. Object-ownership checks.
+6. Cookie security attributes.
+7. SHA-256.
+8. HMAC-SHA256.
+The existing Phase 3 evidence manifest was also integrity-checked.
+### Evidence
+`docs/security/evidence/phase3-practical-verification-evidence.md`
+### Runtime-evidence boundary
+The runtime evidence applies only to the synthetic local harness.
+It does not establish mydemo007/Onyx production runtime security
+behavior. Application-specific control effectiveness remains for later
+phases.
+### Completion criteria
+- Evidence manifest integrity verified: PASS
+- Local loopback harness executed: PASS
+- Authentication distinction demonstrated: PASS
+- Authorization distinction demonstrated: PASS
+- Object-ownership decision demonstrated: PASS
+- Cookie attributes demonstrated: PASS
+- Cryptographic primitives demonstrated: PASS
+- Test bounded to 8 local requests: PASS
+- External services contacted: NO
+- Runtime scope accurately limited: PASS
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
