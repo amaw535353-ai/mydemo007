@@ -206,5 +206,24 @@ unverified until controlled practical verification.
 - No real credential used: PASS
 - No external pipeline or infrastructure triggered: PASS
 - No billable resource used: PASS
+## Action 4.10 - Infrastructure as Code Security Foundations
+Status: **COMPLETE**.
+### Scope
+Infrastructure definitions, providers, modules, state, permissions, network exposure and configuration-as-code security boundaries.
+### Static observations
+- Candidate files: 1105
+- Matching lines: 5096
+### Evidence
+`docs/security/evidence/phase4-infrastructure-as-code-security-evidence.md`
+### Interpretation
+Static source/configuration discovery identifies review candidates.
+Execution and enforcement remain unverified.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence recorded: PASS
+- Static/runtime distinction preserved: PASS
+- No external infrastructure modified: PASS
+- No real credential used: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
