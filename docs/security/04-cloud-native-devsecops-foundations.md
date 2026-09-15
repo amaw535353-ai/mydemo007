@@ -146,5 +146,25 @@ unverified until controlled practical verification.
 - No real credential used: PASS
 - No external pipeline or infrastructure triggered: PASS
 - No billable resource used: PASS
+## Action 4.7 - Secrets & Credential Management Foundations
+Status: **COMPLETE**.
+### Review scope
+Secrets, credentials, API keys, tokens, environment-based secret injection, secret stores, masking, rotation and configuration boundaries without exposing secret values.
+### Static observations
+- Candidate files: 2622
+- Matching lines: 34727
+### Evidence
+`docs/security/evidence/phase4-secrets-credential-management-evidence.md`
+### Security interpretation
+The action maps source and configuration candidates only.
+Execution, enforcement and real security effectiveness remain
+unverified until controlled practical verification.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No real credential used: PASS
+- No external pipeline or infrastructure triggered: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
