@@ -177,3 +177,20 @@ delete/revoke/change -> database -> queue/worker -> index/cache/object storage -
 logs/audit -> observable final state.
 This will establish deletion, reindexing, revocation, cache, queue and audit
 behavior for later consistency and security testing.
+## Action 6.9 - Lifecycle State Propagation Trace
+Status: **COMPLETE**.
+Static analysis traced deletion, permission revocation, MCP/tool revocation,
+chat/session retention, file/object deletion, credential lifecycle, asynchronous
+queues, index updates, cache invalidation, retries, concurrency controls and
+security-relevant logging.
+The central security conclusion is that deletion or revocation is not a single
+database event. Security depends on downstream representations converging on the
+new authoritative state.
+### Evidence
+`docs/security/evidence/phase6-lifecycle-state-propagation-trace.md`
+### Next reverse-engineering question
+Create a consolidated security asset inventory covering data stores, model
+providers, credentials/secrets, queues, caches, files, external services and
+trust dependencies.
+This will prepare Phase 6 for synthetic runtime fixtures and controlled
+verification.
