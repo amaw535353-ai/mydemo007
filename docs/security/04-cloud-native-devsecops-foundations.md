@@ -244,5 +244,24 @@ Execution and enforcement remain unverified.
 - No external infrastructure modified: PASS
 - No real credential used: PASS
 - No billable resource used: PASS
+## Action 4.12 - Logging, Observability & Build Evidence
+Status: **COMPLETE**.
+### Scope
+Logs, audit records, metrics, traces, artifact metadata, workflow evidence, deployments and release evidence needed for investigation.
+### Static observations
+- Candidate files: 3071
+- Matching lines: 28383
+### Evidence
+`docs/security/evidence/phase4-logging-observability-build-evidence.md`
+### Interpretation
+Static source/configuration discovery identifies review candidates.
+Execution and enforcement remain unverified.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence recorded: PASS
+- Static/runtime distinction preserved: PASS
+- No external infrastructure modified: PASS
+- No real credential used: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
