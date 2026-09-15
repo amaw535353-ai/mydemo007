@@ -184,6 +184,37 @@ Runtime retrieval, authorization and isolation behavior remain unverified.
 - No real data or credential used: PASS
 - No billable service used: PASS
 
+## Action 5.6 - RAG, Retrieval & Reranking Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+RAG ingestion and retrieval paths, document chunking, retrieval queries, ranking and reranking, source metadata, citations, authorization propagation and untrusted retrieved-content boundaries.
+
+### Static observations
+- Candidate files: 1250
+- Matching lines: 8827
+
+### Evidence
+
+`docs/security/evidence/phase5-rag-retrieval-reranking-evidence.md`
+
+### Evidence boundary
+
+Static repository evidence only.
+Runtime retrieval, authorization and isolation behavior remain unverified.
+
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Security questions documented: PASS
+- Evidence preserved: PASS
+- Authorization questions preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No external AI/vector system contacted: PASS
+- No real data or credential used: PASS
+- No billable service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
