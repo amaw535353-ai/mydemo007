@@ -1,12 +1,13 @@
 # Phase 4 - Cloud-Native & DevSecOps Foundations
 ## Phase status
-Phase 4 status: **IN PROGRESS**.
+Phase 4 status: **COMPLETE**.
 ## Baseline
 - Phase 3 completion commit: `a10f928e88d29a5a3c225b29371a87886cda2a64`
 - Phase 4 starting branch: `security/phase-4-cloud-devsecops`
 - Phase 4 starting commit: `a10f928e88d29a5a3c225b29371a87886cda2a64`
 - Phase 3 status: COMPLETE
-- Phase 4 runtime deployment verification: NOT YET PERFORMED
+- Phase 4 controlled local verification: COMPLETE
+- Full container/Kubernetes/CI/cloud runtime enforcement: NOT PERFORMED
 ## Action 4.1 - Baseline & Cloud/DevSecOps Security Surface Inventory
 Status: **COMPLETE**.
 ### Purpose
@@ -327,5 +328,22 @@ Container execution, Kubernetes enforcement, CI execution and cloud-runtime beha
 
 Controlled practical verification: **PASS**
 
-## Phase 4 Completion Gate
-Phase 4 remains **IN PROGRESS**.
+## Action 4.15 - Phase 4 Completion Gate
+
+Status: **COMPLETE**.
+
+### Evidence
+
+`docs/security/evidence/phase4-completion-gate-evidence.md`
+
+### Gate result
+
+Phase 4 completion gate: **PASS - COMPLETE**.
+
+### Residual limitations
+
+- Docker/container runtime enforcement remains unverified.
+- Kubernetes runtime enforcement remains unverified.
+- CI/CD workflow execution remains unverified.
+- Cloud-runtime enforcement remains unverified.
+- Commit signing remains a supply-chain maturity item.
