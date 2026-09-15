@@ -210,3 +210,21 @@ capability fixtures that map directly onto the architecture discovered in
 Actions 6.1 through 6.10.
 Those fixtures will become the reusable test identities and data for later
 authorization, RAG, agent, MCP, deletion and isolation verification.
+## Action 6.11 - Synthetic Tenant, Identity and Data Fixture Design
+Status: **COMPLETE**.
+A deterministic synthetic security fixture universe was defined for later
+authorization, tenant-isolation, RAG, prompt-injection, tool, MCP, revocation
+and deletion tests.
+The design includes Tenant Alpha and Tenant Beta, users, groups, synthetic
+credentials, documents with different intended access scopes, adversarial
+retrieval content, capability fixtures and explicit expected ALLOW/DENY
+outcomes.
+No Onyx runtime state was created.
+### Fixture manifest
+`docs/security/fixtures/phase6-synthetic-security-fixture-manifest.md`
+### Evidence
+`docs/security/evidence/phase6-synthetic-tenant-identity-data-fixture-design.md`
+### Next reverse-engineering question
+Design the local mock-service contract for LLM, embedding, reranking, MCP,
+webhook, email and file boundaries so later runtime verification can exercise
+Onyx without paid APIs or uncontrolled external calls.
