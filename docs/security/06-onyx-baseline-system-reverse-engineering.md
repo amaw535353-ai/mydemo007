@@ -63,3 +63,29 @@ or vulnerabilities.
 Determine the actual major application components, their responsibilities,
 their startup/deployment relationships, and the first candidate trust
 boundaries using source and configuration evidence.
+## Action 6.3 - Major Component and Responsibility Mapping
+Status: **COMPLETE**.
+Source code, deployment configuration, build metadata and documentation from
+the exact pinned Onyx revision were analyzed to establish the first
+component-responsibility model.
+Observed architectural categories include:
+- web/client application;
+- backend API surface;
+- authentication/authorization code;
+- persistence infrastructure;
+- cache/queue infrastructure;
+- background workers;
+- connectors and document ingestion;
+- search/index infrastructure;
+- model-serving infrastructure;
+- MCP functionality;
+- sandbox/execution functionality;
+- deployment/configuration infrastructure.
+These categories are evidence-backed repository/deployment observations.
+Runtime communication and security properties remain unverified.
+### Evidence
+`docs/security/evidence/phase6-component-responsibility-map.md`
+### Next reverse-engineering question
+Trace the actual startup paths and service-to-service relationships so that
+the provisional component inventory can be converted into an evidence-backed
+architecture and data-flow graph.
