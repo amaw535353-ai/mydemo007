@@ -481,6 +481,35 @@ Runtime verification remains required.
 - No active runtime testing: PASS
 - Static/runtime distinction: PASS
 
+## Action 3.11 - Cryptographic Primitives & Key Management
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Hashing, HMAC, KDFs, symmetric/asymmetric cryptography, signing, encryption, randomness, certificates and key management.
+
+### Static observations
+
+- Candidate files: 706
+- Matching lines: 16135
+
+### Security interpretation
+
+Static discovery identifies review candidates only.
+Runtime verification remains required.
+
+### Evidence
+
+`docs/security/evidence/phase3-cryptography-key-management-evidence.md`
+
+### Completion criteria
+
+- Static mapping: PASS
+- Evidence recorded: PASS
+- No active runtime testing: PASS
+- Static/runtime distinction: PASS
+
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
