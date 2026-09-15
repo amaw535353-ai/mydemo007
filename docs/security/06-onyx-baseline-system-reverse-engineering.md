@@ -244,3 +244,18 @@ No mock service was implemented or started.
 ### Next reverse-engineering question
 Determine the exact Onyx edition/deployment mode and whether this local host
 can safely support the selected baseline before any application startup.
+## Action 6.13 - Edition, Deployment Mode and Host Suitability
+Status: **COMPLETE**.
+The pinned Onyx deployment definitions and current local host resources were
+evaluated before runtime startup.
+Decision:
+- Full Standard local runtime: **DEFERRED**
+- Selective local baseline: **APPROVED**
+- Mock-assisted local baseline: **APPROVED**
+- Application startup: **NOT YET AUTHORIZED**
+This closes original Phase 6 requirement R6.5.
+### Evidence
+`docs/security/evidence/phase6-edition-deployment-host-suitability-decision.md`
+### Next requirement
+Original R6.6: establish a reproducible installation/build procedure before
+starting Onyx.
