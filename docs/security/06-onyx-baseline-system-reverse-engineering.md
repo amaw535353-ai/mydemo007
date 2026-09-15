@@ -89,3 +89,15 @@ Runtime communication and security properties remain unverified.
 Trace the actual startup paths and service-to-service relationships so that
 the provisional component inventory can be converted into an evidence-backed
 architecture and data-flow graph.
+## Action 6.4 - Startup and Service Relationship Trace
+Status: **COMPLETE**.
+Static source and deployment analysis traced startup configuration and major
+service relationships without executing Onyx.
+Startup dependency, candidate application data flow, and candidate trust
+boundaries were kept as separate concepts.
+### Evidence
+`docs/security/evidence/phase6-startup-service-relationship-trace.md`
+### Next
+Trace the security-critical request path:
+external request -> ingress/web -> API -> authentication -> tenant context ->
+authorization decision -> protected resource.
