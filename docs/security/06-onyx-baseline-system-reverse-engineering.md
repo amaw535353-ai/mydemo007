@@ -160,3 +160,20 @@ Trace agents, actions, tools, MCP and code-execution boundaries:
 model decision -> tool selection -> authorization -> arguments -> execution ->
 result -> model context.
 This will establish the highest-risk capability boundary in the application.
+## Action 6.8 - Agent, Tool, MCP and Code-Execution Flow Trace
+Status: **COMPLETE**.
+Static source analysis traced the provisional capability-execution lifecycle:
+model decision -> tool availability -> structured tool call -> argument
+processing -> authorization/credential boundary -> execution -> result ->
+subsequent model context.
+MCP discovery/invocation and code-interpreter execution surfaces were traced
+as separate high-risk capability boundaries.
+No tool, MCP server or executable sandbox was invoked.
+### Evidence
+`docs/security/evidence/phase6-agent-tool-mcp-code-execution-flow-trace.md`
+### Next reverse-engineering question
+Trace long-lived state transitions and asynchronous propagation:
+delete/revoke/change -> database -> queue/worker -> index/cache/object storage ->
+logs/audit -> observable final state.
+This will establish deletion, reindexing, revocation, cache, queue and audit
+behavior for later consistency and security testing.
