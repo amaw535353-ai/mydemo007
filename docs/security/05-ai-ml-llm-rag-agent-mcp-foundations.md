@@ -308,6 +308,37 @@ Agent decisions, tool execution and MCP runtime enforcement remain unverified.
 - No real credential/data used: PASS
 - No billable service used: PASS
 
+## Action 5.10 - MCP Foundations
+
+Status: **COMPLETE**.
+
+### Review scope
+
+Model Context Protocol clients, servers, transports, tools, resources, prompts, discovery, capability negotiation, configuration, authentication and MCP trust boundaries.
+
+### Static observations
+- Candidate files: 374
+- Matching lines: 2234
+
+### Evidence
+
+`docs/security/evidence/phase5-mcp-foundations-evidence.md`
+
+### Evidence boundary
+
+Static repository evidence only.
+Agent decisions, tool execution and MCP runtime enforcement remain unverified.
+
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Trust boundaries documented: PASS
+- Security questions documented: PASS
+- Evidence preserved: PASS
+- Runtime behavior not overstated: PASS
+- No external agent/tool/MCP system contacted: PASS
+- No real credential/data used: PASS
+- No billable service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
