@@ -300,5 +300,32 @@ Static repository evidence only. Runtime and enforcement behavior remain unverif
 - Static/runtime distinction preserved: PASS
 - Safety boundary preserved: PASS
 
+## Action 4.14 - Controlled Practical Verification
+
+Status: **COMPLETE**.
+
+### Verified locally
+
+- Repository container/build configuration was evaluated.
+- Workflow security characteristics were evaluated.
+- Dependency lockfile presence was checked.
+- Synthetic secret detection was exercised.
+- SHA-256 artifact-integrity behavior was exercised.
+- Synthetic secure/insecure policy decisions were exercised.
+- Git commit-signature state was inspected.
+- Existing Phase 4 evidence was hashed.
+
+### Evidence
+
+`docs/security/evidence/phase4-practical-verification-evidence.md`
+
+### Boundary
+
+Container execution, Kubernetes enforcement, CI execution and cloud-runtime behavior remain outside this verification.
+
+### Result
+
+Controlled practical verification: **PASS**
+
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
