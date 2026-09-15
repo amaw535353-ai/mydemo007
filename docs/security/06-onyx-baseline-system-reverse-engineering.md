@@ -122,3 +122,24 @@ Trace the complete document lifecycle:
 connector or upload -> fetch -> processing -> embedding/indexing -> search ->
 retrieval -> user access filtering -> context supplied to AI.
 This will establish the core RAG data-flow model.
+## Action 6.6 - Document and RAG Data-Flow Trace
+Status: **COMPLETE**.
+Static source analysis traced the provisional document/RAG lifecycle:
+connector or upload -> acquisition -> processing -> chunking -> embedding ->
+indexing -> tenant/access metadata -> retrieval -> access filtering ->
+reranking -> AI context.
+The analysis identified two especially important security properties for
+later runtime verification:
+1. tenant identity must remain attached to content throughout indexing and
+   retrieval;
+2. authorization metadata must remain synchronized and must be enforced before
+   retrieved content reaches AI-visible context.
+No connector, model, index backend or LLM was executed.
+### Evidence
+`docs/security/evidence/phase6-document-rag-data-flow-trace.md`
+### Next reverse-engineering question
+Trace the LLM/chat-generation path in detail:
+user message -> conversation/session ownership -> prompt construction ->
+retrieved context -> model configuration/provider -> generation/streaming ->
+citations/output persistence.
+This will establish the model-interaction trust boundaries.
