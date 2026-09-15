@@ -107,5 +107,24 @@ remains unverified.
 - Runtime behavior not overstated: PASS
 - No external infrastructure contacted: PASS
 - No billable resource used: PASS
+## Action 4.5 - Container Privilege, Filesystem & Isolation
+Status: **COMPLETE**.
+### Review scope
+Runtime privilege, root/non-root users, Linux capabilities, privilege escalation, host namespaces, host paths, writable filesystems, device access, seccomp/AppArmor/SELinux and resource isolation candidates.
+### Static observations
+- Candidate files: 40
+- Matching lines: 263
+### Evidence
+`docs/security/evidence/phase4-container-isolation-evidence.md`
+### Security interpretation
+Static discovery identifies candidate security surfaces only.
+Runtime container, orchestrator, isolation and deployment behavior
+remains unverified.
+### Completion criteria
+- Relevant source/configuration candidates mapped: PASS
+- Evidence preserved: PASS
+- Runtime behavior not overstated: PASS
+- No external infrastructure contacted: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
