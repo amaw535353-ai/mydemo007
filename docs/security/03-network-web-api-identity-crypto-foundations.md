@@ -248,6 +248,79 @@ Those properties require deeper controlled analysis.
 - Request lifecycle security model documented: PASS
 - No active runtime testing performed: PASS
 - Static-vs-runtime distinction preserved: PASS
+## Action 3.6 - REST/API Architecture
+Status: **COMPLETE**.
+### Foundations
+REST/API security requires reasoning about:
+1. Resources and endpoint definitions.
+2. HTTP methods and state changes.
+3. Path identifiers and object references.
+4. Query parameters.
+5. Request bodies and schemas.
+6. Response schemas.
+7. Status and error behavior.
+8. Content types and serialization.
+9. Authentication.
+10. Authorization.
+11. Object ownership.
+12. Tenant isolation.
+13. Pagination.
+14. Rate limiting.
+15. Idempotency and replay.
+16. API versioning.
+17. OpenAPI/Swagger descriptions.
+18. Webhooks and callbacks.
+A valid API request is not automatically an authorized request.
+A valid object identifier does not establish ownership or permission.
+Authentication establishes identity. Authorization determines whether
+that identity may perform the requested operation.
+### Static observations
+- routes: 807 candidate files, 2818 matching lines.
+- http_methods: 2965 candidate files, 24656 matching lines.
+- path_parameters: 3887 candidate files, 32785 matching lines.
+- query_parameters: 307 candidate files, 1188 matching lines.
+- request_schema: 1023 candidate files, 5497 matching lines.
+- response_schema: 58 candidate files, 243 matching lines.
+- versioning: 502 candidate files, 1704 matching lines.
+- openapi_swagger: 104 candidate files, 578 matching lines.
+- pagination: 535 candidate files, 2234 matching lines.
+- status_errors: 1021 candidate files, 5486 matching lines.
+- content_types: 311 candidate files, 707 matching lines.
+- authentication: 1053 candidate files, 7018 matching lines.
+- authorization: 1081 candidate files, 5030 matching lines.
+- rate_limit: 193 candidate files, 504 matching lines.
+- idempotency: 13 candidate files, 20 matching lines.
+- webhook_callback: 20 candidate files, 39 matching lines.
+
+### Security interpretation
+Later controlled analysis must verify:
+- route reachability;
+- authentication requirements;
+- function-level authorization;
+- object-level authorization;
+- tenant isolation;
+- request validation;
+- state-transition rules;
+- pagination and resource limits;
+- abuse/rate controls;
+- replay and idempotency behavior;
+- webhook trust boundaries;
+- error behavior.
+Static source discovery alone does not prove these controls.
+### Evidence
+`docs/security/evidence/phase3-rest-api-architecture-evidence.md`
+### Completion criteria
+- Routes and methods mapped: PASS
+- Path/query parameter candidates mapped: PASS
+- Request/response schemas mapped: PASS
+- Status/content-type candidates mapped: PASS
+- Versioning/API-documentation candidates mapped: PASS
+- Authentication/authorization candidates mapped: PASS
+- Pagination/rate-limit candidates mapped: PASS
+- Idempotency candidates mapped: PASS
+- Webhook/callback candidates mapped: PASS
+- No active API testing performed: PASS
+- Static-vs-runtime distinction preserved: PASS
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
