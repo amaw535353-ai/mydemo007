@@ -363,6 +363,30 @@ Static repository evidence only; runtime effectiveness remains unverified.
 - No real data/credentials used: PASS
 - No external/billable AI service used: PASS
 
+## Action 5.12 - Evaluation, Guardrails & Monitoring Foundations
+
+Status: **COMPLETE**.
+
+### Scope
+AI evaluations, adversarial tests, safety filters, moderation, guardrails, policy checks, scoring, thresholds, monitoring, traces, alerts and regression-test candidates.
+
+### Static observations
+- Candidate files: 1202
+- Matching lines: 6661
+
+### Evidence
+`docs/security/evidence/phase5-evaluation-guardrails-monitoring-evidence.md`
+
+### Boundary
+Static repository evidence only; runtime effectiveness remains unverified.
+
+### Completion criteria
+- Candidates mapped: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No real data/credentials used: PASS
+- No external/billable AI service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
