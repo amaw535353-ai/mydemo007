@@ -225,5 +225,24 @@ Execution and enforcement remain unverified.
 - No external infrastructure modified: PASS
 - No real credential used: PASS
 - No billable resource used: PASS
+## Action 4.11 - Security Scanning & Policy Gates
+Status: **COMPLETE**.
+### Scope
+SAST, dependency, container, IaC and secret scanning plus severity thresholds, failure behavior and security policy gates.
+### Static observations
+- Candidate files: 60
+- Matching lines: 310
+### Evidence
+`docs/security/evidence/phase4-security-scanning-policy-gates-evidence.md`
+### Interpretation
+Static source/configuration discovery identifies review candidates.
+Execution and enforcement remain unverified.
+### Completion criteria
+- Relevant candidates mapped: PASS
+- Evidence recorded: PASS
+- Static/runtime distinction preserved: PASS
+- No external infrastructure modified: PASS
+- No real credential used: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
