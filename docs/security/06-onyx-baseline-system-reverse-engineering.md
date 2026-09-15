@@ -259,3 +259,18 @@ This closes original Phase 6 requirement R6.5.
 ### Next requirement
 Original R6.6: establish a reproducible installation/build procedure before
 starting Onyx.
+## Action 6.14 - Reproducible Installation and Build Plan
+Status: **COMPLETE**.
+Pinned-source manifests, lockfiles, container inputs, version signals and
+installation/build command references were inventoried.
+A reproducible Lite/selective, mock-assisted installation/build procedure was
+defined.
+No dependency installation, image download, build or application startup was
+performed.
+Original R6.6 status:
+**PROCEDURE COMPLETE - EXECUTION VALIDATION PENDING**
+### Evidence
+`docs/security/evidence/phase6-reproducible-install-build-plan.md`
+### Next runtime question
+Can the smallest approved prerequisite/build validation be executed on this
+host without exceeding resource, network or cost boundaries?
