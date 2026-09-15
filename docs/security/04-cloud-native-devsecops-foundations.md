@@ -50,5 +50,24 @@ claim is established by this action.
 - Artifact/SBOM/signing surfaces inventoried: PASS
 - Static/runtime distinction preserved: PASS
 - No billable/external infrastructure used: PASS
+## Action 4.2 - Containers & Image Security Foundations
+Status: **COMPLETE**.
+### Review scope
+Container images, Dockerfiles, base images, build stages, image tags/digests, package installation, entrypoints, users, health checks and image lifecycle trust.
+### Static observations
+- Candidate files: 478
+- Matching lines: 10918
+### Evidence
+`docs/security/evidence/phase4-container-image-security-evidence.md`
+### Security interpretation
+Static discovery identifies candidate security surfaces only.
+Runtime container, orchestrator, isolation and deployment behavior
+remains unverified.
+### Completion criteria
+- Relevant source/configuration candidates mapped: PASS
+- Evidence preserved: PASS
+- Runtime behavior not overstated: PASS
+- No external infrastructure contacted: PASS
+- No billable resource used: PASS
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
