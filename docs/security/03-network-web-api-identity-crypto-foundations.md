@@ -192,6 +192,62 @@ TLS-verification-disable matches are review candidates only.
 - No active HTTP/TLS probing performed: PASS
 - Source-vs-runtime distinction preserved: PASS
 
+## Action 3.5 - Web Application Request/Response Lifecycle
+Status: **COMPLETE**.
+### Request/response lifecycle
+1. A client constructs a request.
+2. DNS and routing direct traffic.
+3. A listener or reverse proxy may receive it.
+4. Routing selects an application handler.
+5. Middleware may inspect or transform the request.
+6. Authentication establishes identity.
+7. Authorization evaluates permission.
+8. Input validation constrains attacker-controlled data.
+9. Business logic performs the operation.
+10. Databases or downstream services may be contacted.
+11. Exceptional paths are handled.
+12. Response data is serialized.
+13. Status, headers, cookies and body return to the client.
+Every transition can represent a security boundary.
+### Static observations
+- routes_endpoints: 2087 candidate files, 11650 matching lines.
+- request: 1171 candidate files, 6983 matching lines.
+- response: 1264 candidate files, 11680 matching lines.
+- middleware: 62 candidate files, 220 matching lines.
+- authentication: 617 candidate files, 2262 matching lines.
+- authorization: 1117 candidate files, 5249 matching lines.
+- validation: 1143 candidate files, 4170 matching lines.
+- session_cookie: 1328 candidate files, 10892 matching lines.
+- data_access: 1226 candidate files, 6039 matching lines.
+- downstream_service: 2111 candidate files, 9897 matching lines.
+- error_handling: 2550 candidate files, 16376 matching lines.
+- serialization: 1321 candidate files, 7314 matching lines.
+
+### Security interpretation
+Static discovery does not prove:
+- actual runtime execution order;
+- universal middleware coverage;
+- authentication before sensitive operations;
+- correct authorization enforcement;
+- complete input validation;
+- tenant-safe data access;
+- safe downstream service calls;
+- secure error handling;
+- secure response behavior.
+Those properties require deeper controlled analysis.
+### Evidence
+`docs/security/evidence/phase3-web-request-response-lifecycle-evidence.md`
+### Completion criteria
+- Route/endpoint candidates mapped: PASS
+- Request/response candidates mapped: PASS
+- Middleware candidates mapped: PASS
+- Authentication/authorization candidates mapped: PASS
+- Validation candidates mapped: PASS
+- Data/downstream candidates mapped: PASS
+- Error/serialization candidates mapped: PASS
+- Request lifecycle security model documented: PASS
+- No active runtime testing performed: PASS
+- Static-vs-runtime distinction preserved: PASS
 ## Phase 3 Completion Gate
 
 Phase 3 remains **IN PROGRESS**.
