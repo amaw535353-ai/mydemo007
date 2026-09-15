@@ -339,6 +339,30 @@ Agent decisions, tool execution and MCP runtime enforcement remain unverified.
 - No real credential/data used: PASS
 - No billable service used: PASS
 
+## Action 5.11 - AI Data & Privacy Boundaries
+
+Status: **COMPLETE**.
+
+### Scope
+AI input/output data, prompts, retrieved documents, embeddings, memories, telemetry, retention, redaction, sensitive-data handling, tenant boundaries and provider data-flow candidates.
+
+### Static observations
+- Candidate files: 1478
+- Matching lines: 12799
+
+### Evidence
+`docs/security/evidence/phase5-ai-data-privacy-boundaries-evidence.md`
+
+### Boundary
+Static repository evidence only; runtime effectiveness remains unverified.
+
+### Completion criteria
+- Candidates mapped: PASS
+- Evidence preserved: PASS
+- Static/runtime distinction preserved: PASS
+- No real data/credentials used: PASS
+- No external/billable AI service used: PASS
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
