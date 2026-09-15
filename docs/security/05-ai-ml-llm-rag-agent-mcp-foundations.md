@@ -410,6 +410,35 @@ Static integration only. Runtime AI-security behavior remains unverified.
 - Runtime claims not overstated: PASS
 - Safety boundary preserved: PASS
 
+## Action 5.14 - Controlled Practical AI Verification
+
+Status: **COMPLETE**.
+
+### Verified locally
+
+- Instruction/data trust separation.
+- Retrieval tenant isolation.
+- Memory ownership enforcement.
+- Tool authorization and confirmation.
+- MCP capability allow/deny controls.
+- Bounded agent-loop behavior.
+- Synthetic sensitive-data redaction.
+- Unknown-capability fail-closed behavior.
+- Integrity hashing of the 13 prior Phase 5 evidence files.
+
+### Evidence
+
+`docs/security/evidence/phase5-controlled-practical-ai-verification-evidence.md`
+
+### Verification boundary
+
+These tests exercised deterministic synthetic control logic.
+They do not establish security of a production LLM, RAG, vector, agent, tool or MCP runtime.
+
+### Result
+
+Controlled practical AI verification: **PASS**
+
 ## Phase 5 Completion Gate
 
 Phase 5 remains **IN PROGRESS**.
