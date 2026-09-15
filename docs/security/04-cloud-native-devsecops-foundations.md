@@ -263,5 +263,42 @@ Execution and enforcement remain unverified.
 - No external infrastructure modified: PASS
 - No real credential used: PASS
 - No billable resource used: PASS
+## Action 4.13 - Apply Phase 4 to mydemo007
+
+Status: **COMPLETE**.
+
+### Purpose
+
+Apply Phase 4 Cloud-Native, DevSecOps and software-supply-chain security foundations to the static structure of `mydemo007`.
+
+### Integrated surfaces
+
+1. Build and image trust.
+2. Runtime privilege.
+3. Orchestration.
+4. CI/CD.
+5. Secrets.
+6. Dependencies.
+7. Infrastructure as Code.
+8. Security gates.
+9. Artifact integrity.
+10. Observability.
+
+### Evidence
+
+`docs/security/evidence/phase4-mydemo007-integrated-review-evidence.md`
+
+### Evidence boundary
+
+Static repository evidence only. Runtime and enforcement behavior remain unverified.
+
+### Completion criteria
+
+- Integrated trust boundaries mapped: PASS
+- Supply-chain path documented: PASS
+- Action 4.14 verification targets defined: PASS
+- Static/runtime distinction preserved: PASS
+- Safety boundary preserved: PASS
+
 ## Phase 4 Completion Gate
 Phase 4 remains **IN PROGRESS**.
