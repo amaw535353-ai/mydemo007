@@ -143,3 +143,20 @@ user message -> conversation/session ownership -> prompt construction ->
 retrieved context -> model configuration/provider -> generation/streaming ->
 citations/output persistence.
 This will establish the model-interaction trust boundaries.
+## Action 6.7 - LLM and Chat Generation Flow Trace
+Status: **COMPLETE**.
+Static source analysis traced the provisional chat-generation lifecycle:
+request -> conversation/session -> user message -> prompt construction ->
+retrieved context -> model/provider selection -> model invocation ->
+streaming/citations/output -> persistence.
+The action identified conversation ownership, prompt assembly, RAG-to-model
+context transfer, provider boundaries, streaming, citations and persistent
+chat state as security-critical surfaces.
+No model or external provider was invoked.
+### Evidence
+`docs/security/evidence/phase6-llm-chat-generation-flow-trace.md`
+### Next reverse-engineering question
+Trace agents, actions, tools, MCP and code-execution boundaries:
+model decision -> tool selection -> authorization -> arguments -> execution ->
+result -> model context.
+This will establish the highest-risk capability boundary in the application.
