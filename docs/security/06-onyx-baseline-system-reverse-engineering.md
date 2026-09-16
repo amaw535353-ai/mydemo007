@@ -439,3 +439,46 @@ The final Phase 6 completion gate remains Action 6.20.
 Run the final Phase 6 completion-gate audit, verify the complete evidence
 chain, record residual limitations and decide whether Phase 6 is formally
 ready to hand off into Phase 7 threat modeling.
+
+
+## Action 6.20 - Final Phase 6 Completion Gate
+
+Status: **COMPLETE**.
+
+Final audit decision:
+
+**READY FOR PHASE 7 WITH DOCUMENTED RUNTIME GAPS**
+
+All 19 preceding Phase 6 action commits were verified in branch ancestry.
+
+All 19 preceding Phase 6 evidence records were verified.
+
+The synthetic-fixture manifest and local mock-service contract were verified.
+
+The pinned Onyx revision remained:
+
+160f9b143605ca45a85bd387b5bd173840bab15d
+
+No unsupported full-build, live-runtime or full-test-suite claim is made.
+
+### Phase 6 completion
+
+Action sequence:
+
+**20/20 = 100%**
+
+Baseline and reverse-engineering work:
+
+**COMPLETE WITH DOCUMENTED RUNTIME LIMITATIONS**
+
+Live runtime/security verification:
+
+**DEFERRED TO APPROPRIATE LATER EXECUTABLE PHASES**
+
+Phase 6 is formally ready to hand off into:
+
+**Phase 7 - Onyx Threat Modeling and Security Requirements**
+
+### Final evidence
+
+docs/security/evidence/phase6-final-completion-gate-audit.md
