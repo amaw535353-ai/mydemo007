@@ -405,3 +405,37 @@ Original R6.8 status:
 
 Consolidate remaining Phase 6 runtime gaps, browser/API evidence, mock/runtime
 limitations and architecture maps before the final completion gate.
+
+
+## Action 6.19 - Consolidated Architecture and Gap Register
+
+Status: **COMPLETE**.
+
+All Phase 6 evidence through Action 6.18 was verified and consolidated into a
+single architecture/trust-boundary map and explicit runtime-gap register.
+
+Evidence classes are now separated into:
+
+- proven static/source observations;
+- proven bounded execution observations;
+- unobserved live runtime behavior;
+- later-phase security verification.
+
+Important limitation:
+
+The absence of a runnable full Onyx stack means no claim is made that static
+security-control paths are effective at runtime.
+
+Original R6.20 map/limitations portion is substantially prepared.
+
+The final Phase 6 completion gate remains Action 6.20.
+
+### Evidence
+
+`docs/security/evidence/phase6-consolidated-architecture-gap-map.md`
+
+### Next step
+
+Run the final Phase 6 completion-gate audit, verify the complete evidence
+chain, record residual limitations and decide whether Phase 6 is formally
+ready to hand off into Phase 7 threat modeling.
