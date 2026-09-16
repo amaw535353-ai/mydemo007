@@ -168,12 +168,13 @@ async def reset_sqlalchemy_async_engine() -> None:
         await engine.dispose()
 
 
-async def get_async_session(
+async def _get_async_session_for_tenant(
     tenant_id: str | None = None,
 ) -> AsyncGenerator[AsyncSession, None]:
-    """For use w/ Depends for *async* FastAPI endpoints.
+    """Create an async database session for a trusted tenant context.
 
-    For standard `async with ... as ...` use, use get_async_session_context_manager.
+    Explicit tenant selection is intentionally kept separate from the FastAPI
+    dependency so request parameters cannot select a database schema.
     """
 
     if tenant_id is None:
@@ -207,4 +208,14 @@ async def get_async_session(
 def get_async_session_context_manager(
     tenant_id: str | None = None,
 ) -> AsyncContextManager[AsyncSession]:
-    return asynccontextmanager(get_async_session)(tenant_id)
+    """Internal API for explicit trusted tenant-aware session creation."""
+    return asynccontextmanager(_get_async_session_for_tenant)(tenant_id)
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """FastAPI dependency using trusted server-side tenant context only.
+
+    Deliberately exposes no request-bindable tenant identifier.
+    """
+    async with get_async_session_context_manager() as session:
+        yield session
