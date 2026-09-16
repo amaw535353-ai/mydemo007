@@ -63,9 +63,73 @@ Evidence:
 
 `docs/security/evidence/phase7-threat-actors-and-boundaries.md`
 
+## Actions 7.5 through 7.9
+
+### Action 7.5 - Web, API and business-logic threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-web-api-business-logic-threats.md`
+
+### Action 7.6 - Identity, authorization and tenant-isolation threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-identity-authorization-tenant-threats.md`
+
+### Action 7.7 - RAG, retrieval and prompt-injection threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-rag-prompt-injection-threats.md`
+
+### Action 7.8 - Model, provider and data-boundary threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-model-provider-data-boundary-threats.md`
+
+### Action 7.9 - Agent, tool, MCP and code-execution threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-agent-tool-mcp-execution-threats.md`
+
+## Current threat-model status
+
+Phase 7 now contains threat hypotheses covering:
+
+- web/API/business logic;
+- authentication and authorization;
+- tenant isolation;
+- RAG and retrieval;
+- indirect prompt injection;
+- model/provider boundaries;
+- sensitive AI context;
+- agents and tools;
+- MCP;
+- code execution;
+- resource/economic abuse.
+
+None of these threat hypotheses is represented as a confirmed vulnerability
+without later executable evidence.
+
 ## Next
 
-Action 7.5:
+Actions 7.10 through 7.14:
 
-Build the structured Onyx threat register covering conventional application
-security plus AI/RAG/agent/MCP-specific threats.
+- lifecycle/deletion/revocation threats;
+- availability and abuse threats;
+- structured consolidated threat register;
+- risk prioritization;
+- testable security requirements.
