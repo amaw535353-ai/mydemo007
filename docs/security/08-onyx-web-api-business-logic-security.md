@@ -271,3 +271,54 @@ established without a live runtime and define the formal Phase 8 runtime-gap
 handoff.
 
 Runtime testing must not be simulated or represented as completed.
+
+---
+
+## Action 8.14 - Maximum-evidence / runtime-gap gate
+
+Status: **COMPLETE**
+
+The maximum defensible web/API/business-logic security evidence available on
+the current host has been established.
+
+Important corrected count:
+
+- P1 executable fixtures: **24**
+
+The previous terminal display of `1` was a verification-parser error caused by
+matching the digit in the label `P1`; it was not the artifact's real count.
+
+### Current evidence state
+
+Static reconnaissance:
+
+**COMPLETE**
+
+Static control-path analysis:
+
+**COMPLETE**
+
+Executable test preparation:
+
+**COMPLETE**
+
+Live Onyx web/API security verification:
+
+**BLOCKED / NOT EXECUTED**
+
+Confirmed runtime vulnerabilities:
+
+**0**
+
+Evidence:
+
+`docs/security/evidence/phase8-maximum-evidence-runtime-gap.md`
+
+## Required next step
+
+Establish an approved runnable Onyx laboratory and execute the prepared P1
+authorization pack.
+
+Phase 8 must not be represented as having verified runtime authentication,
+authorization, tenant isolation or business-logic controls until those tests
+are actually executed.
