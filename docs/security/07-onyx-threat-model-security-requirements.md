@@ -133,3 +133,89 @@ Actions 7.10 through 7.14:
 - structured consolidated threat register;
 - risk prioritization;
 - testable security requirements.
+
+---
+
+## Action 7.10 - Lifecycle, revocation and deletion threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-lifecycle-revocation-deletion-threats.md`
+
+## Action 7.11 - Abuse, availability and economic threats
+
+Status: **COMPLETE**
+
+Evidence:
+
+`docs/security/evidence/phase7-abuse-availability-economic-threats.md`
+
+## Action 7.12 - Consolidated threat register
+
+Status: **COMPLETE**
+
+Threat hypotheses:
+
+**42**
+
+Evidence:
+
+`docs/security/evidence/phase7-consolidated-threat-register.md`
+
+## Action 7.13 - Threat verification prioritization
+
+Status: **COMPLETE**
+
+Priority classes:
+
+- P1: 26
+- P2: 16
+
+These classes represent verification order, not vulnerability severity.
+
+Evidence:
+
+`docs/security/evidence/phase7-threat-prioritization.md`
+
+## Action 7.14 - Testable security requirements and traceability
+
+Status: **COMPLETE**
+
+Security requirements:
+
+**25**
+
+Evidence:
+
+`docs/security/evidence/phase7-security-requirements-traceability.md`
+
+## Current Phase 7 state
+
+Completed actions:
+
+**7.1 through 7.14**
+
+Threat hypotheses:
+
+**42**
+
+Testable security requirements:
+
+**25**
+
+Confirmed vulnerabilities:
+
+**0 claimed by Phase 7**
+
+Runtime security properties:
+
+**NOT YET ASSUMED VERIFIED**
+
+## Remaining Phase 7 work
+
+Action 7.15:
+
+**Final Phase 7 completion-gate audit and handoff into executable security
+testing.**
