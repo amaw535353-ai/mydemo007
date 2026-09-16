@@ -183,3 +183,91 @@ Resolve route composition and control chains more deeply:
 
 Then prepare the smallest executable test pack for the first approved local
 runtime.
+
+---
+
+## Action 8.10 - Router composition trace
+
+Status: **COMPLETE**
+
+Best-effort static route composition was performed across visible
+`include_router` and `APIRouter` relationships.
+
+Evidence:
+
+`docs/security/evidence/phase8-router-composition-trace.md`
+
+Unresolved route prefixes remain explicitly marked rather than guessed.
+
+## Action 8.11 - Authentication/authorization dependency definitions
+
+Status: **COMPLETE**
+
+Security-relevant route dependencies were traced toward candidate source
+definitions.
+
+Evidence:
+
+`docs/security/evidence/phase8-auth-dependency-definition-trace.md`
+
+Static same-name resolution does not prove runtime Python binding.
+
+## Action 8.12 - Ownership and tenant-control paths
+
+Status: **COMPLETE**
+
+Route-local ownership/access/tenant calls and candidate helper definitions were
+mapped for later authorization verification.
+
+Evidence:
+
+`docs/security/evidence/phase8-ownership-tenant-control-trace.md`
+
+No control is represented as effective until runtime evidence exists.
+
+## Action 8.13 - P1 executable authorization test pack
+
+Status: **COMPLETE**
+
+A reduced high-priority authorization test set was prepared.
+
+Evidence:
+
+`docs/security/fixtures/phase8-p1-executable-test-pack.md`
+
+Status:
+
+**PREPARED - NOT EXECUTED**
+
+Live execution remains blocked until an approved local Onyx runtime is
+positively identified.
+
+## Current Phase 8 state
+
+Actions complete:
+
+**8.1 through 8.13**
+
+Live Onyx security tests executed:
+
+**0**
+
+The project now contains:
+
+- broad API reconnaissance;
+- high-value endpoint selection;
+- object-reference surfaces;
+- privileged-operation surfaces;
+- router composition evidence;
+- authentication dependency traces;
+- ownership/tenant-control traces;
+- broad HTTP fixtures;
+- reduced P1 executable test fixtures.
+
+## Next
+
+Action 8.14 should determine the maximum remaining evidence that can be
+established without a live runtime and define the formal Phase 8 runtime-gap
+handoff.
+
+Runtime testing must not be simulated or represented as completed.
