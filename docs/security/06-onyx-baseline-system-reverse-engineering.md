@@ -292,3 +292,39 @@ Original R6.6 remains:
 Perform the smallest reproducible dependency/build validation in an approved
 environment while preserving the pinned SHA and zero-cost/external-service
 boundaries.
+
+
+## Action 6.16 - Local Build Feasibility Closure
+
+Status: **COMPLETE**.
+
+The maximum safe no-install build-adjacent validation available on the current
+Debian/WSL host was completed.
+
+Validated:
+
+- repository version pins;
+- structured JSON/TOML configuration;
+- 500 pinned backend Python files;
+- shell-script syntax;
+- reproducibility-input hashes;
+- Lite Compose invocation contract.
+
+A real dependency/container/application build remains deferred because the
+required local toolchain is unavailable and remote Codespace authentication
+could not be completed reliably.
+
+Original R6.6 status:
+
+**MAXIMUM CURRENT-HOST VALIDATION COMPLETE - ACTUAL BUILD DEFERRED**
+
+No claim of successful full build is made.
+
+### Evidence
+
+`docs/security/evidence/phase6-local-build-feasibility-closure.md`
+
+### Next requirement
+
+Proceed to original R6.7 startup/runtime-baseline assessment while explicitly
+preserving the build/runtime environment limitation.
