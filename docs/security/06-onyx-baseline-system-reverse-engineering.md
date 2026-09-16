@@ -360,3 +360,48 @@ No claim of successful live Onyx startup is made.
 Inventory the pinned Onyx test architecture and execute every meaningful test
 that can run without installing missing dependencies or starting external
 services.
+
+
+## Action 6.18 - Test Inventory and Bounded Test Execution
+
+Status: **COMPLETE**.
+
+The pinned repository test architecture was inventoried.
+
+Observed inventory:
+
+- Python tests: 1207
+- Python unit paths: 717
+- Python integration paths: 178
+- JS/TS tests/specs: 323
+
+A bounded sample of 300 Python repository test files passed syntax
+validation.
+
+Safe dependency-free repository test candidates executed:
+
+0
+
+Passed:
+
+0
+
+Blocked/failed:
+
+0
+
+Full pytest, frontend and container/integration execution remains constrained
+by missing local prerequisites and is not represented as passing.
+
+Original R6.8 status:
+
+**INVENTORY COMPLETE - BOUNDED EXECUTION COMPLETE - FULL SUITE DEFERRED**
+
+### Evidence
+
+`docs/security/evidence/phase6-test-inventory-bounded-execution.md`
+
+### Next step
+
+Consolidate remaining Phase 6 runtime gaps, browser/API evidence, mock/runtime
+limitations and architecture maps before the final completion gate.
