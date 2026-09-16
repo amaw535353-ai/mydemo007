@@ -39,5 +39,10 @@
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
   "workspaceFolder": "/workspace",
   "postStartCommand": "sudo bash /workspace/.devcontainer/init-dev-user.sh && if [ \"${ONYX_DEVCONTAINER_FIREWALL:-}\" = \"1\" ]; then sudo bash /workspace/.devcontainer/init-firewall.sh; else echo 'Devcontainer firewall disabled. Set ONYX_DEVCONTAINER_FIREWALL=1 on the host before starting the container to enable it.'; fi",
-  "waitFor": "postStartCommand"
+  "waitFor": "postStartCommand",
+  "features": {
+    "ghcr.io/devcontainers/features/sshd:1": {
+      "version": "latest"
+    }
+  }
 }
