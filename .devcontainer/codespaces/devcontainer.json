@@ -1,12 +1,13 @@
 {
-  "name": "Phase 8 Codespaces Security Lab",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "name": "Phase 8 Onyx Standard Security Lab",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "privileged": true,
   "features": {
-    "ghcr.io/devcontainers/features/sshd:1": {
-      "version": "latest"
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {
+      "moby": true
     },
-    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
+    "ghcr.io/devcontainers/features/sshd:1": {}
   },
-  "remoteUser": "codespace"
+  "remoteUser": "vscode"
 }
