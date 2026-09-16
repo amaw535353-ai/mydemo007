@@ -328,3 +328,35 @@ No claim of successful full build is made.
 
 Proceed to original R6.7 startup/runtime-baseline assessment while explicitly
 preserving the build/runtime environment limitation.
+
+
+## Action 6.17 - Startup / Runtime Baseline Assessment
+
+Status: **COMPLETE**.
+
+The pinned Standard and Lite deployment definitions were used to map:
+
+- service topology;
+- startup controls;
+- dependency relationships;
+- health/readiness signals;
+- Lite startup invocation.
+
+No service was started because the required runtime toolchain remains
+unavailable on the approved local host.
+
+Original R6.7 status:
+
+**STATIC STARTUP BASELINE COMPLETE - LIVE RUNTIME PROOF DEFERRED**
+
+No claim of successful live Onyx startup is made.
+
+### Evidence
+
+`docs/security/evidence/phase6-startup-runtime-baseline-assessment.md`
+
+### Next requirement
+
+Inventory the pinned Onyx test architecture and execute every meaningful test
+that can run without installing missing dependencies or starting external
+services.
