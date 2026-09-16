@@ -95,3 +95,91 @@ continues with evidence-driven static security work:
 
 Static control presence must not be represented as proof that the control works
 at runtime.
+
+---
+
+## Action 8.5 - High-value endpoint shortlist
+
+Status: **COMPLETE**
+
+The pinned Onyx API inventory was prioritized for security-relevant web/API
+testing.
+
+Evidence:
+
+`docs/security/evidence/phase8-high-value-endpoint-shortlist.md`
+
+Runtime exposure remains unverified.
+
+## Action 8.6 - Authentication and authorization control trace
+
+Status: **COMPLETE**
+
+Directly visible route dependencies and security-related calls were extracted
+from the pinned source.
+
+Evidence:
+
+`docs/security/evidence/phase8-authentication-authorization-control-trace.md`
+
+Presence of a control-looking function does not prove enforcement.
+
+Absence of a visible route-local control does not prove a vulnerability.
+
+## Action 8.7 - Object-authorization test surface
+
+Status: **COMPLETE**
+
+Object-reference route candidates suitable for later BOLA/IDOR and ownership
+verification were identified.
+
+Evidence:
+
+`docs/security/evidence/phase8-object-authorization-surface.md`
+
+## Action 8.8 - Privileged-operation test surface
+
+Status: **COMPLETE**
+
+Administrative and privilege-sensitive route candidates were identified for
+later vertical-authorization verification.
+
+Evidence:
+
+`docs/security/evidence/phase8-privileged-operation-surface.md`
+
+## Action 8.9 - HTTP security test fixtures
+
+Status: **COMPLETE**
+
+Concrete source-backed request templates were prepared for later execution
+against an approved local runtime.
+
+Evidence:
+
+`docs/security/fixtures/phase8-http-test-fixture-manifest.md`
+
+No Phase 8 HTTP security fixture has yet been executed against Onyx.
+
+## Current status
+
+Actions completed:
+
+**8.1 through 8.9**
+
+Static evidence is sufficient to continue endpoint/control tracing while the
+live runtime limitation remains documented.
+
+## Next
+
+Resolve route composition and control chains more deeply:
+
+- router/include-router prefix composition;
+- concrete full-path candidates;
+- authentication dependency definitions;
+- ownership-check implementation paths;
+- tenant-context propagation;
+- negative authorization expectations.
+
+Then prepare the smallest executable test pack for the first approved local
+runtime.
