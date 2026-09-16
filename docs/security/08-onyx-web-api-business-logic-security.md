@@ -1,6 +1,6 @@
 # Phase 8 - Onyx Web, API and Business-Logic Security
 
-Phase 8 status: **IN PROGRESS**
+Phase 8 status: **COMPLETE**
 
 ## Objective
 
@@ -322,3 +322,62 @@ authorization pack.
 Phase 8 must not be represented as having verified runtime authentication,
 authorization, tenant isolation or business-logic controls until those tests
 are actually executed.
+
+---
+
+## Action 8.30 - Formal Phase 8 closure
+
+Status: **COMPLETE**
+
+The earlier runtime-blocked state documented in Actions 8.4 and 8.14 remains
+preserved as historical evidence. A controlled authorized Onyx runtime was
+subsequently established and runtime security verification was completed.
+
+### Confirmed security finding
+
+TC8-007 identified request-controlled tenant/schema selection through the
+asynchronous database-session dependency.
+
+Confirmed effects before remediation:
+
+- caller influence over schema selection;
+- HTTP 500 for a valid but nonexistent schema;
+- internal SQL/database-detail disclosure.
+
+Not demonstrated:
+
+- unauthorized cross-user data access;
+- authorization bypass;
+- unauthorized state change.
+
+### Remediation outcome
+
+The request-facing asynchronous database dependency now exposes no
+request-bindable tenant identifier.
+
+The explicit tenant-aware interface is isolated for trusted internal use.
+
+### Runtime regression outcome
+
+**TC8-007 FIX VERIFIED**
+
+Post-remediation verification demonstrated:
+
+- owner access remains functional;
+- foreign-object access remains denied;
+- tenant query manipulation no longer changes database schema selection;
+- the former HTTP 500 is not reproduced;
+- SQL/schema disclosure is absent;
+- API health remains functional.
+
+Closure evidence:
+
+`docs/security/evidence/phase8-final-closure.md`
+
+### Final Phase 8 decision
+
+**COMPLETE**
+
+Next:
+
+**Phase 9 — Onyx Identity, Authorization and Tenant Isolation**
