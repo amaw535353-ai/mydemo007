@@ -121,12 +121,41 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.3-authentication-session-token-lifecycle-trace.md`
 
+## Action 9.4 - Authorization-policy and ownership-control trace
+
+Status: **COMPLETE**
+
+The authorization chain was traced from effective permissions through GLOBAL / SCOPED /
+NONE authority, PAT scope capping, GATE 1 route admission, GATE 2 managed-resource
+scoping, and resource-specific owner/ACL/sharing checks.
+
+Confirmed source-backed patterns include:
+
+- owner-bound chat reads, updates and deletes using authenticated user IDs;
+- explicit public-shared chat handling;
+- full-admin gating for high-impact user administration;
+- scoped connector management with resource-level GATE 2 controls;
+- read-side managed-scope SQL primitives for scoped-manager resources.
+
+A high-priority static hypothesis was also identified:
+
+`H9-11 — Scoped manager may receive user rows outside managed groups`
+
+`GET /manage/users` uses `READ_USERS` with `allow_scope=True`, while the traced route
+body does not show an explicit managed-group GATE 2 filter before serializing users.
+This is queued for controlled runtime verification and is **not** classified as a
+vulnerability by static analysis alone.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.4-authorization-policy-ownership-control-trace.md`
+
 ## Current completion
 
-Phase 9: **21.4%**
+Phase 9: **28.6%**
 
-Full final project: **approximately 37.0%**
+Full final project: **approximately 37.3%**
 
 Next:
 
-**Action 9.4 - Authorization-policy and ownership-control trace**
+**Action 9.5 - Tenant, document, index, vector and memory authorization trace**
