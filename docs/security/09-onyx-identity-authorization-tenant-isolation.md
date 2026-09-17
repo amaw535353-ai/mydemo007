@@ -94,12 +94,39 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.2-identity-role-tenant-privilege-map.md`
 
+## Action 9.3 - Authentication, session and token lifecycle trace
+
+Status: **COMPLETE**
+
+The authentication lifecycle was traced across browser sessions, mobile bearer
+sessions, externally verified JWTs, PATs, API keys and OAuth/OIDC-linked identities.
+
+Key source-backed lifecycle properties include:
+
+- configurable Redis, PostgreSQL or single-tenant JWT primary session strategies;
+- a mobile Bearer backend reusing the selected primary session strategy;
+- Redis sessions with subject, tenant, issue time, logical expiry and logout tombstone state;
+- Redis rejection classification for expired, terminated, missing and malformed sessions;
+- PAT authentication with explicit token-scope capping of user permissions;
+- API-key authentication with a separate credential-resolution path;
+- external JWT signature validation restricted to RS256 with optional audience and issuer enforcement;
+- additional post-authentication verification and OIDC-expiry checks;
+- stateless JWT logout behavior where an issued JWT cannot be server-side invalidated and remains valid until natural expiry.
+
+The stateless JWT revocation characteristic is recorded for explicit runtime and
+residual-risk verification and is not classified as a vulnerability by static
+analysis alone.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.3-authentication-session-token-lifecycle-trace.md`
+
 ## Current completion
 
-Phase 9: **14.3%**
+Phase 9: **21.4%**
 
-Full final project: **approximately 36.7%**
+Full final project: **approximately 37.0%**
 
 Next:
 
-**Action 9.3 - Authentication, session and token lifecycle trace**
+**Action 9.4 - Authorization-policy and ownership-control trace**
