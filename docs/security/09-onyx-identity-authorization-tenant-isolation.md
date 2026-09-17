@@ -189,12 +189,60 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.5-tenant-document-index-vector-memory-authorization-trace.md`
 
+## Action 9.6 - Agent, tool, action and delegated-authorization trace
+
+Status: **COMPLETE**
+
+Authorization continuity was traced from the authenticated user through agent/persona
+access, tool attachment, per-turn tool narrowing, tool construction, delegated
+credentials and final tool dispatch.
+
+Confirmed source-backed patterns include:
+
+- new chat sessions validate current agent/persona access;
+- persona mutation uses owner/share/admin and scoped-manager authorization;
+- disabled tools are skipped during runtime construction;
+- `allowed_tool_ids` can narrow a turn's available tools;
+- unknown model-requested tools are dropped by the runner;
+- FileReaderTool accepts only server-authorized file IDs;
+- custom OAuth and passthrough-auth paths use the acting user's credential context;
+- newly attached MCP tools require access to the corresponding MCP server;
+- MCP credential resolution distinguishes per-user, admin-shared and passthrough credentials and applies header precedence/denylisting.
+
+Three follow-up hypotheses were identified:
+
+`H9-14 — Foreign custom action attachment may delegate creator-stored credentials`
+
+Custom action management has a creator/admin boundary, but the traced persona upsert
+path does not show an equivalent authorization check for newly attached non-MCP custom
+actions. Because custom actions may carry stored static headers, controlled runtime
+verification must determine whether one user can attach and invoke another creator's
+credential-bearing action. Tracking: GitHub Issue #3.
+
+`H9-15 — Agent access revocation may not invalidate an existing chat-session capability`
+
+New-session creation checks persona access, while the traced existing-session continuation
+path reloads the owned session and its persona/tools without showing a fresh persona-share
+check before tool construction. Tracking: GitHub Issue #4.
+
+`H9-16 — Request-supplied MCP headers require explicit trust-policy verification`
+
+The message request supports caller-provided `mcp_headers`, and MCP execution can use
+additional headers in some no-managed-credential states. This may be intended delegated
+authentication; runtime tests must prove it cannot exceed the configured MCP server policy.
+
+None of these hypotheses is classified as a confirmed vulnerability by static analysis alone.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.6-agent-tool-action-delegated-authorization-trace.md`
+
 ## Current completion
 
-Phase 9: **35.7%**
+Phase 9: **42.9%**
 
-Full final project: **approximately 37.6%**
+Full final project: **approximately 37.9%**
 
 Next:
 
-**Action 9.6 - Agent, tool, action and delegated-authorization trace**
+**Action 9.7 - Workload identity, service authentication and trust relationships**
