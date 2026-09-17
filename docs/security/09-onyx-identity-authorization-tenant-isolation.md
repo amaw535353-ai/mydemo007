@@ -317,12 +317,53 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.8-secrets-api-keys-credential-delegation-cryptography.md`
 
+## Action 9.9 - Authorization attack matrix and executable negative-test pack
+
+Status: **COMPLETE**
+
+The static hypotheses and baseline authorization controls are now converted into a bounded
+runtime test design with explicit actors, expected ALLOW/DENY outcomes, evidence fields,
+stop conditions and automatic PASS / FAIL / REVIEW / SKIP dispositions.
+
+The pack includes:
+
+- anonymous/protected-route controls;
+- global-admin and scoped-manager controls;
+- horizontal chat ownership checks;
+- vertical administrator checks;
+- PAT token-scope enforcement;
+- H9-11 scoped `/manage/users` data filtering;
+- H9-12 cross-user generated-image retrieval;
+- H9-13 search ACL-bypass provenance;
+- H9-14 foreign custom-action attachment/credential delegation;
+- H9-15 agent-revocation behavior for new and existing sessions;
+- H9-16 request-supplied MCP-header policy;
+- service-account privilege reduction, rotation, deletion, disable and cross-tenant replay;
+- H9-17 interactive service-account reachability;
+- H9-18 credential-at-rest confidentiality/integrity checks;
+- H9-19 login OAuth token-storage/lifecycle checks.
+
+The executable runner fails closed outside loopback, requires `PHASE9_RUN=1`, caps timeout
+and response size, runs sequentially, does not follow redirects, does not print credentials,
+and records body length/SHA-256 rather than raw response bodies. `404` denials are REVIEW
+rather than automatic PASS unless paired positive-control evidence establishes route/resource
+validity.
+
+Evidence and executable pack:
+
+`docs/security/evidence/phase9-action-9.9-authorization-attack-matrix-negative-test-pack.md`
+
+`scripts/security/phase9_negative_authz_runner.py`
+
+Runtime effectiveness remains unproven until Action 9.10 executes the pack against the
+authorized synthetic Onyx laboratory.
+
 ## Current completion
 
-Phase 9: **57.1%**
+Phase 9: **64.3%**
 
-Full final project: **approximately 38.5%**
+Full final project: **approximately 38.8%**
 
 Next:
 
-**Action 9.9 - Authorization attack matrix and executable negative-test pack**
+**Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification**
