@@ -69,10 +69,37 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.1-engagement-initialization.md`
 
+## Action 9.2 - Identity, role, tenant and privilege architecture map
+
+Status: **COMPLETE**
+
+The assessed source was used to reconstruct the principal account classes,
+authentication paths, permission-authority model, scoped-manager gates, session
+token lifecycle, API-key/PAT/JWT paths, tenant signals and document/file ACL
+boundaries.
+
+Key source-backed architecture includes:
+
+- `STANDARD`, `SERVICE_ACCOUNT`, `BOT`, `EXT_PERM_USER` and `ANONYMOUS` account classes;
+- group-based permissions with `GLOBAL`, `SCOPED` and `NONE` authority;
+- explicit GATE 1 route admission plus mandatory GATE 2 resource scoping for scoped managers;
+- Redis-backed session values carrying subject, tenant, issuance, expiry and logout state;
+- separate API-key, PAT and JWT credential paths;
+- multi-tenant token structures carrying tenant information where applicable;
+- ownership, sharing and document-ACL authorization paths.
+
+No vulnerability is claimed from static architecture evidence alone.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.2-identity-role-tenant-privilege-map.md`
+
 ## Current completion
 
-Phase 9: **7.1%**
+Phase 9: **14.3%**
+
+Full final project: **approximately 36.7%**
 
 Next:
 
-**Action 9.2 - Identity, role, tenant and privilege architecture map**
+**Action 9.3 - Authentication, session and token lifecycle trace**
