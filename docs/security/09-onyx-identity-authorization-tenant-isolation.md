@@ -150,12 +150,51 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.4-authorization-policy-ownership-control-trace.md`
 
+## Action 9.5 - Tenant, document, index, vector and memory authorization trace
+
+Status: **COMPLETE**
+
+Authorization continuity was traced across the tenant context, PostgreSQL schema,
+document/user-file ACL construction, search filters, vector/index queries and user
+memory persistence.
+
+Confirmed source-backed patterns include:
+
+- multi-tenant request context failing closed when tenant context is absent;
+- tenant-aware SQL sessions using schema translation;
+- document-index `TenantState` derived from the current tenant;
+- search `IndexFilters` carrying both tenant and requesting-user ACL information;
+- OpenSearch applying tenant and ACL filters as ANDed authorization predicates;
+- least-permissive document access when ACL metadata is missing;
+- connector-file reads mirroring document retrieval ACLs;
+- user memories read and mutated using the authenticated user's ID.
+
+Two follow-up hypotheses were identified:
+
+`H9-12 — Generated chat image cross-user authorization exception`
+
+`CHAT_IMAGE_GEN` file records are deliberately accepted by `user_can_access_chat_file`
+without owner/chat/document ACL resolution. Cross-user and cross-tenant runtime tests
+are required before classification.
+
+`H9-13 — Search ACL-bypass caller provenance`
+
+`ChunkSearchRequest` and `SearchTool` contain an explicit `bypass_acl` mode. The mode
+may be legitimate for trusted system flows, but Phase 9 must prove that no public,
+agent-controlled or delegated untrusted path can cause it to become true.
+
+Neither hypothesis is classified as a confirmed vulnerability by static analysis alone.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.5-tenant-document-index-vector-memory-authorization-trace.md`
+
 ## Current completion
 
-Phase 9: **28.6%**
+Phase 9: **35.7%**
 
-Full final project: **approximately 37.3%**
+Full final project: **approximately 37.6%**
 
 Next:
 
-**Action 9.5 - Tenant, document, index, vector and memory authorization trace**
+**Action 9.6 - Agent, tool, action and delegated-authorization trace**
