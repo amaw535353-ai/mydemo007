@@ -237,12 +237,92 @@ Evidence:
 
 `docs/security/evidence/phase9-action-9.6-agent-tool-action-delegated-authorization-trace.md`
 
+## Action 9.7 - Workload identity, service authentication and trust relationships
+
+Status: **COMPLETE**
+
+The workload-identity trace confirmed that service-account API keys map to synthetic
+`SERVICE_ACCOUNT` users and inherit authorization through group membership. Key creation,
+regeneration, group changes and deletion are coupled to service-account identity and
+permission lifecycle, and multi-tenant key generation carries an explicit tenant signal.
+
+Key source-backed properties include:
+
+- service-account API-key administration is explicitly treated as a high-impact,
+  admin-equivalent capability because group assignment can grant powerful permissions;
+- clear API keys are generated with high entropy and stored by one-way hash plus masked display;
+- key regeneration replaces the stored credential and recomputes effective permissions;
+- key deletion removes both credential and synthetic principal;
+- service-account requests resolve back to a concrete user principal for downstream authorization;
+- no app-level SPIFFE/SPIRE or mTLS workload-identity implementation was established by this source trace, so infrastructure identity remains a deployment-layer verification item.
+
+One runtime/policy hypothesis remains:
+
+`H9-17 — Service-account interactive-session reachability`
+
+`SERVICE_ACCOUNT` is classified as web-login-capable in source even though the account is
+provisioned as a machine identity with a randomly generated, undisclosed password. Runtime
+proof and product-policy confirmation are required before classification. Tracking:
+GitHub Issue #5.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.7-workload-identity-service-auth-trust-relationships.md`
+
+`docs/security/evidence/phase9-action-9.7-runtime-test-pack.md`
+
+## Action 9.8 - Secrets, API keys, credential delegation and cryptography assessment
+
+Status: **COMPLETE**
+
+Secret handling and cryptographic boundaries were traced across application-level
+credential wrappers, API keys, PATs, OAuth/OIDC, MCP and JWT verification.
+
+Confirmed source-backed controls include:
+
+- `SensitiveValue` forces an explicit masked/raw decision and blocks common accidental
+  string/JSON/Pydantic disclosure paths;
+- API keys and PATs use high-entropy random generation and one-way SHA-256 lookup material;
+- tool OAuth client secrets and user token sets use `EncryptedString` / `EncryptedJson`;
+- OAuth token exchanges require HTTPS and pass through outbound SSRF controls;
+- managed MCP credential headers take precedence over caller-supplied headers and denylisted
+  header names such as `Host` are removed;
+- external JWT verification pins the accepted algorithm to RS256 and applies configured
+  audience/issuer constraints;
+- the OIDC client performs issuer/config ownership validation and rejects present-but-unverified email claims.
+
+Two additional boundaries require runtime/security-requirement validation:
+
+`H9-18 — Credential-at-rest encryption integrity and fail-open behavior`
+
+The base/MIT encryption path stores raw UTF-8 bytes. The EE override can encrypt using
+AES-CBC with random IV and PKCS#7 padding when `ENCRYPTION_KEY_SECRET` is configured,
+but falls back to raw bytes when it is absent. The traced CBC construction has no
+cryptographic authentication tag/MAC and directly trims configured key bytes to an AES
+key size. This is a cryptographic property, not yet a vulnerability classification.
+Tracking: GitHub Issue #6.
+
+`H9-19 — Login OAuth access/refresh tokens use ordinary Text storage`
+
+Login-provider `OAuthAccount.access_token` and `refresh_token` fields are ordinary
+`Text`, while tool-specific OAuth token sets and client credentials use encrypted
+sensitive models. The runtime tool path can use the login access token for passthrough
+authentication. The storage property is confirmed; risk classification still depends on
+the deployment threat model, storage controls and explicit secret-at-rest requirements.
+Tracking: GitHub Issue #7.
+
+H9-16 remains carried forward for delegated MCP-header trust-policy verification.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.8-secrets-api-keys-credential-delegation-cryptography.md`
+
 ## Current completion
 
-Phase 9: **42.9%**
+Phase 9: **57.1%**
 
-Full final project: **approximately 37.9%**
+Full final project: **approximately 38.5%**
 
 Next:
 
-**Action 9.7 - Workload identity, service authentication and trust relationships**
+**Action 9.9 - Authorization attack matrix and executable negative-test pack**
