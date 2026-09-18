@@ -268,7 +268,7 @@ WHERE file_id = '$FILE_ID';
 "
 )"
 echo "DB fixture: $DB_RECORD"
-grep -q "^chat_image_gen|$ALICE_ID|" <<<"$DB_RECORD"
+grep -qi "^chat_image_gen|$ALICE_ID|" <<<"$DB_RECORD"
 
 echo
 echo "[6/8] Execute owner/control and cross-user requests"
