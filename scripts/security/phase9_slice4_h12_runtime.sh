@@ -53,15 +53,17 @@ PY
     fi
 
     if [ -n "$ALICE_EMAIL" ] && [ -n "$ALICE_HASH" ]; then
-        docker exec "$DB" psql -X -q -U "$DB_USER" -d "$DB_NAME" \
-          -v email="$ALICE_EMAIL" -v hash="$ALICE_HASH" \
-          -c "UPDATE \"user\" SET hashed_password = :'hash' WHERE email = :'email';" >/dev/null 2>&1 || true
+        docker exec -i "$DB" psql -X -q -v ON_ERROR_STOP=1 -U "$DB_USER" -d "$DB_NAME" \
+          -v email="$ALICE_EMAIL" -v hash="$ALICE_HASH" >/dev/null 2>&1 <<'SQL' || true
+UPDATE "user" SET hashed_password = :'hash' WHERE email = :'email';
+SQL
     fi
 
     if [ -n "$BOB_EMAIL" ] && [ -n "$BOB_HASH" ]; then
-        docker exec "$DB" psql -X -q -U "$DB_USER" -d "$DB_NAME" \
-          -v email="$BOB_EMAIL" -v hash="$BOB_HASH" \
-          -c "UPDATE \"user\" SET hashed_password = :'hash' WHERE email = :'email';" >/dev/null 2>&1 || true
+        docker exec -i "$DB" psql -X -q -v ON_ERROR_STOP=1 -U "$DB_USER" -d "$DB_NAME" \
+          -v email="$BOB_EMAIL" -v hash="$BOB_HASH" >/dev/null 2>&1 <<'SQL' || true
+UPDATE "user" SET hashed_password = :'hash' WHERE email = :'email';
+SQL
     fi
 
     rm -rf "$TMP"
@@ -188,13 +190,15 @@ print(PasswordHelper().hash(pw))
 )"
 test -n "$TEMP_HASH"
 
-docker exec "$DB" psql -X -q -U "$DB_USER" -d "$DB_NAME" \
-  -v email="$ALICE_EMAIL" -v hash="$TEMP_HASH" \
-  -c "UPDATE \"user\" SET hashed_password = :'hash' WHERE email = :'email';" >/dev/null
+docker exec -i "$DB" psql -X -q -v ON_ERROR_STOP=1 -U "$DB_USER" -d "$DB_NAME" \
+  -v email="$ALICE_EMAIL" -v hash="$TEMP_HASH" >/dev/null <<'SQL'
+UPDATE "user" SET hashed_password = :'hash' WHERE email = :'email';
+SQL
 
-docker exec "$DB" psql -X -q -U "$DB_USER" -d "$DB_NAME" \
-  -v email="$BOB_EMAIL" -v hash="$TEMP_HASH" \
-  -c "UPDATE \"user\" SET hashed_password = :'hash' WHERE email = :'email';" >/dev/null
+docker exec -i "$DB" psql -X -q -v ON_ERROR_STOP=1 -U "$DB_USER" -d "$DB_NAME" \
+  -v email="$BOB_EMAIL" -v hash="$TEMP_HASH" >/dev/null <<'SQL'
+UPDATE "user" SET hashed_password = :'hash' WHERE email = :'email';
+SQL
 
 echo "Temporary hashes installed; originals retained only in shell memory."
 
