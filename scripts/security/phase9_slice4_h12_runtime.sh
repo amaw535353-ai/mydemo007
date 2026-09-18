@@ -13,10 +13,13 @@ ONYX_PIN="160f9b143605ca45a85bd387b5bd173840bab15d"
 API="${API:-onyx-api_server-1}"
 BASE_URL="${PHASE9_BASE_URL:-http://127.0.0.1:8080}"
 MAX_REQUESTS=20
-REQUESTS=0
 OUT="${PHASE9_H12_EVIDENCE:-/tmp/phase9-action-9.10-slice4-h12-runtime.txt}"
 TMP="$(mktemp -d)"
+REQUEST_COUNT_FILE="$TMP/request-count"
+printf '0\n' > "$REQUEST_COUNT_FILE"
 FILE_ID=""
+TOOL_CALL_MARKER=""
+CHAT_SESSION_ID=""
 ALICE_EMAIL=""
 BOB_EMAIL=""
 ALICE_HASH=""
@@ -24,11 +27,14 @@ BOB_HASH=""
 LOGIN_READY=0
 
 req() {
-    REQUESTS=$((REQUESTS + 1))
-    if [ "$REQUESTS" -gt "$MAX_REQUESTS" ]; then
+    local request_count
+    request_count="$(cat "$REQUEST_COUNT_FILE")"
+    request_count=$((request_count + 1))
+    if [ "$request_count" -gt "$MAX_REQUESTS" ]; then
         echo "STOP: request ceiling exceeded" >&2
         return 90
     fi
+    printf '%s\n' "$request_count" > "$REQUEST_COUNT_FILE"
     curl --silent --show-error --max-time 5 --connect-timeout 3 --max-filesize 1048576 "$@"
 }
 
@@ -42,10 +48,29 @@ cleanup() {
         req -b "$TMP/bob.cookies"   -X POST -o /dev/null "$BASE_URL/auth/logout" >/dev/null 2>&1 || true
     fi
 
+    if [ -n "$TOOL_CALL_MARKER" ]; then
+        docker exec -i "$API" python3 - "$TOOL_CALL_MARKER" <<'PY' >/dev/null 2>&1 || true
+import sys
+from sqlalchemy import delete
+from onyx.db.engine.sql_engine import SqlEngine, get_session_with_current_tenant
+from onyx.db.models import ToolCall
+
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
+marker = sys.argv[1].strip()
+if marker:
+    with get_session_with_current_tenant() as db:
+        db.execute(delete(ToolCall).where(ToolCall.tool_call_id == marker))
+        db.commit()
+PY
+    fi
+
     if [ -n "$FILE_ID" ]; then
         docker exec -i "$API" python3 - "$FILE_ID" <<'PY' >/dev/null 2>&1 || true
 import sys
+from onyx.db.engine.sql_engine import SqlEngine
 from onyx.file_store.file_store import get_default_file_store
+
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
 fid = sys.argv[1].strip()
 if fid:
     get_default_file_store().delete_file(file_id=fid, error_on_missing=False)
@@ -64,8 +89,9 @@ PY
           -c "UPDATE \"user\" SET hashed_password = :'hash' WHERE email = :'email';" >/dev/null 2>&1 || true
     fi
 
+    FINAL_REQUESTS="$(cat "$REQUEST_COUNT_FILE" 2>/dev/null || printf 'unknown')"
     rm -rf "$TMP"
-    echo "CLEANUP: attempted logout, synthetic file deletion, password-hash restoration"
+    echo "CLEANUP: attempted logout, synthetic ToolCall/file deletion, password-hash restoration; requests_total=$FINAL_REQUESTS"
     exit "$rc"
 }
 trap cleanup EXIT
@@ -222,45 +248,89 @@ LOGIN_READY=1
 
 echo
 echo "[5/8] Create <=1 MB synthetic CHAT_IMAGE_GEN fixture"
-FILE_ID="$(
+FIXTURE_INFO="$(
 docker exec -i "$API" python3 - "$ALICE_ID" <<'PY'
 import sys
 from io import BytesIO
+from uuid import UUID, uuid4
+
+from sqlalchemy import select
+
 from onyx.configs.constants import FileOrigin
+from onyx.db.engine.sql_engine import SqlEngine, get_session_with_current_tenant
+from onyx.db.models import ChatSession, ToolCall
 from onyx.file_store.file_store import get_default_file_store
 
-alice_id = sys.argv[1]
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
+alice_id = UUID(sys.argv[1])
 payload = b"PHASE9-H12-SYNTHETIC-ALICE-IMAGE-BYTES"
 assert len(payload) <= 1024 * 1024
-fid = get_default_file_store().save_file(
-    content=BytesIO(payload),
-    display_name="phase9-h12-alice-synthetic.png",
-    file_origin=FileOrigin.CHAT_IMAGE_GEN,
-    file_type="image/png",
-    file_metadata={
-        "phase9_test": True,
-        "synthetic_owner_user_id": alice_id,
-        "purpose": "H9-12 authorization verification",
-    },
-)
-print(fid)
+
+with get_session_with_current_tenant() as db:
+    chat_session_id = db.scalar(
+        select(ChatSession.id).where(ChatSession.user_id == alice_id).limit(1)
+    )
+if chat_session_id is None:
+    raise RuntimeError("No existing synthetic Alice chat session is available")
+
+file_store = get_default_file_store()
+fid = None
+marker = f"phase9-h12-{uuid4().hex}"
+try:
+    fid = file_store.save_file(
+        content=BytesIO(payload),
+        display_name="phase9-h12-alice-synthetic.png",
+        file_origin=FileOrigin.CHAT_IMAGE_GEN,
+        file_type="image/png",
+    )
+    with get_session_with_current_tenant() as db:
+        tool_call = ToolCall(
+            chat_session_id=chat_session_id,
+            parent_chat_message_id=None,
+            parent_tool_call_id=None,
+            turn_number=0,
+            tab_index=0,
+            tool_id=0,
+            tool_call_id=marker,
+            tool_call_arguments={},
+            tool_call_response="",
+            tool_call_tokens=0,
+            generated_images=[
+                {
+                    "file_id": fid,
+                    "url": f"/api/chat/file/{fid}",
+                    "revised_prompt": "phase9 synthetic",
+                    "shape": "square",
+                }
+            ],
+        )
+        db.add(tool_call)
+        db.commit()
+except Exception:
+    if fid:
+        file_store.delete_file(file_id=fid, error_on_missing=False)
+    raise
+
+print(f"{fid}|{marker}|{chat_session_id}")
 PY
 )"
+IFS='|' read -r FILE_ID TOOL_CALL_MARKER CHAT_SESSION_ID <<<"$FIXTURE_INFO"
 test -n "$FILE_ID"
-echo "Synthetic file ID: $FILE_ID"
+test -n "$TOOL_CALL_MARKER"
+test -n "$CHAT_SESSION_ID"
+echo "Synthetic file ID:     $FILE_ID"
+echo "Synthetic chat ID:     $CHAT_SESSION_ID"
+echo "Synthetic ToolCall ID: $TOOL_CALL_MARKER"
 
 DB_RECORD="$(
 docker exec "$DB" psql -X -U "$DB_USER" -d "$DB_NAME" -Atc "
-SELECT
-  file_origin || '|' ||
-  COALESCE(file_metadata->>'synthetic_owner_user_id','') || '|' ||
-  COALESCE(file_size::text,'')
+SELECT file_origin || '|' || COALESCE(file_size::text,'')
 FROM file_record
 WHERE file_id = '$FILE_ID';
 "
 )"
 echo "DB fixture: $DB_RECORD"
-grep -q "^chat_image_gen|$ALICE_ID|" <<<"$DB_RECORD"
+grep -q "^chat_image_gen|" <<<"$DB_RECORD"
 
 echo
 echo "[6/8] Execute owner/control and cross-user requests"
@@ -289,19 +359,26 @@ fi
 echo
 echo "[7/8] Direct runtime authorization predicate"
 DIRECT="$(
-docker exec -i "$API" python3 - "$FILE_ID" "$ALICE_ID" "$BOB_ID" <<'PY'
+docker exec -i "$API" python3 - "$FILE_ID" "$ALICE_ID" "$BOB_ID" "$TOOL_CALL_MARKER" <<'PY'
 import sys
 from uuid import UUID
 from sqlalchemy import select
 
 from onyx.access.access import user_can_access_chat_file
-from onyx.db.engine.sql_engine import get_session_with_current_tenant
-from onyx.db.models import User
+from onyx.db.engine.sql_engine import SqlEngine, get_session_with_current_tenant
+from onyx.db.models import ChatSession, ToolCall, User
 
-fid, alice_id, bob_id = sys.argv[1:4]
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
+fid, alice_id, bob_id, marker = sys.argv[1:5]
 with get_session_with_current_tenant() as db:
     alice = db.scalar(select(User).where(User.id == UUID(alice_id)))
     bob = db.scalar(select(User).where(User.id == UUID(bob_id)))
+    tool_call = db.scalar(select(ToolCall).where(ToolCall.tool_call_id == marker))
+    linked_to_alice = False
+    if tool_call is not None:
+        chat_session = db.get(ChatSession, tool_call.chat_session_id)
+        linked_to_alice = bool(chat_session and chat_session.user_id == UUID(alice_id))
+    print("LINKED_TO_ALICE=" + str(linked_to_alice).upper())
     print("ALICE_CAN_ACCESS=" + str(bool(user_can_access_chat_file(fid, alice, db))).upper())
     print("BOB_CAN_ACCESS=" + str(bool(user_can_access_chat_file(fid, bob, db))).upper())
 PY
@@ -313,6 +390,7 @@ echo "[8/8] Classification"
 if { [ "$ANON_HTTP" = "401" ] || [ "$ANON_HTTP" = "403" ]; } \
    && [ "$ALICE_HTTP" = "200" ] \
    && [ "$BOB_HTTP" = "200" ] \
+   && grep -q 'LINKED_TO_ALICE=TRUE' <<<"$DIRECT" \
    && grep -q 'BOB_CAN_ACCESS=TRUE' <<<"$DIRECT"; then
     echo "RESULT=RUNTIME_CONFIRMED_CROSS_USER_ACCESS"
     echo "H9-12=FAIL_SECURITY_PROPERTY"
@@ -326,7 +404,7 @@ else
     echo "H9-12=INCONCLUSIVE"
 fi
 
-echo "REQUESTS_USED=$REQUESTS"
+echo "REQUESTS_USED_PRE_CLEANUP=$(cat "$REQUEST_COUNT_FILE")"
 echo "EVIDENCE=$OUT"
 echo "ROLLBACK=automatic on exit"
 echo "===================================================="
