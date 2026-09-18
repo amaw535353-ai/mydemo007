@@ -43,10 +43,10 @@ cleanup() {
     fi
 
     if [ -n "$FILE_ID" ]; then
-        printf '%s' "$FILE_ID" | docker exec -i "$API" python3 - <<'PY' >/dev/null 2>&1 || true
+        docker exec -i "$API" python3 - "$FILE_ID" <<'PY' >/dev/null 2>&1 || true
 import sys
 from onyx.file_store.file_store import get_default_file_store
-fid = sys.stdin.read().strip()
+fid = sys.argv[1].strip()
 if fid:
     get_default_file_store().delete_file(file_id=fid, error_on_missing=False)
 PY
