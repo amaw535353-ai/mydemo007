@@ -57,6 +57,26 @@ The relevant behavior is therefore:
 
 This confirms the **source-level authorization exception** targeted by H9-12.
 
+## Upstream integration-test confirmation
+
+The pinned Onyx integration test suite independently models the same asset class.
+
+Its helper `_seed_image_gen_tool_call(...)`:
+
+- saves synthetic PNG bytes with `FileOrigin.CHAT_IMAGE_GEN`;
+- creates a `ToolCall` linked to a chat session;
+- records the file under `ToolCall.generated_images`.
+
+The owner-download test expects HTTP 200.
+
+The private-session non-owner denial test exists but is explicitly skipped with the upstream reason:
+
+`CHAT_IMAGE_GEN files are temporarily public.`
+
+The public-session non-owner test expects HTTP 200.
+
+This is strong source evidence that the broad authenticated-read behavior is a known temporary implementation exception at the assessed commit, not an inference created only by this project.
+
 ## Security interpretation
 
 This evidence is sufficient to establish that the assessed code path does not enforce per-user ownership for CHAT_IMAGE_GEN records.
@@ -93,13 +113,25 @@ The verifier's cleanup path was corrected in commit:
 
 `65272549cca243762081a174245c7afe6ea65986`
 
+The verifier was further hardened in commit:
+
+`9dfef6cfe0ca841aa8cb13a8222b57add337ef1c`
+
+That hardening:
+
+- makes the request ceiling persist across shell command-substitution subshells;
+- initializes the standalone SQLAlchemy engine before DB-backed file-store and predicate operations;
+- mirrors the upstream `ToolCall.generated_images` linkage to an existing synthetic Alice chat session;
+- verifies that linkage before classifying cross-user access;
+- removes the synthetic ToolCall and file during rollback.
+
 ## Remediation property
 
 Do not treat every CHAT_IMAGE_GEN record as globally readable to all authenticated users.
 
 The generated file must be bound to an authorization context that can be evaluated at read time, such as the owning chat session/user (and tenant where applicable).
 
-The Onyx source itself notes that generated images do not currently reach `ChatMessage.files` and that a durable fix requires stamping sufficient chat-session ownership context into `FileRecord.file_metadata` (or an equivalent normalized relation) when the file is saved.
+At the assessed commit, generated-image references are stored under `ToolCall.generated_images`, not `ChatMessage.files`. The inline Onyx TODO explains that the file bytes land in the store before the linking tool-call row is written; tightening authorization therefore requires reordering that lifecycle or introducing an equivalent provisional ownership binding that is available before the file can be read.
 
 A correct fix must preserve:
 
