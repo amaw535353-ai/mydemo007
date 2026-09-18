@@ -45,7 +45,9 @@ cleanup() {
     if [ -n "$FILE_ID" ]; then
         docker exec -i "$API" python3 - "$FILE_ID" <<'PY' >/dev/null 2>&1 || true
 import sys
+from onyx.db.engine.sql_engine import SqlEngine
 from onyx.file_store.file_store import get_default_file_store
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
 fid = sys.argv[1].strip()
 if fid:
     get_default_file_store().delete_file(file_id=fid, error_on_missing=False)
@@ -231,7 +233,9 @@ docker exec -i "$API" python3 - "$ALICE_ID" <<'PY'
 import sys
 from io import BytesIO
 from onyx.configs.constants import FileOrigin
+from onyx.db.engine.sql_engine import SqlEngine
 from onyx.file_store.file_store import get_default_file_store
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
 
 alice_id = sys.argv[1]
 payload = b"PHASE9-H12-SYNTHETIC-ALICE-IMAGE-BYTES"
@@ -299,8 +303,10 @@ from uuid import UUID
 from sqlalchemy import select
 
 from onyx.access.access import user_can_access_chat_file
+from onyx.db.engine.sql_engine import SqlEngine
 from onyx.db.engine.sql_engine import get_session_with_current_tenant
 from onyx.db.models import User
+SqlEngine.init_engine(pool_size=1, max_overflow=0)
 
 fid, alice_id, bob_id = sys.argv[1:4]
 with get_session_with_current_tenant() as db:
