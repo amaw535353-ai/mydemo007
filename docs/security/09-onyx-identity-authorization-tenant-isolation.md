@@ -358,12 +358,40 @@ Evidence and executable pack:
 Runtime effectiveness remains unproven until Action 9.10 executes the pack against the
 authorized synthetic Onyx laboratory.
 
+## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
+
+Status: **READY FOR AUTHORIZED LOCAL EXECUTION — NOT YET COMPLETE**
+
+Repository-side execution tooling is prepared:
+
+- `scripts/security/phase9_runtime_verify.sh` validates branch lineage, clean worktree,
+  loopback-only target reachability, Python syntax, and produces immutable execution metadata;
+- `scripts/security/phase9_negative_authz_runner.py` executes the bounded negative-test matrix;
+- `scripts/security/phase9_results_to_markdown.py` converts runtime JSON into a sanitized
+  PASS / FAIL / REVIEW / SKIP decision record without credentials or raw response bodies;
+- the runtime runbook defines H9-11 through H9-19 proof requirements and the completion gate.
+
+The connected GitHub integration cannot enter the user's WSL/Codespace process or reach
+the laboratory loopback interface. GitHub Actions is intentionally not used as a substitute
+because that could consume unapproved billable cloud resources and would violate the
+engagement cost boundary.
+
+Action 9.10 therefore remains incomplete until the authorized local Onyx laboratory
+executes the wrapper and returns the sanitized runtime evidence.
+
+Evidence/runbook:
+
+`docs/security/evidence/phase9-action-9.10-runtime-verification-runbook.md`
+
 ## Current completion
 
 Phase 9: **64.3%**
 
 Full final project: **approximately 38.8%**
 
-Next:
+Next runtime command in the authorized lab:
 
-**Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification**
+`bash scripts/security/phase9_runtime_verify.sh`
+
+After the dry-run fixtures are validated, set `PHASE9_RUN=1` and execute the same wrapper.
+Only then can Action 9.10 advance to **71.4%**.
