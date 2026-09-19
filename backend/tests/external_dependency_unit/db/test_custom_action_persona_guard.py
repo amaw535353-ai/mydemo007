@@ -50,9 +50,9 @@ def _create_custom_action(rollback_db_session: Session, owner: User) -> Tool:
         passthrough_auth=False,
         enabled=True,
     )
-    db_session.add(action)
+    rollback_db_session.add(action)
     rollback_db_session.commit()
-    db_session.refresh(action)
+    rollback_db_session.refresh(action)
     return action
 
 
@@ -73,7 +73,7 @@ def _upsert_persona_with_tools(
         datetime_aware=None,
         is_public=False,
         tool_ids=tool_ids,
-        db_session=db_session,
+        db_session=rollback_db_session,
     )
 
 
@@ -91,7 +91,9 @@ def test_non_owner_cannot_attach_foreign_custom_action(
     assert exc_info.value.error_code is OnyxErrorCode.INSUFFICIENT_PERMISSIONS
 
 
-def test_owner_can_attach_own_custom_action(db_session: Session) -> None:
+def test_owner_can_attach_own_custom_action(
+    rollback_db_session: Session,
+) -> None:
     owner = create_test_user(rollback_db_session, "custom_action_owner_allowed")
     owner.effective_permissions = []
     owner.is_group_manager = True
