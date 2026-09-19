@@ -359,7 +359,7 @@ Runtime execution is in progress in the authorized synthetic Onyx laboratory.
 
 ## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
 
-Status: **IN PROGRESS — H9-14 REMEDIATION RETEST PENDING**
+Status: **IN PROGRESS — H9-14 DATABASE RETEST PASSED; RUNTIME RETEST PENDING**
 
 Repository-side execution tooling is prepared:
 
@@ -379,8 +379,12 @@ all synthetic objects and verified cleanup.
 The security-hardened fork now requires creator or actions-administrator authority for
 new custom-action attachments. Existing attachments remain during ordinary agent edits.
 
-Action 9.10 remains incomplete until the authorized local laboratory runs the focused
-database test and verifies the API-level denial after rebuilding the patched service.
+The focused database regression suite passed all five authorization cases at runtime
+HEAD `7496d92599f26d2e2050643832ef091aa6025493`. Each case used an outer transaction
+that rolled back at teardown.
+
+Action 9.10 remains incomplete until the authorized local laboratory rebuilds the patched
+API service and verifies the API-level denial.
 
 Evidence/runbook:
 
@@ -390,15 +394,15 @@ Evidence/runbook:
 
 `docs/security/evidence/phase9-action-9.11-h14-remediation.md`
 
+`docs/security/evidence/phase9-action-9.11-h14-database-retest.md`
+
 ## Current completion
 
 Phase 9: **64.3%**
 
 Full final project: **approximately 38.8%**
 
-Next focused test in the authorized lab:
+Next focused action in the authorized lab:
 
-`uv run --env-file .vscode/.env pytest -q backend/tests/external_dependency_unit/db/test_custom_action_persona_guard.py`
-
-After the test passes, rebuild the API service and rerun the bounded transactional H9-14
-attachment test. The expected result is denial with no persistent database change.
+Rebuild the API service from the patched branch. Then rerun the bounded H9-14 attachment
+test. The expected result is denial with no persistent database change.

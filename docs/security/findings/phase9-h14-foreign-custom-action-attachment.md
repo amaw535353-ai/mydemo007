@@ -6,7 +6,7 @@ P9-H14-01
 
 ## Status
 
-**CONFIRMED AT BUSINESS-LOGIC LAYER — REMEDIATION RETEST PENDING**
+**REMEDIATED — DATABASE RETEST PASSED; RUNTIME/API RETEST PENDING**
 
 ## Component
 
@@ -77,14 +77,16 @@ Passed:
 - Ruff formatting;
 - Ruff linting;
 - Python syntax compilation;
-- Git whitespace validation.
+- Git whitespace validation;
+- database-backed external-dependency regression suite: 5/5 passed in 2.97 seconds.
 
 Pending:
 
-- database-backed external-dependency regression suite;
 - rebuilt local-container negative retest;
 - API-level HTTP 403 verification.
 
 ## Evidence
 
 `docs/security/evidence/phase9-action-9.10-runtime-slice6-h14.md`
+
+`docs/security/evidence/phase9-action-9.11-h14-database-retest.md`

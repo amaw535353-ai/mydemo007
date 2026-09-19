@@ -2,7 +2,7 @@
 
 ## Status
 
-**IMPLEMENTED — DATABASE AND RUNTIME RETEST PENDING**
+**IMPLEMENTED — DATABASE RETEST PASSED; RUNTIME/API RETEST PENDING**
 
 ## Decision
 
@@ -44,6 +44,14 @@ Expected post-fix outcomes:
 
 Static verification passed on the changed files.
 
-The current work environment has no Docker or PostgreSQL service. The database-backed test remains pending.
+The database-backed regression suite passed all five cases in 2.97 seconds at runtime
+HEAD `7496d92599f26d2e2050643832ef091aa6025493`.
 
-The authorized local Onyx laboratory must run the focused test after it receives the patch.
+Each test case used an outer database transaction. The fixture rolled back the transaction
+at teardown.
+
+The rebuilt-container negative retest and API-level HTTP 403 verification remain pending.
+
+Evidence:
+
+`docs/security/evidence/phase9-action-9.11-h14-database-retest.md`
