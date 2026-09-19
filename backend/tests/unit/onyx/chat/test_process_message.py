@@ -1,9 +1,13 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from onyx.chat.process_message import (
+    _validate_existing_session_persona_access,
     _resolve_query_processing_hook_result,
     remove_answer_citations,
 )
+from onyx.configs.constants import DEFAULT_PERSONA_ID
 from onyx.error_handling.error_codes import OnyxErrorCode
 from onyx.error_handling.exceptions import OnyxError
 from onyx.hooks.executor import HookSkipped, HookSoftFailed
@@ -119,3 +123,71 @@ def test_nonempty_query_rewrites_message_text() -> None:
         QueryProcessingResponse(query="rewritten query"), "original query"
     )
     assert result == "rewritten query"
+
+# ---------------------------------------------------------------------------
+# H9-15: existing-session persona revocation
+# ---------------------------------------------------------------------------
+
+def test_h9_15_existing_session_revoked_persona_is_denied() -> None:
+    chat_session = MagicMock()
+    chat_session.persona.id = 42
+    user = MagicMock()
+    user.is_anonymous = False
+    db_session = MagicMock()
+
+    with patch(
+        "onyx.chat.process_message.user_can_access_persona",
+        return_value=False,
+    ) as access_check:
+        with pytest.raises(ValueError, match="access to persona"):
+            _validate_existing_session_persona_access(
+                chat_session=chat_session,
+                user=user,
+                db_session=db_session,
+            )
+
+    access_check.assert_called_once_with(
+        db_session=db_session,
+        persona_id=42,
+        user=user,
+        get_editable=False,
+    )
+
+
+def test_h9_15_existing_session_authorized_persona_is_allowed() -> None:
+    chat_session = MagicMock()
+    chat_session.persona.id = 42
+    user = MagicMock()
+    user.is_anonymous = False
+    db_session = MagicMock()
+
+    with patch(
+        "onyx.chat.process_message.user_can_access_persona",
+        return_value=True,
+    ) as access_check:
+        _validate_existing_session_persona_access(
+            chat_session=chat_session,
+            user=user,
+            db_session=db_session,
+        )
+
+    access_check.assert_called_once()
+
+
+def test_h9_15_default_persona_skips_access_recheck() -> None:
+    chat_session = MagicMock()
+    chat_session.persona.id = DEFAULT_PERSONA_ID
+    user = MagicMock()
+    user.is_anonymous = False
+    db_session = MagicMock()
+
+    with patch(
+        "onyx.chat.process_message.user_can_access_persona"
+    ) as access_check:
+        _validate_existing_session_persona_access(
+            chat_session=chat_session,
+            user=user,
+            db_session=db_session,
+        )
+
+    access_check.assert_not_called()
