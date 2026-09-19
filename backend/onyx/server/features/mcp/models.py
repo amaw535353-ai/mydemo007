@@ -74,7 +74,16 @@ def contains_mcp_placeholder(value: str) -> bool:
 # templates. Host is particularly critical — it can be used for Host Header
 # Injection attacks to route requests to unintended internal servers.
 DENYLISTED_MCP_HEADERS = {
+    "connection",
     "host",
+    "keep-alive",
+    "proxy-authenticate",
+    "proxy-authorization",
+    "proxy-connection",
+    "te",
+    "trailer",
+    "transfer-encoding",
+    "upgrade",
 }
 
 
@@ -201,6 +210,57 @@ class MCPAuthTemplate(BaseModel):
                 value = value.replace(f"{{{key}}}", replacement)
             headers[name] = apply_auto_substitutions(value, user_email=user_email)
         return headers
+
+
+def filter_request_mcp_headers(
+    headers: dict[str, str],
+    auth_template: MCPAuthTemplate | None,
+) -> dict[str, str]:
+    """Apply the administrator-controlled request-header allowlist.
+
+    The template's header names are the policy boundary. Global protocol
+    denylisting remains authoritative even for malformed legacy templates.
+    """
+    if auth_template is None:
+        return {}
+    allowed_names = {name.lower() for name in auth_template.headers}
+    return {
+        name: value
+        for name, value in headers.items()
+        if name.lower() in allowed_names
+        and name.lower() not in DENYLISTED_MCP_HEADERS
+    }
+
+
+def request_mcp_headers_can_authenticate(
+    request_headers: dict[str, str],
+    managed_headers: dict[str, str],
+    *,
+    auth_type: MCPAuthenticationType | None,
+    auth_performer: MCPAuthenticationPerformer | None,
+    auth_template: MCPAuthTemplate | None,
+) -> bool:
+    """Whether allowlisted request headers may fill missing user credentials."""
+    if (
+        auth_type != MCPAuthenticationType.API_TOKEN
+        or auth_performer != MCPAuthenticationPerformer.PER_USER
+        or auth_template is None
+        or not auth_template.headers
+    ):
+        return False
+
+    filtered_request_headers = filter_request_mcp_headers(
+        request_headers, auth_template
+    )
+    if not filtered_request_headers:
+        return False
+
+    final_headers = merge_mcp_headers(filtered_request_headers, managed_headers)
+    present_names = {
+        name.lower() for name, value in final_headers.items() if value
+    }
+    required_names = {name.lower() for name in auth_template.headers}
+    return required_names.issubset(present_names)
 
 
 class MCPToolCreateRequest(BaseModel):

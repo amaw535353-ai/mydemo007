@@ -5,13 +5,18 @@ from typing import Any
 from mcp.client.auth import OAuthClientProvider
 
 from onyx.chat.emitter import Emitter
-from onyx.db.enums import MCPAuthenticationType, MCPTransport
+from onyx.db.enums import (
+    MCPAuthenticationPerformer,
+    MCPAuthenticationType,
+    MCPTransport,
+)
 from onyx.db.models import MCPConnectionConfig, MCPServer
 from onyx.server.features.mcp.client import call_mcp_tool
 from onyx.server.features.mcp.credentials import ResolvedMCPCredentials
 from onyx.server.features.mcp.models import (
-    DENYLISTED_MCP_HEADERS,
+    filter_request_mcp_headers,
     merge_mcp_headers,
+    request_mcp_headers_can_authenticate,
 )
 from onyx.server.features.mcp.oauth import (
     MCPReauthenticationRequired,
@@ -152,35 +157,42 @@ class MCPTool(Tool[None]):
         _server = self.mcp_server.name
         outcome = MCPToolCallStatus.ERROR
         try:
-            request_headers = {
-                name: value
-                for name, value in self._additional_headers.items()
-                if name.lower() not in DENYLISTED_MCP_HEADERS
-            }
-            if denylisted := sorted(
-                set(self._additional_headers) - set(request_headers)
-            ):
-                logger.warning(
-                    "MCP tool '%s' received denylisted headers that were filtered: %s",
-                    self._name,
-                    denylisted,
-                )
             credentials = self._resolved_credentials or ResolvedMCPCredentials(
                 connection_config=self.connection_config,
                 user_oauth_token=self._user_oauth_token,
                 auth_type=self.mcp_server.auth_type,
                 user_email=self.user_email,
             )
-            headers = merge_mcp_headers(
-                request_headers,
-                credentials.build_headers(),
+            managed_headers = credentials.build_headers()
+            request_headers = filter_request_mcp_headers(
+                self._additional_headers,
+                credentials.auth_template,
+            )
+            if blocked_header_names := sorted(
+                name
+                for name in self._additional_headers
+                if name not in request_headers
+            ):
+                logger.warning(
+                    "MCP tool '%s' received request headers outside the configured "
+                    "server policy that were filtered: %s",
+                    self._name,
+                    blocked_header_names,
+                )
+            headers = merge_mcp_headers(request_headers, managed_headers)
+            request_headers_can_authenticate = (
+                request_mcp_headers_can_authenticate(
+                    request_headers,
+                    managed_headers,
+                    auth_type=self.mcp_server.auth_type,
+                    auth_performer=self.mcp_server.auth_performer,
+                    auth_template=credentials.auth_template,
+                )
             )
 
-            # Extra request headers can stand in for missing credentials, but
-            # not for a dead OAuth grant — its stale bearer wins the header
-            # merge, so the call can only fail upstream.
-            if not credentials.can_authenticate() and (
-                credentials.needs_reauth() or not self._additional_headers
+            if (
+                not credentials.can_authenticate()
+                and not request_headers_can_authenticate
             ):
                 auth_error_msg = (
                     f"The {self._name} tool from {self.mcp_server.name} requires "
