@@ -51,6 +51,8 @@ from onyx.db.scoped_permissions import (
     scoped_group_ids_subquery,
     within_managed_scope_clause,
 )
+from onyx.error_handling.error_codes import OnyxErrorCode
+from onyx.error_handling.exceptions import OnyxError
 from onyx.server.features.persona.models import (
     FullPersonaSnapshot,
     MinimalPersonaSnapshot,
@@ -1629,6 +1631,7 @@ def upsert_persona(
         if user is not None:
             # local import to avoid circular import (mirrors built_in_tools below)
             from onyx.db.mcp import user_can_access_mcp_server
+            from onyx.db.tools import can_manage_own_tool
 
             existing_tool_ids = (
                 {tool.id for tool in existing_persona.tools}
@@ -1637,12 +1640,22 @@ def upsert_persona(
             )
             checked_servers: set[int] = set()
             for tool in tools:
+                if tool.id in existing_tool_ids:
+                    continue
+
                 server_id = tool.mcp_server_id
-                if (
-                    tool.id in existing_tool_ids
-                    or server_id is None
-                    or server_id in checked_servers
-                ):
+                if server_id is None:
+                    if tool.in_code_tool_id is None and not can_manage_own_tool(
+                        user, tool
+                    ):
+                        raise OnyxError(
+                            OnyxErrorCode.INSUFFICIENT_PERMISSIONS,
+                            "You do not have access to one or more of the "
+                            "selected custom actions.",
+                        )
+                    continue
+
+                if server_id in checked_servers:
                     continue
                 checked_servers.add(server_id)
                 if not user_can_access_mcp_server(user, server_id, db_session):

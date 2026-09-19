@@ -355,12 +355,11 @@ Evidence and executable pack:
 
 `scripts/security/phase9_negative_authz_runner.py`
 
-Runtime effectiveness remains unproven until Action 9.10 executes the pack against the
-authorized synthetic Onyx laboratory.
+Runtime execution is in progress in the authorized synthetic Onyx laboratory.
 
 ## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
 
-Status: **READY FOR AUTHORIZED LOCAL EXECUTION — NOT YET COMPLETE**
+Status: **IN PROGRESS — H9-14 REMEDIATION RETEST PENDING**
 
 Repository-side execution tooling is prepared:
 
@@ -371,17 +370,25 @@ Repository-side execution tooling is prepared:
   PASS / FAIL / REVIEW / SKIP decision record without credentials or raw response bodies;
 - the runtime runbook defines H9-11 through H9-19 proof requirements and the completion gate.
 
-The connected GitHub integration cannot enter the user's WSL/Codespace process or reach
-the laboratory loopback interface. GitHub Actions is intentionally not used as a substitute
-because that could consume unapproved billable cloud resources and would violate the
-engagement cost boundary.
+Completed runtime slices confirmed H9-11 and H9-12. A transactional H9-14 test also
+confirmed that Bob could attach Alice's custom action at the business-logic layer.
 
-Action 9.10 therefore remains incomplete until the authorized local Onyx laboratory
-executes the wrapper and returns the sanitized runtime evidence.
+The H9-14 test made no HTTP request. It did not transmit a stored header. It rolled back
+all synthetic objects and verified cleanup.
+
+The security-hardened fork now requires creator or actions-administrator authority for
+new custom-action attachments. Existing attachments remain during ordinary agent edits.
+
+Action 9.10 remains incomplete until the authorized local laboratory runs the focused
+database test and verifies the API-level denial after rebuilding the patched service.
 
 Evidence/runbook:
 
 `docs/security/evidence/phase9-action-9.10-runtime-verification-runbook.md`
+
+`docs/security/evidence/phase9-action-9.10-runtime-slice6-h14.md`
+
+`docs/security/evidence/phase9-action-9.11-h14-remediation.md`
 
 ## Current completion
 
@@ -389,9 +396,9 @@ Phase 9: **64.3%**
 
 Full final project: **approximately 38.8%**
 
-Next runtime command in the authorized lab:
+Next focused test in the authorized lab:
 
-`bash scripts/security/phase9_runtime_verify.sh`
+`uv run --env-file .vscode/.env pytest -q backend/tests/external_dependency_unit/db/test_custom_action_persona_guard.py`
 
-After the dry-run fixtures are validated, set `PHASE9_RUN=1` and execute the same wrapper.
-Only then can Action 9.10 advance to **71.4%**.
+After the test passes, rebuild the API service and rerun the bounded transactional H9-14
+attachment test. The expected result is denial with no persistent database change.
