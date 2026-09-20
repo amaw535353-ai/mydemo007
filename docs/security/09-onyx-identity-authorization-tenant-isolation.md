@@ -359,7 +359,7 @@ Runtime execution is in progress in the authorized synthetic Onyx laboratory.
 
 ## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
 
-Status: **IN PROGRESS — H9-14 DATABASE RETEST PASSED; RUNTIME RETEST PENDING**
+Status: **IN PROGRESS — H9-15 AND H9-16 REMEDIATIONS VERIFIED; REMAINING TESTS PENDING**
 
 Repository-side execution tooling is prepared:
 
@@ -383,8 +383,17 @@ The focused database regression suite passed all five authorization cases at run
 HEAD `7496d92599f26d2e2050643832ef091aa6025493`. Each case used an outer transaction
 that rolled back at teardown.
 
-Action 9.10 remains incomplete until the authorized local laboratory rebuilds the patched
-API service and verifies the API-level denial.
+The H9-15 remediation now revalidates non-default persona access before an existing
+chat session can execute another turn. Its focused regression and bounded runtime
+retest passed.
+
+The H9-16 remediation now denies request-supplied MCP headers by default. It permits
+only names in the administrator-controlled server template. Managed credentials keep
+collision precedence. An isolated loopback retest verified the filter, explicit
+per-user API-token delegation, OAuth precedence and fail-closed behavior.
+
+Action 9.10 remains incomplete until the H9-14 API-level denial and all remaining
+H9-11 through H9-19 items have evidence-backed dispositions.
 
 Evidence/runbook:
 
@@ -396,6 +405,27 @@ Evidence/runbook:
 
 `docs/security/evidence/phase9-action-9.11-h14-database-retest.md`
 
+`docs/security/evidence/phase9-action-9.11-h15-runtime-remediation-retest.md`
+
+`docs/security/evidence/phase9-action-9.10-runtime-slice8-h16.md`
+
+`docs/security/evidence/phase9-action-9.11-h16-policy-root-cause.md`
+
+`docs/security/evidence/phase9-action-9.11-h16-runtime-remediation-retest.md`
+
+## Action 9.11 - Finding validation, root cause and remediation
+
+Status: **IN PROGRESS**
+
+The hardened fork has source-backed remediations for H9-14, H9-15 and H9-16.
+H9-14 has a passing database regression but still needs its API-level retest.
+H9-15 and H9-16 have passing focused tests and bounded runtime retests.
+
+H9-12 remains a confirmed open finding. Generated chat images still need an
+owner-bound, sharing-aware and tenant-aware authorization decision at read time.
+Action 9.11 cannot be marked complete until this finding and the remaining H9-14
+verification item have evidence-backed dispositions.
+
 ## Current completion
 
 Phase 9: **64.3%**
@@ -404,5 +434,5 @@ Full final project: **approximately 38.8%**
 
 Next focused action in the authorized lab:
 
-Rebuild the API service from the patched branch. Then rerun the bounded H9-14 attachment
-test. The expected result is denial with no persistent database change.
+Complete the H9-14 API-level denial retest. Then implement and verify the H9-12
+generated-image ownership remediation.
