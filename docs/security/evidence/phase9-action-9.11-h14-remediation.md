@@ -2,7 +2,7 @@
 
 ## Status
 
-**IMPLEMENTED — DATABASE RETEST PASSED; RUNTIME/API RETEST PENDING**
+**REMEDIATED — DATABASE AND API-LEVEL RETESTS PASSED**
 
 ## Decision
 
@@ -50,8 +50,20 @@ HEAD `7496d92599f26d2e2050643832ef091aa6025493`.
 Each test case used an outer database transaction. The fixture rolled back the transaction
 at teardown.
 
-The rebuilt-container negative retest and API-level HTTP 403 verification remain pending.
+The rebuilt API container was then exercised through four loopback-only HTTP requests at
+assessed HEAD `c7762ebec300b68af782ac51b7ce6b2078ac0ec3`. A scoped synthetic user could
+read the owned persona but received HTTP `403` with `INSUFFICIENT_PERMISSIONS` when
+attempting to attach another creator's custom action.
+
+The persona name and description remained unchanged, action ownership remained intact,
+and the persona-action attachment count remained zero. Logout returned HTTP `204`, the
+session was revoked, and cleanup verified zero remaining fixture rows.
+
+The runtime log was `2979` bytes with SHA-256
+`c4a3d3fbb21ab4f856b251532b048e97f3697b1b89a3db4820af02a11ef7782f`.
 
 Evidence:
 
 `docs/security/evidence/phase9-action-9.11-h14-database-retest.md`
+
+`docs/security/evidence/phase9-action-9.11-h14-runtime-remediation-retest.md`

@@ -359,7 +359,7 @@ Runtime execution is in progress in the authorized synthetic Onyx laboratory.
 
 ## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
 
-Status: **IN PROGRESS — H9-15 AND H9-16 REMEDIATIONS VERIFIED; REMAINING TESTS PENDING**
+Status: **IN PROGRESS — H9-14, H9-15 AND H9-16 REMEDIATIONS VERIFIED; REMAINING TESTS PENDING**
 
 Repository-side execution tooling is prepared:
 
@@ -383,6 +383,12 @@ The focused database regression suite passed all five authorization cases at run
 HEAD `7496d92599f26d2e2050643832ef091aa6025493`. Each case used an outer transaction
 that rolled back at teardown.
 
+The rebuilt API-level H9-14 retest authenticated a scoped synthetic user, established
+a positive-control read, and denied a new foreign custom-action attachment with HTTP
+`403` and `INSUFFICIENT_PERMISSIONS`. Persona fields and action ownership remained
+unchanged, the attachment count remained zero, all synthetic rows were removed, and
+the session was revoked.
+
 The H9-15 remediation now revalidates non-default persona access before an existing
 chat session can execute another turn. Its focused regression and bounded runtime
 retest passed.
@@ -392,8 +398,8 @@ only names in the administrator-controlled server template. Managed credentials 
 collision precedence. An isolated loopback retest verified the filter, explicit
 per-user API-token delegation, OAuth precedence and fail-closed behavior.
 
-Action 9.10 remains incomplete until the H9-14 API-level denial and all remaining
-H9-11 through H9-19 items have evidence-backed dispositions.
+Action 9.10 remains incomplete until all remaining H9-11 through H9-19 items have
+evidence-backed dispositions.
 
 Evidence/runbook:
 
@@ -404,6 +410,8 @@ Evidence/runbook:
 `docs/security/evidence/phase9-action-9.11-h14-remediation.md`
 
 `docs/security/evidence/phase9-action-9.11-h14-database-retest.md`
+
+`docs/security/evidence/phase9-action-9.11-h14-runtime-remediation-retest.md`
 
 `docs/security/evidence/phase9-action-9.11-h15-runtime-remediation-retest.md`
 
@@ -418,13 +426,13 @@ Evidence/runbook:
 Status: **IN PROGRESS**
 
 The hardened fork has source-backed remediations for H9-14, H9-15 and H9-16.
-H9-14 has a passing database regression but still needs its API-level retest.
-H9-15 and H9-16 have passing focused tests and bounded runtime retests.
+H9-14 passed both its focused database regression and bounded API-level runtime retest.
+H9-15 and H9-16 also have passing focused tests and bounded runtime retests.
 
 H9-12 remains a confirmed open finding. Generated chat images still need an
 owner-bound, sharing-aware and tenant-aware authorization decision at read time.
-Action 9.11 cannot be marked complete until this finding and the remaining H9-14
-verification item have evidence-backed dispositions.
+Action 9.11 cannot be marked complete until H9-12 and the remaining remediation
+items have evidence-backed dispositions.
 
 ## Current completion
 
@@ -434,5 +442,5 @@ Full final project: **approximately 38.8%**
 
 Next focused action in the authorized lab:
 
-Complete the H9-14 API-level denial retest. Then implement and verify the H9-12
-generated-image ownership remediation.
+Implement and verify the H9-12 generated-image ownership remediation while preserving
+the existing loopback-only, synthetic-data and bounded-execution controls.
