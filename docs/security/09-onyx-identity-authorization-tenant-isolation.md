@@ -430,21 +430,21 @@ The hardened fork has source-backed remediations for H9-14, H9-15 and H9-16.
 H9-14 passed both its focused database regression and bounded API-level runtime retest.
 H9-15 and H9-16 also have passing focused tests and bounded runtime retests.
 
-H9-12 is remediated and closed. Action 9.11 remains in progress because
-remaining dispositioned findings, including H9-18 and H9-19, still carry
-remediation and assurance requirements.
+H9-12 and H9-18 have completed code-level remediation. Action 9.11 remains
+in progress because H9-19 still requires protected-storage remediation and
+lifecycle assurance. H9-18 retains a deployment key-configuration assurance
+requirement for the later Phase 9 gates.
 
 ## Current completion
 
-Phase 9: **64.3%**
+Phase 9: **71.4%**
 
 Full final project: **approximately 38.8%**
 
 Next focused action in the authorized lab:
 
-Reconcile and validate the remaining remediation-required findings under Action 9.11,
-beginning with the H9-18 and H9-19 secret-storage requirements while preserving
-the existing synthetic-data and bounded-execution controls.
+Complete H9-19 protected login-OAuth token storage and lifecycle assurance while
+preserving the existing synthetic-data and bounded-execution controls.
 
 ### H9-12 remediation closeout — 2026-09-22
 
@@ -553,3 +553,31 @@ measurement in Action 9.12.
 
 Next phase action: **Action 9.11 — Finding validation, root cause and
 remediation.**
+
+
+### H9-18 Action 9.11 remediation closeout — 2026-09-22
+
+The H9-18 cryptographic integrity defect is remediated in the hardened fork.
+
+New keyed writes use a versioned AES-GCM authenticated-encryption envelope.
+Authenticated records reject tampering, wrong keys and missing-key reads
+without degrading to plaintext.
+
+Legacy raw UTF-8 and AES-CBC records remain readable for migration. The
+rotation helper distinguishes the current authenticated format from legacy
+records, including legacy CBC encrypted using the same current key.
+
+A bounded real-PostgreSQL proof verified plaintext and legacy-CBC migration,
+correct authenticated decryption, idempotent subsequent rotation and complete
+fixture cleanup.
+
+**H9-18 code-level status: REMEDIATED.**
+
+The assessed lab still has no `ENCRYPTION_KEY_SECRET`. Deployment-level
+key configuration and legacy-record migration remain assurance requirements
+for environments requiring application-level confidentiality.
+
+`docs/security/evidence/phase9-action-9.11-h9-18-aead-remediation.md`
+
+Action 9.11 now proceeds to **H9-19 login OAuth token protected storage and
+lifecycle assurance**.

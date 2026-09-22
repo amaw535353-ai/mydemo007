@@ -13,6 +13,12 @@ logger = setup_logger()
 
 
 # IMPORTANT DO NOT DELETE, THIS IS USED BY fetch_versioned_implementation
+def _is_current_encryption_format(input_bytes: bytes) -> bool:
+    # MIT/base storage has no EE authenticated ciphertext envelope.
+    return False
+
+
+# IMPORTANT DO NOT DELETE, THIS IS USED BY fetch_versioned_implementation
 def _encrypt_string(input_str: str, key: str | None = None) -> bytes:
     if ENCRYPTION_KEY_SECRET:
         logger.warning("MIT version of Onyx does not support encryption of secrets.")

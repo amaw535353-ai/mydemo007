@@ -165,3 +165,140 @@ class TestWrapperFunctions:
         with patch(f"{EE_MODULE}.ENCRYPTION_KEY_SECRET", KEY_32):
             encrypted = encrypt_string_to_bytes("payload")
             assert decrypt_bytes_to_string(encrypted) == "payload"
+
+
+class TestVersionedAuthenticatedEncryption:
+    def test_new_keyed_write_uses_versioned_aead(self) -> None:
+        from ee.onyx.utils import encryption as enc
+
+        encrypted = enc._encrypt_string(
+            "versioned secret",
+            key=KEY_32,
+        )
+
+        assert encrypted.startswith(enc._AEAD_MAGIC)
+        assert enc._is_current_encryption_format(encrypted)
+        assert (
+            enc._decrypt_bytes(
+                encrypted,
+                key=KEY_32,
+            )
+            == "versioned secret"
+        )
+
+    def test_versioned_aead_rejects_tampering(self) -> None:
+        from ee.onyx.utils import encryption as enc
+
+        encrypted = bytearray(
+            enc._encrypt_string(
+                "authenticated secret",
+                key=KEY_32,
+            )
+        )
+
+        encrypted[-1] ^= 0x01
+
+        with pytest.raises(
+            ValueError,
+            match="Authenticated secret decryption failed",
+        ):
+            enc._decrypt_bytes(
+                bytes(encrypted),
+                key=KEY_32,
+            )
+
+    def test_versioned_aead_wrong_key_fails_closed(self) -> None:
+        from ee.onyx.utils import encryption as enc
+
+        encrypted = enc._encrypt_string(
+            "wrong-key secret",
+            key=KEY_16,
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="Authenticated secret decryption failed",
+        ):
+            enc._decrypt_bytes(
+                encrypted,
+                key=KEY_16_ALT,
+            )
+
+    def test_versioned_record_without_key_fails_closed(self) -> None:
+        from ee.onyx.utils import encryption as enc
+
+        encrypted = enc._encrypt_string(
+            "key-required secret",
+            key=KEY_16,
+        )
+
+        with patch(
+            f"{EE_MODULE}.ENCRYPTION_KEY_SECRET",
+            "",
+        ):
+            with pytest.raises(
+                ValueError,
+                match="requires ENCRYPTION_KEY_SECRET",
+            ):
+                enc._decrypt_bytes(encrypted)
+
+    def test_legacy_plaintext_remains_readable_for_migration(self) -> None:
+        from ee.onyx.utils import encryption as enc
+
+        with patch(
+            f"{EE_MODULE}.ENCRYPTION_KEY_SECRET",
+            KEY_16,
+        ):
+            assert (
+                enc._decrypt_bytes(
+                    b"legacy readable plaintext"
+                )
+                == "legacy readable plaintext"
+            )
+
+    def test_legacy_cbc_remains_readable_for_migration(self) -> None:
+        from cryptography.hazmat.backends import default_backend
+        from cryptography.hazmat.primitives import padding
+        from cryptography.hazmat.primitives.ciphers import (
+            Cipher,
+            algorithms,
+            modes,
+        )
+
+        from ee.onyx.utils import encryption as enc
+
+        plaintext = b"legacy CBC migration record"
+        iv = b"\x17" * 16
+
+        padder = padding.PKCS7(
+            algorithms.AES.block_size
+        ).padder()
+
+        padded = (
+            padder.update(plaintext)
+            + padder.finalize()
+        )
+
+        cipher = Cipher(
+            algorithms.AES(KEY_16.encode()),
+            modes.CBC(iv),
+            backend=default_backend(),
+        )
+
+        encryptor = cipher.encryptor()
+
+        legacy = (
+            iv
+            + encryptor.update(padded)
+            + encryptor.finalize()
+        )
+
+        assert not enc._is_current_encryption_format(legacy)
+
+        assert (
+            enc._decrypt_bytes(
+                legacy,
+                key=KEY_16,
+            )
+            == plaintext.decode()
+        )

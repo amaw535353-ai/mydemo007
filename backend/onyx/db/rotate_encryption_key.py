@@ -27,17 +27,40 @@ _BATCH_SIZE = 500
 
 
 def _can_decrypt_with_current_key(data: bytes) -> bool:
-    """Check if data is already encrypted with the current key.
+    """Return True only for authenticated ciphertext in the current format.
 
-    Passes the key explicitly so the fallback-to-raw-decode path in
-    _decrypt_bytes is NOT triggered — a clean success/failure signal.
+    Historical behavior treated any value decryptable with the current key
+    as already rotated. That is insufficient after introducing a versioned
+    AEAD envelope because legacy AES-CBC encrypted with the same key must
+    still be migrated.
+
+    A row is current only when:
+    1. the EE implementation identifies the current ciphertext envelope; and
+    2. authenticated decryption succeeds with ENCRYPTION_KEY_SECRET.
+
+    Legacy plaintext and legacy AES-CBC therefore return False and remain
+    eligible for re-encryption.
     """
+    from onyx.utils.variable_functionality import (
+        fetch_versioned_implementation,
+    )
+
+    is_current_format = fetch_versioned_implementation(
+        "onyx.utils.encryption",
+        "_is_current_encryption_format",
+    )
+
+    if not is_current_format(data):
+        return False
+
     try:
-        decrypt_bytes_to_string(data, key=ENCRYPTION_KEY_SECRET)
+        decrypt_bytes_to_string(
+            data,
+            key=ENCRYPTION_KEY_SECRET,
+        )
         return True
     except Exception:
         return False
-
 
 def _discover_encrypted_columns() -> list[tuple[type, str, list[str], bool]]:
     """Walk all ORM models and find columns using EncryptedString/EncryptedJson.

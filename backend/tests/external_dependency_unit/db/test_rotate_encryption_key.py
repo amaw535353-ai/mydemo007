@@ -27,6 +27,7 @@ from onyx.db.models import (
     InternetSearchProvider,
 )
 from onyx.db.rotate_encryption_key import (
+    _can_decrypt_with_current_key,
     _discover_encrypted_columns,
     rotate_encryption_key,
 )
@@ -323,3 +324,106 @@ class TestRotateInternetSearchProvider:
                 {"id": isp_id},
             )
             db_session.commit()
+
+
+
+class TestCurrentEncryptionFormatDetection:
+    def test_current_aead_is_already_current(self) -> None:
+        with (
+            patch(
+                f"{ROTATE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+            patch(
+                f"{EE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+        ):
+            current = _encrypt_string(
+                "current authenticated record",
+                key=NEW_KEY,
+            )
+
+            assert _can_decrypt_with_current_key(
+                current
+            )
+
+    def test_legacy_cbc_same_key_still_requires_migration(
+        self,
+    ) -> None:
+        from cryptography.hazmat.backends import (
+            default_backend,
+        )
+        from cryptography.hazmat.primitives import padding
+        from cryptography.hazmat.primitives.ciphers import (
+            Cipher,
+            algorithms,
+            modes,
+        )
+
+        plaintext = b"legacy same-key CBC record"
+        iv = b"\x31" * 16
+
+        padder = padding.PKCS7(
+            algorithms.AES.block_size
+        ).padder()
+
+        padded = (
+            padder.update(plaintext)
+            + padder.finalize()
+        )
+
+        cipher = Cipher(
+            algorithms.AES(NEW_KEY.encode()),
+            modes.CBC(iv),
+            backend=default_backend(),
+        )
+
+        encryptor = cipher.encryptor()
+
+        legacy = (
+            iv
+            + encryptor.update(padded)
+            + encryptor.finalize()
+        )
+
+        # Prove the old record really is decryptable with the
+        # current key. It must nevertheless NOT count as current.
+        assert (
+            _decrypt_bytes(
+                legacy,
+                key=NEW_KEY,
+            )
+            == plaintext.decode()
+        )
+
+        with (
+            patch(
+                f"{ROTATE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+            patch(
+                f"{EE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+        ):
+            assert not _can_decrypt_with_current_key(
+                legacy
+            )
+
+    def test_legacy_plaintext_requires_migration(
+        self,
+    ) -> None:
+        with (
+            patch(
+                f"{ROTATE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+            patch(
+                f"{EE_MODULE}.ENCRYPTION_KEY_SECRET",
+                NEW_KEY,
+            ),
+        ):
+            assert not _can_decrypt_with_current_key(
+                b"legacy plaintext row"
+            )
