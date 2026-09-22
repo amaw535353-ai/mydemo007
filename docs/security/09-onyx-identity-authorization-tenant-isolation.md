@@ -436,7 +436,7 @@ requirement for the later Phase 9 gates.
 
 ## Current completion
 
-Phase 9: **78.6%**
+Phase 9: **92.9%**
 
 Full final project: **approximately 38.8%**
 
@@ -612,3 +612,29 @@ Evidence:
 - `docs/security/evidence/phase9-action-9.11-completion.md`
 
 Phase 9 proceeds to accelerated Actions **9.12 and 9.13**.
+
+
+### Accelerated Actions 9.12 and 9.13 completion — 2026-09-22
+
+Action 9.12 reconfirmed the highest-risk post-remediation security
+properties and verified evidence continuity for H9-12 through H9-19.
+
+**Action 9.12 status: COMPLETE.**
+
+Action 9.13 established explicit responsibility boundaries between
+application controls and potential external identity/authorization
+infrastructure.
+
+Authentication and coarse identity claims may be externalized, while tenant
+isolation, object ownership, delegated-action authorization and data-path
+authorization remain application responsibilities.
+
+**Action 9.13 status: COMPLETE.**
+
+Evidence:
+
+- `docs/security/evidence/phase9-action-9.12-regression-security-effectiveness.md`
+- `docs/security/evidence/phase9-action-9.13-supporting-control-transfer.md`
+
+Only **Action 9.14 — residual risk and final Phase 9 completion gate**
+remains.
