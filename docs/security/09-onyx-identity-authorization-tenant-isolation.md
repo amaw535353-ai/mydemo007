@@ -458,3 +458,16 @@ Final patched-runtime verification passed:
 **H9-12 is remediated and closed.**
 
 `docs/security/evidence/phase9-action-9.10-h9-12-remediation-runtime.md`
+
+### H9-13 ACL-bypass provenance closeout — 2026-09-22
+
+H9-13 production reachability analysis passed:
+- ACL bypass is security-sensitive when enabled;
+- production literal `True` sources: **0**;
+- suspicious positional/true call sites: **0**;
+- Search API and Slack explicitly use `False`;
+- ordinary chat paths retain the default `False`.
+
+**Classification: PASS — not currently reachable from identified production callers.**
+
+`docs/security/evidence/phase9-action-9.10-h9-13-acl-bypass-provenance.md`
