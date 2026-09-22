@@ -10,6 +10,7 @@ don't re-validate against an allow-list in the tool itself.
 
 from typing import cast
 from unittest.mock import MagicMock, patch
+from uuid import uuid4
 
 import pytest
 
@@ -43,6 +44,8 @@ def _make_tool(
         return ImageGenerationTool(
             image_generation_credentials=MagicMock(),
             tool_id=1,
+            owner_user_id=uuid4(),
+            chat_session_id=uuid4(),
             emitter=MagicMock(),
             model=model,
             provider="openai",

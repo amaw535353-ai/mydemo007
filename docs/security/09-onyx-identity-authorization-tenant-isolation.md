@@ -444,3 +444,17 @@ Next focused action in the authorized lab:
 
 Implement and verify the H9-12 generated-image ownership remediation while preserving
 the existing loopback-only, synthetic-data and bounded-execution controls.
+
+### H9-12 remediation closeout — 2026-09-22
+
+Final patched-runtime verification passed:
+- anonymous request: **403 denied**;
+- Alice owner request: **200 allowed**;
+- Bob authenticated non-owner request: **404 denied**;
+- `ALICE_CAN_ACCESS=TRUE`;
+- `BOB_CAN_ACCESS=FALSE`;
+- runtime classification: **PASS — SECURITY_PROPERTY_ENFORCED**.
+
+**H9-12 is remediated and closed.**
+
+`docs/security/evidence/phase9-action-9.10-h9-12-remediation-runtime.md`

@@ -239,7 +239,7 @@ def validate_user_files_ownership(
     return current_user_files
 
 
-def save_file_from_url(url: str) -> str:
+def save_file_from_url(url: str, file_metadata: dict[str, str] | None = None) -> str:
     response = requests.get(url)
     response.raise_for_status()
 
@@ -250,17 +250,21 @@ def save_file_from_url(url: str) -> str:
         display_name="GeneratedImage",
         file_origin=FileOrigin.CHAT_IMAGE_GEN,
         file_type="image/png;base64",
+        file_metadata=file_metadata,
     )
     return file_id
 
 
-def save_file_from_base64(base64_string: str) -> str:
+def save_file_from_base64(
+    base64_string: str, file_metadata: dict[str, str] | None = None
+) -> str:
     file_store = get_default_file_store()
     file_id = file_store.save_file(
         content=BytesIO(base64.b64decode(base64_string)),
         display_name="GeneratedImage",
         file_origin=FileOrigin.CHAT_IMAGE_GEN,
         file_type=get_image_type(base64_string),
+        file_metadata=file_metadata,
     )
     return file_id
 
@@ -268,12 +272,14 @@ def save_file_from_base64(base64_string: str) -> str:
 def save_file(
     url: str | None = None,
     base64_data: str | None = None,
+    file_metadata: dict[str, str] | None = None,
 ) -> str:
     """Save a file from either a URL or base64 encoded string.
 
     Args:
         url: URL to download file from
         base64_data: Base64 encoded file data
+        file_metadata: Authorization and lifecycle metadata for the file
 
     Returns:
         The unique ID of the saved file
@@ -285,22 +291,27 @@ def save_file(
         raise ValueError("Cannot specify both url and base64_data")
 
     if url is not None:
-        return save_file_from_url(url)
+        return save_file_from_url(url, file_metadata)
     elif base64_data is not None:
-        return save_file_from_base64(base64_data)
+        return save_file_from_base64(base64_data, file_metadata)
     else:
         raise ValueError("Must specify either url or base64_data")
 
 
-def save_files(urls: list[str], base64_files: list[str]) -> list[str]:
+def save_files(
+    urls: list[str],
+    base64_files: list[str],
+    file_metadata: dict[str, str] | None = None,
+) -> list[str]:
     # NOTE: be explicit about typing so that if we change things, we get notified
     funcs: list[
         tuple[
-            Callable[[str | None, str | None], str],
-            tuple[str | None, str | None],
+            Callable[[str | None, str | None, dict[str, str] | None], str],
+            tuple[str | None, str | None, dict[str, str] | None],
         ]
-    ] = [(save_file, (url, None)) for url in urls] + [
-        (save_file, (None, base64_file)) for base64_file in base64_files
+    ] = [(save_file, (url, None, file_metadata)) for url in urls] + [
+        (save_file, (None, base64_file, file_metadata))
+        for base64_file in base64_files
     ]
 
     return run_functions_tuples_in_parallel(funcs)

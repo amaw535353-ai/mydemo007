@@ -1,5 +1,6 @@
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from typing import cast
+from uuid import UUID
 
 from sqlalchemy import cast as sa_cast
 from sqlalchemy import or_, select
@@ -21,10 +22,15 @@ from onyx.db.models import (
     Persona,
     Persona__User,
     Persona__UserFile,
+    ToolCall,
     User,
     UserFile,
 )
 from onyx.db.user_file import fetch_user_files_with_access_relationships
+from onyx.file_store.constants import (
+    CHAT_IMAGE_GEN_CHAT_SESSION_ID_METADATA_KEY,
+    CHAT_IMAGE_GEN_OWNER_USER_ID_METADATA_KEY,
+)
 from onyx.utils.variable_functionality import (
     fetch_ee_implementation_or_noop,
     fetch_versioned_implementation,
@@ -230,7 +236,8 @@ def user_can_access_chat_file(file_id: str, user: User, db_session: Session) -> 
       or directly shared via `Persona.users`).
     - `ChatMessage.files` of a session the user owns or that is shared as
       `ChatSessionSharedStatus.PUBLIC`.
-    - `FileRecord` with origin `CHAT_IMAGE_GEN` (see inline TODO).
+    - Generated chat images owned by the user or created in a public chat
+      session.
     - `Document` whose ACL grants access (covers connector-ingested files).
 
     TODO(auth-perf): split `/chat/file` into per-asset-class endpoints so the
@@ -263,22 +270,80 @@ def user_can_access_chat_file(file_id: str, user: User, db_session: Session) -> 
     if db_session.execute(chat_file_stmt).first() is not None:
         return True
 
-    # TODO: CHAT_IMAGE_GEN files are public because the bytes land in the
-    # store before the linking tool-call row is written; tightening this
-    # requires reordering the streaming/tool-call writes. Kept above the
-    # connector branch so previews hit a PK lookup, not the JSONB scan.
-    is_chat_image_gen = db_session.query(
-        select(FileRecord.file_id)
-        .where(
-            FileRecord.file_id == file_id,
-            FileRecord.file_origin == FileOrigin.CHAT_IMAGE_GEN,
-        )
-        .exists()
-    ).scalar()
-    if is_chat_image_gen:
+    if _user_can_access_generated_image(file_id, user, db_session):
         return True
 
     return _user_can_access_connector_file(file_id, user, db_session)
+
+
+def _user_can_access_generated_image(
+    file_id: str, user: User, db_session: Session
+) -> bool:
+    """Enforce generated-image ownership without a pre-link public window.
+
+    New generated-image records carry their owner and originating chat session
+    when the bytes are saved. Legacy rows require a linked, authorized session.
+    Public sharing is evaluated from the current session state so revoking
+    sharing also revokes non-owner image access.
+    """
+    file_record = db_session.execute(
+        select(FileRecord).where(
+            FileRecord.file_id == file_id,
+            FileRecord.file_origin == FileOrigin.CHAT_IMAGE_GEN,
+        )
+    ).scalar_one_or_none()
+    if file_record is None:
+        return False
+
+    file_metadata = file_record.file_metadata
+    if file_metadata is None or (
+        isinstance(file_metadata, Mapping)
+        and CHAT_IMAGE_GEN_OWNER_USER_ID_METADATA_KEY not in file_metadata
+        and CHAT_IMAGE_GEN_CHAT_SESSION_ID_METADATA_KEY not in file_metadata
+    ):
+        # The supplied session scopes both tables to the current tenant.
+        legacy_chat_stmt = (
+            select(ToolCall.id)
+            .join(ChatSession, ToolCall.chat_session_id == ChatSession.id)
+            .where(
+                ToolCall.generated_images.contains([{"file_id": file_id}]),
+                or_(
+                    ChatSession.user_id == user.id,
+                    ChatSession.shared_status == ChatSessionSharedStatus.PUBLIC,
+                ),
+            )
+            .limit(1)
+        )
+        return db_session.execute(legacy_chat_stmt).first() is not None
+
+    # JSONB can contain arrays and primitives as well as objects.
+    if not isinstance(file_metadata, Mapping):
+        return False
+
+    owner_user_id = file_metadata.get(CHAT_IMAGE_GEN_OWNER_USER_ID_METADATA_KEY)
+    if owner_user_id == str(user.id):
+        return True
+
+    raw_chat_session_id = file_metadata.get(CHAT_IMAGE_GEN_CHAT_SESSION_ID_METADATA_KEY)
+    if not isinstance(owner_user_id, str) or not isinstance(raw_chat_session_id, str):
+        return False
+
+    try:
+        owner_id = UUID(owner_user_id)
+        chat_session_id = UUID(raw_chat_session_id)
+    except ValueError:
+        return False
+
+    public_chat_stmt = (
+        select(ChatSession.id)
+        .where(
+            ChatSession.id == chat_session_id,
+            ChatSession.user_id == owner_id,
+            ChatSession.shared_status == ChatSessionSharedStatus.PUBLIC,
+        )
+        .limit(1)
+    )
+    return db_session.execute(public_chat_stmt).first() is not None
 
 
 def _user_can_access_persona_attached_file(

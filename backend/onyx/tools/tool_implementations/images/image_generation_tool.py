@@ -1,6 +1,7 @@
 import json
 import threading
 from typing import Any, cast
+from uuid import UUID
 
 import requests
 from sqlalchemy.orm import Session
@@ -8,6 +9,10 @@ from typing_extensions import override
 
 from onyx.chat.emitter import Emitter
 from onyx.configs.app_configs import IMAGE_MODEL_NAME, IMAGE_MODEL_PROVIDER
+from onyx.file_store.constants import (
+    CHAT_IMAGE_GEN_CHAT_SESSION_ID_METADATA_KEY,
+    CHAT_IMAGE_GEN_OWNER_USER_ID_METADATA_KEY,
+)
 from onyx.file_store.models import ChatFileType
 from onyx.file_store.utils import (
     build_frontend_file_url,
@@ -62,11 +67,15 @@ class ImageGenerationTool(Tool[None]):
         image_generation_credentials: ImageGenerationProviderCredentials,
         tool_id: int,
         emitter: Emitter,
+        owner_user_id: UUID,
+        chat_session_id: UUID | None,
         model: str = IMAGE_MODEL_NAME,
         provider: str = IMAGE_MODEL_PROVIDER,
         num_imgs: int = 1,
     ) -> None:
         super().__init__(emitter=emitter)
+        self._owner_user_id = owner_user_id
+        self._chat_session_id = chat_session_id
         self.model = model
         self.provider = provider
         self.num_imgs = num_imgs
@@ -388,10 +397,19 @@ class ImageGenerationTool(Tool[None]):
 
         image_generation_responses = valid_results
 
+        file_metadata = {
+            CHAT_IMAGE_GEN_OWNER_USER_ID_METADATA_KEY: str(self._owner_user_id)
+        }
+        if self._chat_session_id is not None:
+            file_metadata[CHAT_IMAGE_GEN_CHAT_SESSION_ID_METADATA_KEY] = str(
+                self._chat_session_id
+            )
+
         # Save files and create GeneratedImage objects
         file_ids = save_files(
             urls=[],
             base64_files=[img.image_data for img in image_generation_responses],
+            file_metadata=file_metadata,
         )
         generated_images_metadata = [
             GeneratedImage(

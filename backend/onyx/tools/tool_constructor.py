@@ -301,6 +301,12 @@ def _construct_tools_impl(
                         model=img_generation_llm_config.model_name,
                         tool_id=db_tool_model.id,
                         emitter=emitter,
+                        owner_user_id=user.id,
+                        chat_session_id=(
+                            custom_tool_config.chat_session_id
+                            if custom_tool_config is not None
+                            else None
+                        ),
                     )
                 ]
 
