@@ -485,3 +485,27 @@ H9-17 was confirmed and remediated:
 **H9-17 is remediated and closed.**
 
 `docs/security/evidence/phase9-action-9.10-h9-17-service-account-interactive-login.md`
+
+### H9-18 credential-at-rest encryption disposition — 2026-09-22
+
+H9-18 is evidence-backed and dispositioned.
+
+Confirmed properties:
+
+- credential-bearing ORM storage reaches the application encryption wrappers;
+- the current authorized lab has no `ENCRYPTION_KEY_SECRET` configured;
+- missing-key behavior stores raw UTF-8 bytes;
+- keyed EE AES-CBC encryption provides confidentiality but not authenticated
+  ciphertext integrity;
+- a wrong explicitly supplied key failed closed in the tested vector;
+- IV tampering was accepted and produced altered plaintext.
+
+**Classification: CONFIRMED SECURITY-PROPERTY / DEPLOYMENT-HARDENING FINDING.**
+
+Remediation is carried forward to Action 9.11 / 9.12 rather than changing the
+cryptographic storage format during runtime-verification Action 9.10.
+
+H9-18 now has an evidence-backed disposition. H9-19 is the remaining
+H9-11 through H9-19 runtime hypothesis required before Action 9.10 closeout.
+
+`docs/security/evidence/phase9-action-9.10-h9-18-credential-at-rest-crypto.md`
