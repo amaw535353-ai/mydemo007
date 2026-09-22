@@ -471,3 +471,17 @@ H9-13 production reachability analysis passed:
 **Classification: PASS — not currently reachable from identified production callers.**
 
 `docs/security/evidence/phase9-action-9.10-h9-13-acl-bypass-provenance.md`
+
+### H9-17 service-account interactive-login closeout — 2026-09-22
+
+H9-17 was confirmed and remediated:
+- pre-remediation service-account interactive login succeeded;
+- `SERVICE_ACCOUNT` is now excluded from `AccountType.is_web_login()`;
+- focused regression suite passed;
+- patched runtime login returned **403**;
+- no authentication cookie was issued;
+- the synthetic service-account fixture was removed.
+
+**H9-17 is remediated and closed.**
+
+`docs/security/evidence/phase9-action-9.10-h9-17-service-account-interactive-login.md`

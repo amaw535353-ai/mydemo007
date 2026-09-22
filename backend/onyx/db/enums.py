@@ -24,6 +24,7 @@ class AccountType(str, PyEnum):
         return self not in (
             AccountType.BOT,
             AccountType.EXT_PERM_USER,
+            AccountType.SERVICE_ACCOUNT,
         )
 
 
