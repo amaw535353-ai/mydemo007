@@ -430,14 +430,13 @@ The hardened fork has source-backed remediations for H9-14, H9-15 and H9-16.
 H9-14 passed both its focused database regression and bounded API-level runtime retest.
 H9-15 and H9-16 also have passing focused tests and bounded runtime retests.
 
-H9-12 and H9-18 have completed code-level remediation. Action 9.11 remains
-in progress because H9-19 still requires protected-storage remediation and
-lifecycle assurance. H9-18 retains a deployment key-configuration assurance
+H9-12 and H9-18 have completed code-level remediation. Action 9.11 is complete after H9-19 protected-storage remediation and
+bounded lifecycle/storage verification. H9-18 retains a deployment key-configuration assurance
 requirement for the later Phase 9 gates.
 
 ## Current completion
 
-Phase 9: **71.4%**
+Phase 9: **78.6%**
 
 Full final project: **approximately 38.8%**
 
@@ -581,3 +580,35 @@ for environments requiring application-level confidentiality.
 
 Action 9.11 now proceeds to **H9-19 login OAuth token protected storage and
 lifecycle assurance**.
+
+
+### Action 9.11 completion — 2026-09-22
+
+H9-19 login OAuth token storage has been remediated.
+
+The hardened fork now stores login OAuth access and refresh tokens using an
+OAuth-compatible encrypted binary SQLAlchemy type backed by the H9-18
+versioned authenticated-encryption mechanism.
+
+A real bounded PostgreSQL/Alembic proof verified:
+
+- TEXT -> BYTEA migration;
+- lossless legacy compatibility;
+- legacy token -> authenticated ciphertext migration;
+- ordinary-string ORM compatibility;
+- encrypted token replacement during simulated refresh;
+- idempotent rotation;
+- downgrade protection;
+- complete fixture and schema rollback.
+
+**Action 9.11 status: COMPLETE.**
+
+Residual deployment/lifecycle assurance items are carried forward rather than
+misclassified as unresolved code defects.
+
+Evidence:
+
+- `docs/security/evidence/phase9-action-9.11-h9-19-oauth-token-storage-remediation.md`
+- `docs/security/evidence/phase9-action-9.11-completion.md`
+
+Phase 9 proceeds to accelerated Actions **9.12 and 9.13**.

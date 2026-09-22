@@ -228,6 +228,37 @@ class EncryptedString(_EncryptedBase):
         return None
 
 
+class EncryptedOAuthToken(EncryptedString):
+    """Encrypted login-OAuth token preserving the plain-str ORM contract.
+
+    Login OAuth consumers, including fastapi-users and the refresh path,
+    expect access_token and refresh_token to be ordinary strings.
+
+    Storage and cryptographic behavior are inherited from EncryptedString,
+    while result loading unwraps SensitiveValue before returning to those
+    existing callers.
+    """
+
+    cache_ok = True
+
+    def process_result_value(  # type: ignore[override]
+        self,
+        value: bytes | None,
+        dialect: Any,
+    ) -> str | None:
+        sensitive_value = super().process_result_value(
+            value,
+            dialect,
+        )
+
+        if sensitive_value is None:
+            return None
+
+        return sensitive_value.get_value(
+            apply_mask=False
+        )
+
+
 class EncryptedJson(_EncryptedBase):
     cache_ok = True
     _is_json: bool = True
@@ -325,8 +356,8 @@ Auth/Authz (users, permissions, access) Tables
 
 class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
     # even an almost empty token from keycloak will not fit the default 1024 bytes
-    access_token: Mapped[str] = mapped_column(Text, nullable=False)
-    refresh_token: Mapped[str] = mapped_column(Text, nullable=False)
+    access_token: Mapped[str] = mapped_column(EncryptedOAuthToken(), nullable=False)
+    refresh_token: Mapped[str] = mapped_column(EncryptedOAuthToken(), nullable=False)
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
