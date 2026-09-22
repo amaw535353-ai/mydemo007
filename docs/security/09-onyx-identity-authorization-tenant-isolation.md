@@ -359,7 +359,7 @@ Runtime execution is in progress in the authorized synthetic Onyx laboratory.
 
 ## Action 9.10 - Runtime cross-user, cross-role and cross-tenant verification
 
-Status: **IN PROGRESS — H9-14, H9-15 AND H9-16 REMEDIATIONS VERIFIED; REMAINING TESTS PENDING**
+Status: **COMPLETE — H9-11 THROUGH H9-19 HAVE EVIDENCE-BACKED DISPOSITIONS**
 
 Repository-side execution tooling is prepared:
 
@@ -398,8 +398,9 @@ only names in the administrator-controlled server template. Managed credentials 
 collision precedence. An isolated loopback retest verified the filter, explicit
 per-user API-token delegation, OAuth precedence and fail-closed behavior.
 
-Action 9.10 remains incomplete until all remaining H9-11 through H9-19 items have
-evidence-backed dispositions.
+Action 9.10 completion gate is satisfied: H9-11 through H9-19 now have
+evidence-backed dispositions. Findings requiring remediation are carried into
+Actions 9.11 and 9.12.
 
 Evidence/runbook:
 
@@ -429,10 +430,9 @@ The hardened fork has source-backed remediations for H9-14, H9-15 and H9-16.
 H9-14 passed both its focused database regression and bounded API-level runtime retest.
 H9-15 and H9-16 also have passing focused tests and bounded runtime retests.
 
-H9-12 remains a confirmed open finding. Generated chat images still need an
-owner-bound, sharing-aware and tenant-aware authorization decision at read time.
-Action 9.11 cannot be marked complete until H9-12 and the remaining remediation
-items have evidence-backed dispositions.
+H9-12 is remediated and closed. Action 9.11 remains in progress because
+remaining dispositioned findings, including H9-18 and H9-19, still carry
+remediation and assurance requirements.
 
 ## Current completion
 
@@ -442,8 +442,9 @@ Full final project: **approximately 38.8%**
 
 Next focused action in the authorized lab:
 
-Implement and verify the H9-12 generated-image ownership remediation while preserving
-the existing loopback-only, synthetic-data and bounded-execution controls.
+Reconcile and validate the remaining remediation-required findings under Action 9.11,
+beginning with the H9-18 and H9-19 secret-storage requirements while preserving
+the existing synthetic-data and bounded-execution controls.
 
 ### H9-12 remediation closeout — 2026-09-22
 
@@ -509,3 +510,46 @@ H9-18 now has an evidence-backed disposition. H9-19 is the remaining
 H9-11 through H9-19 runtime hypothesis required before Action 9.10 closeout.
 
 `docs/security/evidence/phase9-action-9.10-h9-18-credential-at-rest-crypto.md`
+
+
+### H9-19 login OAuth token-storage disposition — 2026-09-22
+
+H9-19 is evidence-backed and dispositioned.
+
+Confirmed:
+
+- login `OAuthAccount.access_token` and `refresh_token` use ordinary
+  PostgreSQL text fields;
+- no `EncryptedString` / `EncryptedJson` binding was identified for those
+  login-token fields;
+- the live schema confirmed both token columns as `text`;
+- token values were neither selected nor printed;
+- expiry, refresh, refresh-token rotation/preservation and per-user refresh
+  locking are implemented;
+- local user deletion cascades associated OAuth-account deletion;
+- explicit provider-side revocation for the login OAuthAccount path was not
+  established by this trace.
+
+**Classification: CONFIRMED STORAGE-HARDENING FINDING WITH FUNCTIONING
+REFRESH-LIFECYCLE CONTROLS.**
+
+Remediation and assurance requirements are carried into Actions 9.11 and 9.12.
+
+`docs/security/evidence/phase9-action-9.10-h9-19-login-oauth-token-storage-lifecycle.md`
+
+### Action 9.10 final closeout — 2026-09-22
+
+The runtime cross-user, cross-role, cross-tenant, workload-identity,
+credential-storage and related security-property verification gate is complete.
+
+**H9-11 through H9-19 now have evidence-backed dispositions.**
+
+Action 9.10 does not require every confirmed finding to be remediated before
+closure. Confirmed findings and residual remediation requirements are carried
+forward to Action 9.11, followed by regression/security-effectiveness
+measurement in Action 9.12.
+
+**Action 9.10 status: COMPLETE.**
+
+Next phase action: **Action 9.11 — Finding validation, root cause and
+remediation.**
