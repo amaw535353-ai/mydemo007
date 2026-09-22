@@ -436,7 +436,7 @@ requirement for the later Phase 9 gates.
 
 ## Current completion
 
-Phase 9: **92.9%**
+Phase 9: **100% — COMPLETE**
 
 Full final project: **approximately 38.8%**
 
@@ -638,3 +638,43 @@ Evidence:
 
 Only **Action 9.14 — residual risk and final Phase 9 completion gate**
 remains.
+
+
+### Action 9.14 final completion gate — 2026-09-22
+
+Phase 9 completed its residual-risk and final evidence gate.
+
+All fourteen planned actions now have an evidence-backed completion state.
+
+Final finding disposition coverage includes H9-12 through H9-19, with
+code-level remediation, non-reachability disposition, regression verification
+or explicit residual assurance treatment as appropriate.
+
+Residual risks intentionally carried forward include:
+
+- production encryption-key management;
+- legacy secret/token migration;
+- OAuth-provider revocation assurance;
+- production IdP/policy-engine integration validation;
+- dependency-complete CI regression;
+- laboratory infrastructure hardening such as replacement of default
+  object-storage credentials.
+
+These items do not invalidate the completed laboratory security engineering
+work and are not being represented as resolved production controls.
+
+**Action 9.14 status: COMPLETE.**
+
+**PHASE 9 STATUS: COMPLETE — 14/14 ACTIONS.**
+
+**Phase 9 progress: 100%.**
+
+Evidence:
+
+- `docs/security/evidence/phase9-action-9.11-completion.md`
+- `docs/security/evidence/phase9-action-9.12-regression-security-effectiveness.md`
+- `docs/security/evidence/phase9-action-9.13-supporting-control-transfer.md`
+- `docs/security/evidence/phase9-action-9.14-final-completion-gate.md`
+
+The Phase 9 branch is ready for review and later integration according to the
+project's normal approval process.
