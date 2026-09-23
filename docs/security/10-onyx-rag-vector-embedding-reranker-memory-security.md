@@ -48,3 +48,22 @@ authenticated identity through filtering, candidate retrieval, reranking and
 prompt-context construction.
 
 **Action 10.2 status: COMPLETE.**
+
+## Action 10.3 — Retrieval authorization / ACL propagation trace
+
+Action 10.3 produced a symbol-level retrieval authorization trace.
+
+Primary enforcement boundaries include:
+
+- `SearchTool.run`;
+- `DocumentQuery._get_search_filters`;
+- `search_pipeline`;
+- the search API entry point.
+
+The trace shows explicit ACL/filter-building behavior but does not by itself
+prove all retrieval paths fail closed.
+
+Action 10.4 therefore moves from static analysis to bounded authorization
+negative tests.
+
+**Action 10.3 status: COMPLETE.**
