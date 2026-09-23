@@ -321,3 +321,17 @@ This is repository-code runtime verification, not a claim of a fully
 distributed production Postgres/Redis/OpenSearch deployment test.
 
 **Action 10.15 status: COMPLETE.**
+
+## Action 10.16 — Findings, root cause and remediation review
+
+Action 10.16 consolidated H10-01 through H10-06 and recorded each finding's
+root cause, remediation, verification method and residual limitations.
+
+Five items are classified remediated and H10-04 is classified hardened.
+
+No confirmed Phase 10 finding remains knowingly unremediated.
+
+Residual provider, model-behavior, distributed-runtime and production-scale
+risks remain explicitly tracked rather than overstated as verified.
+
+**Action 10.16 status: COMPLETE.**
