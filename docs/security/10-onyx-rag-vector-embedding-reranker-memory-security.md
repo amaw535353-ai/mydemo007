@@ -335,3 +335,20 @@ Residual provider, model-behavior, distributed-runtime and production-scale
 risks remain explicitly tracked rather than overstated as verified.
 
 **Action 10.16 status: COMPLETE.**
+
+## Action 10.17 — Regression, control and framework mapping
+
+Action 10.17 reran the representative Phase 10 security suite, including the
+bounded integration harness.
+
+Every selected regression file executed actual tests and passed.
+
+H10-01 through H10-06 remain protected by regression evidence.
+
+Phase 10 controls were cross-mapped at an engineering level to the project's
+NIST AI RMF / GenAI Profile, NIST SSDF, OWASP GenAI/LLM, OWASP Agentic,
+MITRE ATLAS and OWASP ASVS anchors.
+
+The mapping is evidence-oriented and is not presented as certification.
+
+**Action 10.17 status: COMPLETE.**

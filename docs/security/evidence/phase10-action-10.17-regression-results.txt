@@ -1,0 +1,71 @@
+=== RUN tests/unit/onyx/document_index/vespa/shared_utils/test_vespa_tenant_isolation.py ===
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/document_index/vespa/shared_utils/test_vespa_tenant_isolation.py
+=== RUN tests/unit/onyx/natural_language_processing/test_embedding_security_boundaries.py ===
+.[94mNOTICE[0m:   09/23/2026 06:40:31 PM                      timing.py   62: embed_chunks took 0.000 seconds.
+..[92mINFO[0m:     09/23/2026 06:40:31 PM           search_nlp_models.py  856: Embedding 1 texts with 44 total characters with provider: EmbeddingProvider.OPENAI
+[91mERROR[0m:    09/23/2026 06:40:31 PM           search_nlp_models.py  887: Embedding provider returned None value(s) for input index(es): [0].
+..
+----------------------------------------------------------------------
+Ran 5 tests in 0.589s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/natural_language_processing/test_embedding_security_boundaries.py
+=== RUN tests/unit/onyx/tools/tool_implementations/search/test_context_assembly_authorization.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/tool_implementations/search/test_context_assembly_authorization.py
+=== RUN tests/unit/onyx/prompts/test_retrieved_content_security_boundary.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/prompts/test_retrieved_content_security_boundary.py
+=== RUN tests/unit/onyx/chat/test_rag_poisoning_provenance.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/chat/test_rag_poisoning_provenance.py
+=== RUN tests/unit/onyx/tools/tool_implementations/memory/test_memory_security_boundaries.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.003s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/tool_implementations/memory/test_memory_security_boundaries.py
+=== RUN tests/unit/onyx/document_index/opensearch/test_revocation_index_consistency.py ===
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.003s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/document_index/opensearch/test_revocation_index_consistency.py
+=== RUN tests/unit/onyx/test_phase10_bounded_runtime_verification.py ===
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/test_phase10_bounded_runtime_verification.py
+PHASE10_REGRESSION_GATE=PASS
+H10_01_REGRESSION=PASS
+H10_02_REGRESSION=PASS
+H10_03_REGRESSION=PASS
+H10_04_REGRESSION=PASS
+H10_05_REGRESSION=PASS
+H10_06_REGRESSION=PASS
+BOUNDED_RUNTIME_REGRESSION=PASS
+HTTP_REQUESTS=0
+EXTERNAL_NETWORK_REQUESTS=0
+REAL_DATA_OR_CREDENTIALS=0
+RESULT=ACTION_10_17_REGRESSION_CONTROL_MAPPING_PASS
