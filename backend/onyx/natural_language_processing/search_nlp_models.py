@@ -631,7 +631,12 @@ class CloudEmbedding:
             # transient provider outages). The final failure surfaces via
             # the RuntimeError below and is logged by the caller.
             logger.warning(error_string)
-            logger.debug("Exception texts: %s", texts)
+            logger.debug(
+                "Embedding provider failure metadata: "
+                "text_count=%s total_chars=%s",
+                len(texts),
+                sum(len(text) for text in texts),
+            )
 
             raise RuntimeError(error_string)
         except Exception as e:
@@ -646,7 +651,12 @@ class CloudEmbedding:
                 sanitized_api_key=self.sanitized_api_key,
             )
             logger.warning(error_string)
-            logger.debug("Exception texts: %s", texts)
+            logger.debug(
+                "Embedding provider failure metadata: "
+                "text_count=%s total_chars=%s",
+                len(texts),
+                sum(len(text) for text in texts),
+            )
 
             raise RuntimeError(error_string)
 
@@ -865,9 +875,15 @@ class EmbeddingModel:
             )
 
         if any(embedding is None for embedding in embeddings):
-            error_message = "Embeddings contain None values\n"
-            error_message += "Corresponding texts:\n"
-            error_message += "\n".join(embed_request.texts)
+            missing_indices = [
+                idx
+                for idx, embedding in enumerate(embeddings)
+                if embedding is None
+            ]
+            error_message = (
+                "Embedding provider returned None value(s) "
+                f"for input index(es): {missing_indices}."
+            )
             logger.error(error_message)
             raise ValueError(error_message)
 
@@ -1151,7 +1167,7 @@ class EmbeddingModel:
         request_id: str | None = None,
     ) -> list[Embedding]:
         if not texts or not all(texts):
-            raise ValueError(f"Empty or missing text for embedding: {texts}")
+            raise ValueError("Empty or missing text for embedding.")
 
         if large_chunks_present:
             max_seq_length *= LARGE_CHUNK_RATIO

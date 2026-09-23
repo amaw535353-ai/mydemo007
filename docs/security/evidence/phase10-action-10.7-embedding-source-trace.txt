@@ -1,0 +1,125 @@
+=== INDEXING EMBEDDER ===
+backend/onyx/indexing/embedder.py:17:from onyx.indexing.models import ChunkEmbedding, DocAwareChunk, IndexChunk
+backend/onyx/indexing/embedder.py:79:    def embed_chunks(
+backend/onyx/indexing/embedder.py:82:        tenant_id: str | None = None,
+backend/onyx/indexing/embedder.py:83:        request_id: str | None = None,
+backend/onyx/indexing/embedder.py:118:    def embed_chunks(
+backend/onyx/indexing/embedder.py:121:        tenant_id: str | None = None,
+backend/onyx/indexing/embedder.py:122:        request_id: str | None = None,
+backend/onyx/indexing/embedder.py:152:        embeddings = self.embedding_model.encode(
+backend/onyx/indexing/embedder.py:156:            tenant_id=tenant_id,
+backend/onyx/indexing/embedder.py:157:            request_id=request_id,
+backend/onyx/indexing/embedder.py:172:            title_embeddings = self.embedding_model.encode(
+backend/onyx/indexing/embedder.py:175:                tenant_id=tenant_id,
+backend/onyx/indexing/embedder.py:176:                request_id=request_id,
+backend/onyx/indexing/embedder.py:182:                        chunk_titles_list, title_embeddings, strict=True
+backend/onyx/indexing/embedder.py:200:            title_embedding = None
+backend/onyx/indexing/embedder.py:204:                    title_embedding = title_embed_dict[title]
+backend/onyx/indexing/embedder.py:209:                    title_embedding = self.embedding_model.encode(
+backend/onyx/indexing/embedder.py:212:                        tenant_id=tenant_id,
+backend/onyx/indexing/embedder.py:213:                        request_id=request_id,
+backend/onyx/indexing/embedder.py:215:                    title_embed_dict[title] = title_embedding
+backend/onyx/indexing/embedder.py:219:                embeddings=ChunkEmbedding(
+backend/onyx/indexing/embedder.py:223:                title_embedding=title_embedding,
+backend/onyx/indexing/embedder.py:251:def embed_chunks_with_failure_handling(
+backend/onyx/indexing/embedder.py:254:    tenant_id: str | None = None,
+backend/onyx/indexing/embedder.py:255:    request_id: str | None = None,
+backend/onyx/indexing/embedder.py:267:            embedder.embed_chunks(
+backend/onyx/indexing/embedder.py:268:                chunks=chunks, tenant_id=tenant_id, request_id=request_id
+backend/onyx/indexing/embedder.py:274:            "Connector stop signal detected in embed_chunks_with_failure_handling"
+backend/onyx/indexing/embedder.py:292:            doc_embedded_chunks = embedder.embed_chunks(
+backend/onyx/indexing/embedder.py:293:                chunks=chunks_for_doc, tenant_id=tenant_id, request_id=request_id
+backend/onyx/indexing/embedder.py:300:                if tenant_id:
+backend/onyx/indexing/embedder.py:301:                    scope.set_tag("tenant_id", tenant_id)
+backend/onyx/indexing/models.py:26:class ChunkEmbedding(BaseModel):
+backend/onyx/indexing/models.py:88:    embeddings: ChunkEmbedding
+backend/onyx/indexing/models.py:89:    title_embedding: Embedding | None
+backend/onyx/indexing/models.py:108:    tenant_id: str
+backend/onyx/indexing/models.py:130:        tenant_id: str,
+backend/onyx/indexing/models.py:141:            tenant_id=tenant_id,
+backend/onyx/indexing/models.py:273:        tenant_id: str,
+
+=== EMBEDDING PROVIDER BOUNDARY ===
+backend/onyx/natural_language_processing/search_nlp_models.py:327:class CloudEmbedding:
+backend/onyx/natural_language_processing/search_nlp_models.py:659:    ) -> "CloudEmbedding":
+backend/onyx/natural_language_processing/search_nlp_models.py:661:        return CloudEmbedding(api_key, provider, api_url, api_version)
+backend/onyx/natural_language_processing/search_nlp_models.py:669:    async def __aenter__(self) -> "CloudEmbedding":
+backend/onyx/natural_language_processing/search_nlp_models.py:684:                "CloudEmbedding was not properly closed. Use 'async with' or call aclose()"
+backend/onyx/natural_language_processing/search_nlp_models.py:816:    async def _make_direct_api_call(
+backend/onyx/natural_language_processing/search_nlp_models.py:853:        async with CloudEmbedding(
+backend/onyx/natural_language_processing/search_nlp_models.py:885:    def _make_model_server_request(
+backend/onyx/natural_language_processing/search_nlp_models.py:900:                headers["X-Onyx-Tenant-ID"] = tenant_id
+backend/onyx/natural_language_processing/search_nlp_models.py:903:                headers["X-Onyx-Request-ID"] = request_id
+backend/onyx/natural_language_processing/search_nlp_models.py:905:            response = requests.post(
+backend/onyx/natural_language_processing/search_nlp_models.py:1045:                                self._make_direct_api_call(embed_request)
+backend/onyx/natural_language_processing/search_nlp_models.py:1057:                                        self._make_direct_api_call(embed_request),
+backend/onyx/natural_language_processing/search_nlp_models.py:1062:                        response = self._make_model_server_request(
+backend/onyx/natural_language_processing/search_nlp_models.py:1314:                response = requests.post(
+backend/onyx/natural_language_processing/search_nlp_models.py:1354:            response = requests.post(
+
+=== ERROR / LOGGING BOUNDARY ===
+backend/onyx/natural_language_processing/search_nlp_models.py:153:                    logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:166:                logger.debug("Error gathering tasks during cleanup: %s", e)
+backend/onyx/natural_language_processing/search_nlp_models.py:170:            logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:518:        logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:532:                    logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:539:            logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:549:                logger.warning("Google GenAI client aclose() timed out after 5s")
+backend/onyx/natural_language_processing/search_nlp_models.py:551:                logger.warning("Error closing Google GenAI client: %s", e)
+backend/onyx/natural_language_processing/search_nlp_models.py:633:            logger.warning(error_string)
+backend/onyx/natural_language_processing/search_nlp_models.py:634:            logger.debug("Exception texts: %s", texts)
+backend/onyx/natural_language_processing/search_nlp_models.py:648:            logger.warning(error_string)
+backend/onyx/natural_language_processing/search_nlp_models.py:649:            logger.debug("Exception texts: %s", texts)
+backend/onyx/natural_language_processing/search_nlp_models.py:660:        logger.debug("Creating Embedding instance for provider: %s", provider)
+backend/onyx/natural_language_processing/search_nlp_models.py:683:            logger.warning(
+backend/onyx/natural_language_processing/search_nlp_models.py:699:            logger.warning(
+backend/onyx/natural_language_processing/search_nlp_models.py:825:            logger.error("API key not provided for cloud model")
+backend/onyx/natural_language_processing/search_nlp_models.py:830:            logger.warning("Prefix provided for cloud model, which is not supported")
+backend/onyx/natural_language_processing/search_nlp_models.py:836:            logger.error("Empty strings provided for embedding")
+backend/onyx/natural_language_processing/search_nlp_models.py:840:            logger.error("No texts provided for embedding")
+backend/onyx/natural_language_processing/search_nlp_models.py:869:            error_message += "Corresponding texts:\n"
+backend/onyx/natural_language_processing/search_nlp_models.py:871:            logger.error(error_message)
+backend/onyx/natural_language_processing/search_nlp_models.py:969:        logger.debug("Encoding %s texts in %s batches.", len(texts), num_of_batches)
+backend/onyx/natural_language_processing/search_nlp_models.py:1077:            logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:1154:            raise ValueError(f"Empty or missing text for embedding: {texts}")
+backend/onyx/natural_language_processing/search_nlp_models.py:1402:    logger.debug("Warming up encoder model: %s", embedding_model.model_name)
+backend/onyx/natural_language_processing/search_nlp_models.py:1411:            logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:1415:            logger.warning(
+backend/onyx/natural_language_processing/search_nlp_models.py:1423:        logger.debug(
+backend/onyx/natural_language_processing/search_nlp_models.py:1440:    logger.debug("Warming up reranking model: %s", rerank_model_name)
+backend/onyx/natural_language_processing/search_nlp_models.py:1452:            logger.debug("Warm-up complete for reranking model: %s", rerank_model_name)
+backend/onyx/natural_language_processing/search_nlp_models.py:1454:            logger.warning(
+backend/onyx/natural_language_processing/search_nlp_models.py:1462:        logger.debug(
+
+=== INDEXING PIPELINE TENANT PROPAGATION ===
+backend/onyx/indexing/indexing_pipeline.py:89:from onyx.indexing.vector_db_insertion import write_chunks_to_vector_db_with_backoff
+backend/onyx/indexing/indexing_pipeline.py:249:    tenant_id: str,
+backend/onyx/indexing/indexing_pipeline.py:250:    request_id: str | None,
+backend/onyx/indexing/indexing_pipeline.py:281:            tenant_id=tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:282:            request_id=request_id,
+backend/onyx/indexing/indexing_pipeline.py:317:def embed_and_stream(
+backend/onyx/indexing/indexing_pipeline.py:320:    tenant_id: str,
+backend/onyx/indexing/indexing_pipeline.py:321:    request_id: str | None,
+backend/onyx/indexing/indexing_pipeline.py:337:        with embed_and_stream(chunks, embedder, tenant_id, req_id) as (result, store):
+backend/onyx/indexing/indexing_pipeline.py:346:            tenant_id=tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:347:            request_id=request_id,
+backend/onyx/indexing/indexing_pipeline.py:434:    request_id: str | None,
+backend/onyx/indexing/indexing_pipeline.py:435:    tenant_id: str,
+backend/onyx/indexing/indexing_pipeline.py:451:            request_id=request_id,
+backend/onyx/indexing/indexing_pipeline.py:452:            tenant_id=tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:471:            scope.set_tag("tenant_id", tenant_id)
+backend/onyx/indexing/indexing_pipeline.py:1364:    request_id: str | None,
+backend/onyx/indexing/indexing_pipeline.py:1365:    tenant_id: str,
+backend/onyx/indexing/indexing_pipeline.py:1390:        "Starting index_doc_batch: connector_id=%s, credential_id=%s, tenant_id=%s, num_docs=%s",
+backend/onyx/indexing/indexing_pipeline.py:1393:        tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:1489:    # ``embed_and_stream`` records EMBEDDING internally so the timer captures
+backend/onyx/indexing/indexing_pipeline.py:1492:    with embed_and_stream(
+backend/onyx/indexing/indexing_pipeline.py:1493:        chunks, embedder, tenant_id, request_id, attempt_id=attempt_id
+backend/onyx/indexing/indexing_pipeline.py:1522:            enricher = adapter.prepare_enrichment(
+backend/onyx/indexing/indexing_pipeline.py:1524:                tenant_id=tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:1563:                    write_chunks_to_vector_db_with_backoff(
+backend/onyx/indexing/indexing_pipeline.py:1567:                        tenant_id=tenant_id,
+backend/onyx/indexing/indexing_pipeline.py:1651:    request_id: str | None,
+backend/onyx/indexing/indexing_pipeline.py:1655:    tenant_id: str,
+backend/onyx/indexing/indexing_pipeline.py:1721:            request_id=request_id,
+backend/onyx/indexing/indexing_pipeline.py:1722:            tenant_id=tenant_id,

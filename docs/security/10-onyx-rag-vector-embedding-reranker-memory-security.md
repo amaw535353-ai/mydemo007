@@ -129,3 +129,25 @@ regression test.
 **H10-01: REMEDIATED.**
 
 **Action 10.6 status: COMPLETE.**
+
+## Action 10.7 — Embedding security boundaries
+
+Action 10.7 assessed the content-to-embedding trust boundary.
+
+Tenant and request identity propagate into local model-server embedding
+requests.
+
+A failure-path information-exposure issue was reproduced: raw embedding input
+could be emitted in debug logs or exception messages.
+
+The failure paths were changed to retain operational metadata while avoiding
+intentional raw embedding-content disclosure.
+
+**H10-02: REMEDIATED.**
+
+Configured cloud embedding providers remain an explicit data-egress trust
+boundary. ACL enrichment occurs after embedding, so retrieval authorization
+does not itself prevent content from reaching the configured embedding
+provider.
+
+**Action 10.7 status: COMPLETE.**
