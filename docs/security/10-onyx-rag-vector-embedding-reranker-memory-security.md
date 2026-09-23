@@ -151,3 +151,25 @@ does not itself prevent content from reaching the configured embedding
 provider.
 
 **Action 10.7 status: COMPLETE.**
+
+## Action 10.8 — Reranker authorization/security
+
+Action 10.8 established that the retained reranking implementation is not
+reachable from the tested active Onyx search path.
+
+Current search applies authorization-aware retrieval and post-query censoring,
+then uses reciprocal-rank fusion and later section selection rather than the
+historical reranker.
+
+Historical reranking settings have been removed, and the legacy local
+cross-encoder endpoint is non-executable commented source.
+
+The retained cloud-capable RerankingModel remains a dormant/configuration
+data-egress trust boundary if future code calls it.
+
+No public reranking authorization bypass was confirmed.
+
+**R10-RERANK-01:** any future reranker reintroduction must consume only
+authorized/tenant-scoped candidates and retain regression coverage.
+
+**Action 10.8 status: COMPLETE.**

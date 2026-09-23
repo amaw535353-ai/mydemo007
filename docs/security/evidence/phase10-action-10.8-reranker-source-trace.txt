@@ -1,0 +1,35 @@
+=== ACTIVE SEARCH PIPELINE ===
+backend/onyx/context/search/pipeline.py:20:from onyx.context.search.retrieval.search_runner import search_chunks
+backend/onyx/context/search/pipeline.py:328:    retrieved_chunks = search_chunks(
+backend/onyx/context/search/pipeline.py:341:        "_post_query_chunk_censoring",
+backend/onyx/context/search/retrieval/search_runner.py:89:def search_chunks(
+backend/onyx/tools/tool_implementations/search/search_tool.py:93:    select_sections_for_expansion,
+backend/onyx/tools/tool_implementations/search/search_tool.py:128:    weighted_reciprocal_rank_fusion,
+backend/onyx/tools/tool_implementations/search/search_tool.py:1042:        top_chunks = weighted_reciprocal_rank_fusion(
+backend/onyx/tools/tool_implementations/search/search_tool.py:1108:        selected_sections, best_doc_ids = select_sections_for_expansion(
+backend/onyx/tools/tool_implementations/search/search_utils.py:31:def weighted_reciprocal_rank_fusion(
+backend/onyx/tools/tool_implementations/search/search_utils.py:65:        >>> merged = weighted_reciprocal_rank_fusion(
+
+=== RERANKER IMPLEMENTATION ===
+backend/model_server/legacy/reranker.py:47:# @router.post("/cross-encoder-scores")
+backend/onyx/natural_language_processing/search_nlp_models.py:699:async def cohere_rerank_api(
+backend/onyx/natural_language_processing/search_nlp_models.py:721:async def cohere_rerank_aws(
+backend/onyx/natural_language_processing/search_nlp_models.py:760:async def litellm_rerank(
+backend/onyx/natural_language_processing/search_nlp_models.py:1232:class RerankingModel:
+backend/onyx/natural_language_processing/search_nlp_models.py:1253:                model_server_url + "/encoder/cross-encoder-scores"
+backend/onyx/natural_language_processing/search_nlp_models.py:1270:            return await cohere_rerank_api(
+backend/onyx/natural_language_processing/search_nlp_models.py:1277:            return await cohere_rerank_aws(
+backend/onyx/natural_language_processing/search_nlp_models.py:1288:            return await litellm_rerank(
+
+=== RERANK SETTINGS MIGRATION ===
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:1:"""remove reranking from search_settings
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:21:    op.drop_column("search_settings", "rerank_model_name")
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:22:    op.drop_column("search_settings", "rerank_provider_type")
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:23:    op.drop_column("search_settings", "rerank_api_key")
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:24:    op.drop_column("search_settings", "rerank_api_url")
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:25:    op.drop_column("search_settings", "num_rerank")
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:39:        "search_settings", sa.Column("rerank_model_name", sa.String(), nullable=True)
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:42:        "search_settings", sa.Column("rerank_provider_type", sa.String(), nullable=True)
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:45:        "search_settings", sa.Column("rerank_api_key", sa.String(), nullable=True)
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:48:        "search_settings", sa.Column("rerank_api_url", sa.String(), nullable=True)
+backend/alembic/versions/78ebc66946a0_remove_reranking_from_search_settings.py:53:            "num_rerank",
