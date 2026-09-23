@@ -197,3 +197,33 @@ fail-closed.
 No public end-to-end exploit is claimed by this action.
 
 **Action 10.9 status: COMPLETE.**
+
+## Action 10.10 — Indirect prompt injection through retrieved content
+
+Action 10.10 validated the indirect prompt-injection exposure identified during
+the Phase 7 threat model.
+
+Synthetic instruction-like retrieved content reached document-selection,
+context-expansion and final LLM-facing search context.
+
+No deterministic model compromise was claimed.
+
+Explicit instruction/data separation was added to:
+
+- system-level search/tool guidance;
+- document-selection prompts;
+- context-expansion prompts;
+- final internal-search result payloads.
+
+The final search payload now carries a trusted security notice before retrieved
+results, while preserving document content as evidence.
+
+A regression verifies that JSON-shaped retrieved content cannot overwrite this
+trusted notice.
+
+**H10-04 PROMPT-BOUNDARY HARDENING: PASS.**
+
+Dynamic model-behavior prompt-injection testing remains deferred to later
+red-team work.
+
+**Action 10.10 status: COMPLETE.**

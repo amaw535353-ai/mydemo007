@@ -1,0 +1,43 @@
+=== FINAL RETRIEVED CONTENT → LLM ===
+backend/onyx/tools/tool_implementations/search/search_tool.py:132:    convert_inference_sections_to_llm_string,
+backend/onyx/tools/tool_implementations/search/search_tool.py:219:        combined_content = "\n".join(chunk.content for chunk in selected_chunks)
+backend/onyx/tools/tool_implementations/search/search_tool.py:220:        content_tokens = token_counter(combined_content)
+backend/onyx/tools/tool_implementations/search/search_tool.py:222:        content_tokens = token_counter(section.combined_content)
+backend/onyx/tools/tool_implementations/search/search_tool.py:1127:            empty_response, _ = convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/search/search_tool.py:1283:        docs_str, citation_mapping = convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/utils.py:21:FILE_ASSOCIATED_GUIDANCE = (
+backend/onyx/tools/tool_implementations/utils.py:29:def convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/utils.py:108:            result["content"] = FILE_ASSOCIATED_GUIDANCE.format(
+backend/onyx/tools/tool_implementations/utils.py:112:            result["content"] = section.combined_content
+backend/onyx/tools/tool_implementations/utils.py:118:    payload["results"] = results
+
+=== DOCUMENT SELECTION PROMPT ===
+backend/onyx/prompts/search_prompts.py:104:DOCUMENT_SELECTION_PROMPT = """
+backend/onyx/prompts/search_prompts.py:107:# Document Sections
+backend/onyx/prompts/search_prompts.py:109:{formatted_doc_sections}
+backend/onyx/prompts/search_prompts.py:117:# Selection Criteria
+backend/onyx/secondary_llm_flows/document_filter.py:14:    DOCUMENT_SELECTION_PROMPT,
+backend/onyx/secondary_llm_flows/document_filter.py:277:        content=DOCUMENT_SELECTION_PROMPT.format(
+backend/onyx/secondary_llm_flows/document_filter.py:280:            formatted_doc_sections=json.dumps(sections_dict, indent=2),
+
+=== CONTEXT EXPANSION PROMPT ===
+backend/onyx/prompts/search_prompts.py:144:DOCUMENT_CONTEXT_SELECTION_PROMPT = """
+backend/onyx/prompts/search_prompts.py:155:{section_above}
+backend/onyx/prompts/search_prompts.py:160:{main_section}
+backend/onyx/prompts/search_prompts.py:165:{section_below}
+backend/onyx/prompts/search_prompts.py:173:# Classification Categories:
+backend/onyx/secondary_llm_flows/document_filter.py:13:    DOCUMENT_CONTEXT_SELECTION_PROMPT,
+backend/onyx/secondary_llm_flows/document_filter.py:103:    section_above_text: str | None,
+backend/onyx/secondary_llm_flows/document_filter.py:104:    section_below_text: str | None,
+backend/onyx/secondary_llm_flows/document_filter.py:112:        section_above_text: Text content from chunks above the section
+backend/onyx/secondary_llm_flows/document_filter.py:113:        section_below_text: Text content from chunks below the section
+backend/onyx/secondary_llm_flows/document_filter.py:119:    prompt_text = DOCUMENT_CONTEXT_SELECTION_PROMPT.format(
+backend/onyx/secondary_llm_flows/document_filter.py:121:        main_section=section_text,
+backend/onyx/secondary_llm_flows/document_filter.py:122:        section_above=section_above_text if section_above_text else "N/A",
+backend/onyx/secondary_llm_flows/document_filter.py:123:        section_below=section_below_text if section_below_text else "N/A",
+backend/onyx/secondary_llm_flows/document_filter.py:179:        not section_above_text
+backend/onyx/secondary_llm_flows/document_filter.py:180:        and not section_below_text
+
+=== SYSTEM-LEVEL SEARCH GUIDANCE ===
+backend/onyx/prompts/tool_prompts.py:7:TOOL_DESCRIPTION_SEARCH_GUIDANCE = """
+backend/onyx/prompts/tool_prompts.py:22:INTERNAL_SEARCH_GUIDANCE = """
