@@ -1,0 +1,61 @@
+=== DOCUMENT ACCESS MODEL ===
+backend/onyx/access/models.py:4:    prefix_external_group,
+backend/onyx/access/models.py:5:    prefix_user_email,
+backend/onyx/access/models.py:6:    prefix_user_group,
+backend/onyx/access/models.py:8:from onyx.configs.constants import PUBLIC_DOC_PAT
+backend/onyx/access/models.py:160:class DocumentAccess(ExternalAccess):
+backend/onyx/access/models.py:176:    def to_acl(self) -> set[str]:
+backend/onyx/access/models.py:185:                acl_set.add(prefix_user_email(user_email))
+backend/onyx/access/models.py:188:            acl_set.add(prefix_user_group(group_name))
+backend/onyx/access/models.py:191:            acl_set.add(prefix_user_email(external_user_email))
+backend/onyx/access/models.py:194:            acl_set.add(prefix_external_group(external_group_id))
+backend/onyx/access/models.py:197:            acl_set.add(PUBLIC_DOC_PAT)
+
+=== INDEX CHUNK MODEL ===
+backend/onyx/indexing/models.py:94:class DocMetadataAwareIndexChunk(IndexChunk):
+backend/onyx/indexing/models.py:98:    access: holds all information about which users should have access to the
+backend/onyx/indexing/models.py:100:    document_sets: all document sets the source document for this chunk is a part
+backend/onyx/indexing/models.py:108:    tenant_id: str
+backend/onyx/indexing/models.py:109:    access: "DocumentAccess"
+backend/onyx/indexing/models.py:110:    document_sets: set[str]
+backend/onyx/indexing/models.py:124:        access: "DocumentAccess",
+backend/onyx/indexing/models.py:125:        document_sets: set[str],
+backend/onyx/indexing/models.py:130:        tenant_id: str,
+backend/onyx/indexing/models.py:273:        tenant_id: str,
+
+=== OPENSEARCH ACL CONVERSION ===
+backend/onyx/document_index/opensearch/opensearch_document_index.py:12:from onyx.configs.constants import PUBLIC_DOC_PAT, OnyxRedisLocks
+backend/onyx/document_index/opensearch/opensearch_document_index.py:96:def generate_opensearch_filtered_access_control_list(
+backend/onyx/document_index/opensearch/opensearch_document_index.py:99:    """Generates an access control list with PUBLIC_DOC_PAT removed.
+backend/onyx/document_index/opensearch/opensearch_document_index.py:103:    access_control_list = access.to_acl()
+backend/onyx/document_index/opensearch/opensearch_document_index.py:104:    access_control_list.discard(PUBLIC_DOC_PAT)
+backend/onyx/document_index/opensearch/opensearch_document_index.py:105:    return list(access_control_list)
+backend/onyx/document_index/opensearch/opensearch_document_index.py:235:        public=chunk.access.is_public,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:236:        access_control_list=generate_opensearch_filtered_access_control_list(
+backend/onyx/document_index/opensearch/opensearch_document_index.py:637:                    generate_opensearch_filtered_access_control_list(
+
+=== OPENSEARCH SCHEMA ===
+backend/onyx/document_index/opensearch/schema.py:47:PUBLIC_FIELD_NAME = "public"
+backend/onyx/document_index/opensearch/schema.py:48:ACCESS_CONTROL_LIST_FIELD_NAME = "access_control_list"
+backend/onyx/document_index/opensearch/schema.py:173:    public: bool
+backend/onyx/document_index/opensearch/schema.py:174:    access_control_list: list[str]
+backend/onyx/document_index/opensearch/schema.py:480:                # is its own field. If true, ACCESS_CONTROL_LIST_FIELD_NAME
+backend/onyx/document_index/opensearch/schema.py:482:                PUBLIC_FIELD_NAME: {"type": "boolean"},
+backend/onyx/document_index/opensearch/schema.py:490:                ACCESS_CONTROL_LIST_FIELD_NAME: {"type": "keyword"},
+backend/onyx/document_index/opensearch/schema.py:493:                # PUBLIC_FIELD_NAME and ACCESS_CONTROL_LIST_FIELD_NAME; up to
+
+=== VESPA TO OPENSEARCH ACL MIGRATION ===
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:5:from onyx.configs.constants import PUBLIC_DOC_PAT
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:9:    ACCESS_CONTROL_LIST,
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:66:    ACCESS_CONTROL_LIST,
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:172:def _transform_vespa_acl_to_opensearch_acl(
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:177:    acl_list = list(vespa_acl.keys())
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:178:    is_public = PUBLIC_DOC_PAT in acl_list
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:179:    if is_public:
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:180:        acl_list.remove(PUBLIC_DOC_PAT)
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:181:    return is_public, acl_list
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:286:            is_public, acl_list = _transform_vespa_acl_to_opensearch_acl(
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:287:                vespa_chunk.get(ACCESS_CONTROL_LIST)
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:289:            if not is_public and not acl_list:
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:319:                public=is_public,
+backend/onyx/background/celery/tasks/opensearch_migration/transformer.py:320:                access_control_list=acl_list,

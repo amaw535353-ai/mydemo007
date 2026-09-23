@@ -91,3 +91,18 @@ security-sensitive internal contract for continued call-site review.
 No retrieval authorization bypass was confirmed by these direct tests.
 
 **Action 10.4 status: COMPLETE.**
+
+## Action 10.5 — Chunk/index ACL persistence and propagation
+
+Action 10.5 verified authorization metadata through document access,
+index-aware chunks, OpenSearch storage models/schema and the
+Vespa-to-OpenSearch migration path.
+
+Private/public state and ACL principals remained distinct throughout the tested
+transformations.
+
+No ACL persistence or propagation bypass was confirmed.
+
+Runtime cross-tenant and revocation behavior remain separate Phase 10 tests.
+
+**Action 10.5 status: COMPLETE.**
