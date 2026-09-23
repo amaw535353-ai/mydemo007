@@ -227,3 +227,22 @@ Dynamic model-behavior prompt-injection testing remains deferred to later
 red-team work.
 
 **Action 10.10 status: COMPLETE.**
+
+## Action 10.11 — RAG poisoning and provenance
+
+Action 10.11 tested structural provenance against synthetic poisoning.
+
+Control-shaped document text, forged citation numbers and forged provenance
+fields remained retrieved data and did not replace application-generated
+document/citation identity.
+
+Citation mappings without a corresponding SearchDoc were not elevated into
+citation objects, and conflicting documents with distinct document IDs remained
+separate provenance sources.
+
+No structural RAG-provenance bypass was confirmed.
+
+Semantic truthfulness and dynamic model behavior remain later red-team
+concerns.
+
+**Action 10.11 status: COMPLETE.**
