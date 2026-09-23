@@ -291,3 +291,17 @@ These establish deterministic design/property behavior. Production-scale
 eventual revocation timing remains outside this action.
 
 **Action 10.13 status: COMPLETE.**
+
+## Action 10.14 — Consolidated attack matrix and negative tests
+
+Action 10.14 consolidated the Phase 10 attack surface through Action 10.13 and
+reran a bounded offline representative regression suite.
+
+The matrix records retrieval authorization, ACL propagation, tenant isolation,
+embedding handling, reranker reachability, context expansion, prompt injection,
+RAG poisoning/provenance, memory ownership, revocation and deletion behavior.
+
+The representative negative suite preserved the prior controls and the new
+H10-06 revocation remediation.
+
+**Action 10.14 status: COMPLETE.**
