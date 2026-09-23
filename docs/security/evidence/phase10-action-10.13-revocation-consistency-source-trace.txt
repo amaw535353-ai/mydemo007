@@ -1,0 +1,69 @@
+=== OPENSEARCH PERMISSION UPDATE ===
+49:    ACCESS_CONTROL_LIST_FIELD_NAME,
+101:    In the OpenSearch schema this is represented by PUBLIC_FIELD_NAME.
+635:            if update_request.access is not None:
+636:                properties_to_update[ACCESS_CONTROL_LIST_FIELD_NAME] = (
+638:                        update_request.access
+716:                self._client.bulk_update_documents(
+
+=== OPENSEARCH SEARCH PUBLIC FILTER ===
+37:    PUBLIC_FIELD_NAME,
+221:            access_control_list=index_filters.access_control_list,
+288:            access_control_list=None,
+389:            access_control_list=index_filters.access_control_list,
+486:            access_control_list=index_filters.access_control_list,
+570:            access_control_list=index_filters.access_control_list,
+633:            access_control_list=index_filters.access_control_list,
+874:        access_control_list: list[str] | None,
+909:            access_control_list: Access control list for the documents to
+911:                can be retrieved. If not None, only public documents can be
+912:                retrieved, or non-public documents where at least one acl
+960:            access_control_list: list[str],
+968:                access_control_list: The access control list to restrict
+981:                    "should": [{"term": {PUBLIC_FIELD_NAME: {"value": True}}}],
+985:            if access_control_list:
+986:                if len(access_control_list) > MAX_NUM_TERMS_ALLOWED_IN_TERMS_QUERY:
+988:                        f"Too many access control list entries: {len(access_control_list)}. Max allowed: {MAX_NUM_TERMS_ALLOWED_IN_TERMS_QUERY}."
+995:                    "terms": {ACCESS_CONTROL_LIST_FIELD_NAME: list(access_control_list)}
+1270:        if access_control_list is not None:
+1272:            # retrieve public documents, and non-public documents where at least
+1276:            filter_clauses.append(_get_acl_visibility_filter(access_control_list))
+
+=== INDEX PAIR UPDATE / DELETE ===
+35:    SecondaryIndexDocumentMissingError,
+534:    def delete(
+572:    def delete_port_written_chunks(self, document_ids: list[str]) -> int:
+593:    def update(
+596:        surface_document_missing: bool = False,
+721:                    ignore_missing=not surface_document_missing,
+722:                    surface_document_missing=surface_document_missing,
+1037:        self._secondary = secondary
+1038:        self._secondary_embedding_dim = secondary_embedding_dim
+1039:        self._secondary_embedding_precision = secondary_embedding_precision
+1050:        if self._secondary is not None:
+1051:            assert self._secondary_embedding_dim is not None, (
+1054:            assert self._secondary_embedding_precision is not None, (
+1057:            self._secondary.verify_and_create_index_if_necessary(
+1058:                self._secondary_embedding_dim, self._secondary_embedding_precision
+1068:    def delete(self, document_id: str, chunk_count: int | None = None) -> int:
+1070:        if self._secondary is not None:
+1071:            total += self._secondary.delete(document_id, chunk_count)
+1074:    def update(self, update_requests: list[MetadataUpdateRequest]) -> None:
+1081:                self._primary.update(update_requests, surface_document_missing=True)
+1083:                raise SecondaryIndexDocumentMissingError(e.missing_document_ids)
+1086:        if self._secondary is not None:
+1090:                self._secondary.update(update_requests, surface_document_missing=True)
+1092:                raise SecondaryIndexDocumentMissingError(e.missing_document_ids)
+1157:        return self._secondary
+
+=== SYNC WATERMARK / DEFERRED UPDATE ===
+39:    mark_document_as_synced,
+40:    mark_document_synced_secondary_pending,
+62:    SecondaryIndexDocumentMissingError,
+487:        doc_last_modified: datetime | None = None
+504:                doc_last_modified = doc.last_modified
+562:                except SecondaryIndexDocumentMissingError:
+578:                    mark_document_synced_secondary_pending(
+579:                        document_id, db_session, synced_as_of=doc_last_modified
+582:                    mark_document_as_synced(
+583:                        document_id, db_session, synced_as_of=doc_last_modified

@@ -53,6 +53,7 @@ from onyx.document_index.opensearch.schema import (
     GLOBAL_BOOST_FIELD_NAME,
     HIDDEN_FIELD_NAME,
     PERSONAS_FIELD_NAME,
+    PUBLIC_FIELD_NAME,
     USER_PROJECTS_FIELD_NAME,
     DocumentChunk,
     DocumentChunkWithoutVectors,
@@ -637,6 +638,13 @@ class OpenSearchDocumentIndex(DocumentIndex):
                     generate_opensearch_filtered_access_control_list(
                         update_request.access
                     )
+                )
+                # OpenSearch represents public access separately from the ACL.
+                # Permission revocation must update both fields atomically at
+                # the metadata-update boundary; otherwise a document that
+                # changed from public to private can retain public=True.
+                properties_to_update[PUBLIC_FIELD_NAME] = (
+                    update_request.access.is_public
                 )
             if update_request.document_sets is not None:
                 properties_to_update[DOCUMENT_SETS_FIELD_NAME] = list(

@@ -268,3 +268,26 @@ the test harness was corrected without changing the security control.
 Live cross-tenant memory verification remains for Action 10.15.
 
 **Action 10.12 status: COMPLETE.**
+
+## Action 10.13 — Revocation, deletion and index consistency
+
+Action 10.13 identified a concrete OpenSearch authorization-revocation defect.
+
+OpenSearch stores public accessibility separately from the ACL. The metadata
+permission-update path changed the ACL but did not update the dedicated public
+flag. A synthetic public-to-private transition reproduced the stale-public
+property.
+
+The update path was remediated to write both the ACL and current public state,
+with regression coverage for public-to-private and private-to-public changes.
+
+**H10-06: REMEDIATED.**
+
+Additional tests verified tenant-specific chunk identity, tenant-scoped
+deletion, primary/secondary delete fanout, missing-document deferral during
+reindex backfill, and the last-modified synchronization watermark.
+
+These establish deterministic design/property behavior. Production-scale
+eventual revocation timing remains outside this action.
+
+**Action 10.13 status: COMPLETE.**
