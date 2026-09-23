@@ -67,3 +67,27 @@ Action 10.4 therefore moves from static analysis to bounded authorization
 negative tests.
 
 **Action 10.3 status: COMPLETE.**
+
+## Action 10.4 — Retrieval authorization negative tests
+
+Action 10.4 directly tested the authorization/filter contracts identified by
+the Action 10.3 trace.
+
+Verified properties include:
+
+- missing normal-user ACL derivation state fails closed;
+- empty ACL state becomes public-only retrieval rather than unrestricted
+  retrieval;
+- non-empty user ACLs produce public-or-authorized visibility;
+- unauthorized document-set selection is rejected;
+- tenant identity propagates into backend filtering in multi-tenant mode;
+- normal search-pipeline execution forwards ACL filters into backend queries;
+- the public search API does not expose `bypass_acl` and explicitly constructs
+  search with `bypass_acl=False`.
+
+The privileged `ACL=None` / `bypass_acl=True` behavior remains an intentional
+security-sensitive internal contract for continued call-site review.
+
+No retrieval authorization bypass was confirmed by these direct tests.
+
+**Action 10.4 status: COMPLETE.**
