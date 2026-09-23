@@ -246,3 +246,25 @@ Semantic truthfulness and dynamic model behavior remain later red-team
 concerns.
 
 **Action 10.11 status: COMPLETE.**
+
+## Action 10.12 — Memory ownership, isolation and injection
+
+Action 10.12 traced memory ownership from authenticated user context through
+memory retrieval, tool execution and persistence.
+
+Reads and mutations are explicitly user-ID scoped, and the model-facing memory
+tool exposes no user, tenant or owner selector.
+
+No cross-user memory ownership bypass was confirmed.
+
+The memory-update secondary prompt lacked an explicit untrusted-data boundary
+around chat/history/memory fields. This was hardened and regression-tested.
+
+**H10-05: REMEDIATED.**
+
+The first regression run exposed only a whitespace-sensitive test assertion;
+the test harness was corrected without changing the security control.
+
+Live cross-tenant memory verification remains for Action 10.15.
+
+**Action 10.12 status: COMPLETE.**

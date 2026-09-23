@@ -1,0 +1,87 @@
+=== MEMORY READ OWNERSHIP ===
+34:class UserMemoryContext(BaseModel):
+42:    def without_memories(self) -> "UserMemoryContext":
+44:        return UserMemoryContext(
+80:def get_memories(user: User, db_session: Session) -> UserMemoryContext:
+107:        select(Memory).where(Memory.user_id == user.id).order_by(Memory.id.asc())
+111:    return UserMemoryContext(
+112:        user_id=user.id,
+133:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+140:            user_id=user_id,
+160:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+
+=== MEMORY WRITE / UPDATE OWNERSHIP ===
+backend/onyx/db/memory.py:119:def add_memory(
+backend/onyx/db/memory.py:133:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+backend/onyx/db/memory.py:148:def update_memory_at_index(
+backend/onyx/db/memory.py:160:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+backend/onyx/chat/llm_loop.py:43:from onyx.db.memory import UserMemoryContext, add_memory, update_memory_at_index
+backend/onyx/chat/llm_loop.py:1253:                                persisted_memory_id = update_memory_at_index(
+backend/onyx/chat/llm_loop.py:1254:                                    user_id=user_memory_context.user_id,
+backend/onyx/chat/llm_loop.py:1259:                                persisted_memory_id = add_memory(
+backend/onyx/chat/llm_loop.py:1260:                                    user_id=user_memory_context.user_id,
+
+=== MEMORY TOOL INPUT ===
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:17:from onyx.secondary_llm_flows.memory_update import process_memory_update
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:32:MEMORY_FIELD = "memory"
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:35:class MemoryToolOverrideKwargs(BaseModel):
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:42:    existing_memories: list[str]
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:46:class MemoryTool(Tool[MemoryToolOverrideKwargs]):
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:87:                        MEMORY_FIELD: {
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:97:                    "required": [MEMORY_FIELD],
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:110:        override_kwargs: MemoryToolOverrideKwargs,
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:113:        if MEMORY_FIELD not in llm_kwargs:
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:115:                message=f"Missing required '{MEMORY_FIELD}' parameter in add_memory tool call",
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:117:                    f"The add_memory tool requires a '{MEMORY_FIELD}' parameter containing "
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:122:        memory = cast(str, llm_kwargs[MEMORY_FIELD])
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:124:        existing_memories = override_kwargs.existing_memories
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:128:        memory_text, index_to_replace = process_memory_update(
+backend/onyx/tools/tool_implementations/memory/memory_tool.py:130:            existing_memories=existing_memories,
+backend/onyx/tools/tool_runner.py:35:    MemoryToolOverrideKwargs,
+backend/onyx/tools/tool_runner.py:355:            | MemoryToolOverrideKwargs
+backend/onyx/tools/tool_runner.py:407:            override_kwargs = MemoryToolOverrideKwargs(
+backend/onyx/tools/tool_runner.py:417:                existing_memories=(
+
+=== MEMORY PROMPT ===
+backend/onyx/prompts/basic_memory.py:5:FULL_MEMORY_UPDATE_PROMPT = """
+backend/onyx/prompts/basic_memory.py:8:If the new memory is an update to an existing memory or contradicts an existing memory, it should be treated as an update and you should reference the existing memory by memory_id (see below). \
+backend/onyx/prompts/basic_memory.py:12:{chat_history}{user_basic_information}
+backend/onyx/prompts/basic_memory.py:15:{existing_memories}
+backend/onyx/prompts/basic_memory.py:18:{new_memory}
+backend/onyx/prompts/basic_memory.py:25:    "memory_id": "if the operation is update, the id of the memory to update, otherwise null",
+backend/onyx/secondary_llm_flows/memory_update.py:4:from onyx.prompts.basic_memory import FULL_MEMORY_UPDATE_PROMPT
+backend/onyx/secondary_llm_flows/memory_update.py:18:def _format_chat_history(chat_history: list[ChatMinimalTextMessage]) -> str:
+backend/onyx/secondary_llm_flows/memory_update.py:20:        msg for msg in chat_history if msg.message_type == MessageType.USER
+backend/onyx/secondary_llm_flows/memory_update.py:40:def _format_existing_memories(existing_memories: list[str]) -> str:
+backend/onyx/secondary_llm_flows/memory_update.py:42:    if not existing_memories:
+backend/onyx/secondary_llm_flows/memory_update.py:46:    for i, memory in enumerate(existing_memories, start=1):
+backend/onyx/secondary_llm_flows/memory_update.py:73:    new_memory: str,
+backend/onyx/secondary_llm_flows/memory_update.py:74:    existing_memories: list[str],
+backend/onyx/secondary_llm_flows/memory_update.py:75:    chat_history: list[ChatMinimalTextMessage],
+backend/onyx/secondary_llm_flows/memory_update.py:88:        new_memory: The new memory text from the memory tool
+backend/onyx/secondary_llm_flows/memory_update.py:89:        existing_memories: List of existing memory strings
+backend/onyx/secondary_llm_flows/memory_update.py:90:        chat_history: Recent chat history for context
+backend/onyx/secondary_llm_flows/memory_update.py:99:        - index_to_replace: Index in existing_memories to replace, or None if adding new
+backend/onyx/secondary_llm_flows/memory_update.py:102:    formatted_chat_history = _format_chat_history(chat_history)
+backend/onyx/secondary_llm_flows/memory_update.py:103:    formatted_memories = _format_existing_memories(existing_memories)
+backend/onyx/secondary_llm_flows/memory_update.py:109:    prompt = FULL_MEMORY_UPDATE_PROMPT.format(
+backend/onyx/secondary_llm_flows/memory_update.py:110:        chat_history=formatted_chat_history,
+backend/onyx/secondary_llm_flows/memory_update.py:112:        existing_memories=formatted_memories,
+backend/onyx/secondary_llm_flows/memory_update.py:113:        new_memory=new_memory,
+backend/onyx/secondary_llm_flows/memory_update.py:129:        return (new_memory, None)
+backend/onyx/secondary_llm_flows/memory_update.py:136:        return (new_memory, None)
+backend/onyx/secondary_llm_flows/memory_update.py:146:        return (new_memory, None)
+backend/onyx/secondary_llm_flows/memory_update.py:150:    memory_id = parsed_response.get("memory_id")
+backend/onyx/secondary_llm_flows/memory_update.py:151:    memory_text = parsed_response.get("memory_text", new_memory)
+backend/onyx/secondary_llm_flows/memory_update.py:155:        memory_text = new_memory
+backend/onyx/secondary_llm_flows/memory_update.py:164:        # Validate memory_id
+backend/onyx/secondary_llm_flows/memory_update.py:165:        if memory_id is None:
+backend/onyx/secondary_llm_flows/memory_update.py:166:            logger.warning("Update operation specified but no memory_id provided")
+backend/onyx/secondary_llm_flows/memory_update.py:169:        # Convert memory_id to integer if it's a string
+backend/onyx/secondary_llm_flows/memory_update.py:171:            memory_id_int = int(memory_id)
+backend/onyx/secondary_llm_flows/memory_update.py:173:            logger.warning("Invalid memory_id format: %s", memory_id)
+backend/onyx/secondary_llm_flows/memory_update.py:177:        index_to_replace = memory_id_int - 1
+backend/onyx/secondary_llm_flows/memory_update.py:180:        if index_to_replace < 0 or index_to_replace >= len(existing_memories):
+backend/onyx/secondary_llm_flows/memory_update.py:182:                "memory_id %s out of range (1-%s), defaulting to add",
+backend/onyx/secondary_llm_flows/memory_update.py:183:                memory_id_int,
+backend/onyx/secondary_llm_flows/memory_update.py:184:                len(existing_memories),
