@@ -305,3 +305,19 @@ The representative negative suite preserved the prior controls and the new
 H10-06 revocation remediation.
 
 **Action 10.14 status: COMPLETE.**
+
+## Action 10.15 — Bounded synthetic runtime verification
+
+Action 10.15 executed an integrated synthetic security scenario against the
+current repository implementation inside the pinned backend container.
+
+The runtime exercised authorization revocation, tenant-specific indexed
+identity, expanded-context reauthorization, final retrieved-content trust
+marking, citation provenance and the memory-content trust boundary.
+
+All bounded runtime properties passed.
+
+This is repository-code runtime verification, not a claim of a fully
+distributed production Postgres/Redis/OpenSearch deployment test.
+
+**Action 10.15 status: COMPLETE.**
