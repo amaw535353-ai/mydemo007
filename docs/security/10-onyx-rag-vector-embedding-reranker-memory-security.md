@@ -106,3 +106,26 @@ No ACL persistence or propagation bypass was confirmed.
 Runtime cross-tenant and revocation behavior remain separate Phase 10 tests.
 
 **Action 10.5 status: COMPLETE.**
+
+## Action 10.6 — Vector/index tenant isolation
+
+Action 10.6 verified tenant isolation across the application, OpenSearch and
+Vespa retrieval boundaries.
+
+OpenSearch maintains tenant-specific chunk identity and tenant-specific search
+constraints.
+
+The normal search path propagates current tenant identity.
+
+A lower-level Vespa defense-in-depth weakness was reproduced: multi-tenant
+filter construction tolerated missing tenant identity and omitted the tenant
+constraint.
+
+No public cross-tenant retrieval bypass was demonstrated.
+
+The lower-level contract was changed to fail closed and protected with a
+regression test.
+
+**H10-01: REMEDIATED.**
+
+**Action 10.6 status: COMPLETE.**

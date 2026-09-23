@@ -1,0 +1,80 @@
+=== OPENSEARCH TENANT QUERY ===
+backend/onyx/document_index/opensearch/opensearch_document_index.py:309:            self._tenant_state.multitenant
+backend/onyx/document_index/opensearch/opensearch_document_index.py:371:            if not self._tenant_state.multitenant:
+backend/onyx/document_index/opensearch/opensearch_document_index.py:375:                embedding_dim, self._tenant_state.multitenant
+backend/onyx/document_index/opensearch/schema.py:61:TENANT_ID_FIELD_NAME = "tenant_id"
+backend/onyx/document_index/opensearch/schema.py:97:    if tenant_state.multitenant:
+backend/onyx/document_index/opensearch/schema.py:98:        short_tenant_id: str = get_tenant_id_short_string(tenant_state.tenant_id)
+backend/onyx/document_index/opensearch/schema.py:582:            schema["properties"][TENANT_ID_FIELD_NAME] = {"type": "keyword"}
+backend/onyx/document_index/opensearch/search.py:39:    TENANT_ID_FIELD_NAME,
+backend/onyx/document_index/opensearch/search.py:325:        if tenant_state.multitenant:
+backend/onyx/document_index/opensearch/search.py:327:                {"term": {TENANT_ID_FIELD_NAME: {"value": tenant_state.tenant_id}}}
+backend/onyx/document_index/opensearch/search.py:1364:        if tenant_state.multitenant:
+backend/onyx/document_index/opensearch/search.py:1366:                {"term": {TENANT_ID_FIELD_NAME: {"value": tenant_state.tenant_id}}}
+
+=== OPENSEARCH TENANT CHUNK ID ===
+backend/onyx/document_index/opensearch/opensearch_document_index.py:60:    get_opensearch_doc_chunk_id,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:291:        tenant_state: The tenant state of the caller.
+backend/onyx/document_index/opensearch/opensearch_document_index.py:299:        tenant_state: TenantState,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:305:        self._tenant_state: TenantState = tenant_state
+backend/onyx/document_index/opensearch/opensearch_document_index.py:309:            self._tenant_state.multitenant
+backend/onyx/document_index/opensearch/opensearch_document_index.py:371:            if not self._tenant_state.multitenant:
+backend/onyx/document_index/opensearch/opensearch_document_index.py:375:                embedding_dim, self._tenant_state.multitenant
+backend/onyx/document_index/opensearch/opensearch_document_index.py:493:                    tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:510:                    tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:567:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:588:                tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:707:                    document_chunk_id = get_opensearch_doc_chunk_id(
+backend/onyx/document_index/opensearch/opensearch_document_index.py:708:                        tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:762:                tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:817:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:865:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:909:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:949:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/opensearch_document_index.py:993:            tenant_state=self._tenant_state,
+backend/onyx/document_index/opensearch/schema.py:77:def get_opensearch_doc_chunk_id(
+backend/onyx/document_index/opensearch/schema.py:78:    tenant_state: TenantState,
+backend/onyx/document_index/opensearch/schema.py:96:    opensearch_doc_chunk_id_tenant_prefix: str = ""
+backend/onyx/document_index/opensearch/schema.py:97:    if tenant_state.multitenant:
+backend/onyx/document_index/opensearch/schema.py:98:        short_tenant_id: str = get_tenant_id_short_string(tenant_state.tenant_id)
+backend/onyx/document_index/opensearch/schema.py:102:        opensearch_doc_chunk_id_tenant_prefix = f"{short_tenant_id}__"
+backend/onyx/document_index/opensearch/schema.py:104:            opensearch_doc_chunk_id_tenant_prefix.encode("utf-8")
+backend/onyx/document_index/opensearch/schema.py:130:    opensearch_doc_chunk_id: str = f"{opensearch_doc_chunk_id_tenant_prefix}{sanitized_document_id}{opensearch_doc_chunk_id_suffix}"
+backend/onyx/document_index/opensearch/schema.py:281:    def serialize_tenant_state(
+backend/onyx/document_index/opensearch/schema.py:287:        Serializes tenant_state to the tenant str if multitenant, or None if
+
+=== VESPA TENANT FILTER ===
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:21:from shared_configs.configs import MULTI_TENANT
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:26:def build_tenant_id_filter(tenant_id: str) -> str:
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:27:    return f'({TENANT_ID} contains "{tenant_id}")'
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:30:def build_vespa_filters(
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:187:    # TODO: add error condition if MULTI_TENANT and no tenant_id filter is set
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:188:    if filters.tenant_id and MULTI_TENANT:
+backend/onyx/document_index/vespa/shared_utils/vespa_request_builders.py:189:        filter_parts.append(build_tenant_id_filter(filters.tenant_id))
+backend/onyx/document_index/vespa/vespa_document_index.py:74:    build_vespa_filters,
+backend/onyx/document_index/vespa/vespa_document_index.py:95:from shared_configs.configs import MULTI_TENANT
+backend/onyx/document_index/vespa/vespa_document_index.py:205:    if MULTI_TENANT:
+backend/onyx/document_index/vespa/vespa_document_index.py:265:        multi_tenant=MULTI_TENANT,
+backend/onyx/document_index/vespa/vespa_document_index.py:279:            multi_tenant=MULTI_TENANT,
+backend/onyx/document_index/vespa/vespa_document_index.py:302:    if not MULTI_TENANT:
+backend/onyx/document_index/vespa/vespa_document_index.py:367:            multi_tenant=MULTI_TENANT,
+backend/onyx/document_index/vespa/vespa_document_index.py:613:        self._tenant_id = tenant_state.tenant_id
+backend/onyx/document_index/vespa/vespa_document_index.py:743:                tenant_id=self._tenant_id,
+backend/onyx/document_index/vespa/vespa_document_index.py:800:                tenant_id=self._tenant_id,
+backend/onyx/document_index/vespa/vespa_document_index.py:846:                        tenant_id=self._tenant_id,
+backend/onyx/document_index/vespa/vespa_document_index.py:912:        vespa_where_clauses = build_vespa_filters(filters)
+backend/onyx/document_index/vespa/vespa_document_index.py:973:        vespa_where_clauses = build_vespa_filters(
+backend/onyx/document_index/vespa/vespa_document_index.py:1007:        vespa_where_clauses = build_vespa_filters(filters, remove_trailing_and=True)
+backend/onyx/document_index/vespa/vespa_document_index.py:1040:            filters=IndexFilters(access_control_list=None, tenant_id=self._tenant_id),
+backend/onyx/document_index/vespa/vespa_document_index.py:1070:                tenant_id=self._tenant_id, multitenant=MULTI_TENANT
+backend/onyx/document_index/vespa/vespa_document_index.py:1091:                        tenant_id=self._tenant_id,
+backend/onyx/document_index/vespa/vespa_document_index.py:1112:            f'tenant_id contains "{self._tenant_id}"' if self._multitenant else "true"
+backend/onyx/document_index/vespa/vespa_document_index.py:1114:        yql = f"select documentid from {self._index_name} where {where_clause} limit 0"  # noqa: S608 - Vespa YQL with internal index_name/tenant_id
+backend/onyx/document_index/vespa/vespa_document_index.py:1184:        tenant_id: str,
+backend/onyx/document_index/vespa/vespa_document_index.py:1203:                tenant_id=tenant_id,
+
+=== APPLICATION TENANT PROPAGATION ===
+backend/onyx/context/search/pipeline.py:33:from shared_configs.configs import MULTI_TENANT
+backend/onyx/context/search/pipeline.py:40:def _build_index_filters(
+backend/onyx/context/search/pipeline.py:135:        tenant_id=get_current_tenant_id() if MULTI_TENANT else None,
+backend/onyx/context/search/pipeline.py:302:    filters = _build_index_filters(

@@ -184,9 +184,17 @@ def build_vespa_filters(
     if not include_hidden:
         filter_parts.append(f"!({HIDDEN}=true)")
 
-    # TODO: add error condition if MULTI_TENANT and no tenant_id filter is set
-    if filters.tenant_id and MULTI_TENANT:
-        filter_parts.append(build_tenant_id_filter(filters.tenant_id))
+    # Tenant isolation is mandatory in multi-tenant mode. Do not rely solely
+    # on higher application layers to populate this security boundary.
+    if MULTI_TENANT:
+        if not filters.tenant_id:
+            raise ValueError(
+                "Tenant ID must be set when building Vespa filters "
+                "in multi-tenant mode."
+            )
+        filter_parts.append(
+            build_tenant_id_filter(filters.tenant_id)
+        )
 
     # ACL filters — use weightedSet for efficient matching against the
     # access_control_list weightedset<string> field.  OR-chaining thousands
