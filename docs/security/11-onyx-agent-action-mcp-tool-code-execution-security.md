@@ -48,3 +48,20 @@ conditions and completion requirements were recorded before technical
 agent/tool testing begins.
 
 **Action 11.1 status: COMPLETE.**
+
+## Phase 11 action plan
+
+Phase 11 uses 15 actions from immutable initialization through final residual
+risk closure.
+
+The assessment preserves separate evidence and commits per action even when
+multiple actions are executed in an accelerated batch.
+
+## Action 11.2 — Agent / tool / MCP architecture inventory
+
+Action 11.2 mapped tool construction, execution, MCP, credentials, approvals,
+external actions, sandboxing, networking and code-execution surfaces.
+
+The inventory is a discovery artifact rather than a vulnerability claim.
+
+**Action 11.2 status: COMPLETE.**

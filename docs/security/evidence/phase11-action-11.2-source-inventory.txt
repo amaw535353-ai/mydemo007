@@ -1,0 +1,641 @@
+=== TOOL CONSTRUCTION / EXECUTION ===
+backend/onyx/tools/built_in_tools.py
+backend/onyx/tools/constants.py
+backend/onyx/tools/fake_tools/__init__.py
+backend/onyx/tools/fake_tools/coding_agent.py
+backend/onyx/tools/fake_tools/research_agent.py
+backend/onyx/tools/interface.py
+backend/onyx/tools/models.py
+backend/onyx/tools/tool_constructor.py
+backend/onyx/tools/tool_implementations/bash/__init__.py
+backend/onyx/tools/tool_implementations/bash/bash_tool.py
+backend/onyx/tools/tool_implementations/coding_agent/__init__.py
+backend/onyx/tools/tool_implementations/coding_agent/coding_agent_tool.py
+backend/onyx/tools/tool_implementations/custom/base_tool_types.py
+backend/onyx/tools/tool_implementations/custom/custom_tool.py
+backend/onyx/tools/tool_implementations/custom/openapi_parsing.py
+backend/onyx/tools/tool_implementations/file_reader/file_reader_tool.py
+backend/onyx/tools/tool_implementations/images/image_generation_tool.py
+backend/onyx/tools/tool_implementations/images/models.py
+backend/onyx/tools/tool_implementations/knowledge_graph/knowledge_graph_tool.py
+backend/onyx/tools/tool_implementations/mcp/mcp_tool.py
+backend/onyx/tools/tool_implementations/memory/__init__.py
+backend/onyx/tools/tool_implementations/memory/memory_tool.py
+backend/onyx/tools/tool_implementations/memory/models.py
+backend/onyx/tools/tool_implementations/open_url/__init__.py
+backend/onyx/tools/tool_implementations/open_url/firecrawl.py
+backend/onyx/tools/tool_implementations/open_url/models.py
+backend/onyx/tools/tool_implementations/open_url/onyx_web_crawler.py
+backend/onyx/tools/tool_implementations/open_url/open_url_tool.py
+backend/onyx/tools/tool_implementations/open_url/snippet_matcher.py
+backend/onyx/tools/tool_implementations/open_url/tavily.py
+backend/onyx/tools/tool_implementations/open_url/url_normalization.py
+backend/onyx/tools/tool_implementations/open_url/utils.py
+backend/onyx/tools/tool_implementations/python/__init__.py
+backend/onyx/tools/tool_implementations/python/code_interpreter_client.py
+backend/onyx/tools/tool_implementations/python/python_tool.py
+backend/onyx/tools/tool_implementations/search/constants.py
+backend/onyx/tools/tool_implementations/search/search_tool.py
+backend/onyx/tools/tool_implementations/search/search_utils.py
+backend/onyx/tools/tool_implementations/search_like_tool_utils.py
+backend/onyx/tools/tool_implementations/utils.py
+backend/onyx/tools/tool_implementations/web_search/clients/brave_client.py
+backend/onyx/tools/tool_implementations/web_search/clients/exa_client.py
+backend/onyx/tools/tool_implementations/web_search/clients/google_pse_client.py
+backend/onyx/tools/tool_implementations/web_search/clients/searxng_client.py
+backend/onyx/tools/tool_implementations/web_search/clients/serper_client.py
+backend/onyx/tools/tool_implementations/web_search/clients/tavily_client.py
+backend/onyx/tools/tool_implementations/web_search/models.py
+backend/onyx/tools/tool_implementations/web_search/providers.py
+backend/onyx/tools/tool_implementations/web_search/utils.py
+backend/onyx/tools/tool_implementations/web_search/web_search_tool.py
+backend/onyx/tools/tool_name.py
+backend/onyx/tools/tool_runner.py
+backend/onyx/tools/utils.py
+
+=== MCP ===
+backend/onyx/mcp_server/api.py
+backend/onyx/mcp_server/auth.py
+backend/onyx/mcp_server/resources/__init__.py
+backend/onyx/mcp_server/resources/agents.py
+backend/onyx/mcp_server/resources/document_sets.py
+backend/onyx/mcp_server/resources/indexed_sources.py
+backend/onyx/mcp_server/tools/__init__.py
+backend/onyx/mcp_server/tools/search.py
+backend/onyx/mcp_server/utils.py
+backend/onyx/server/features/mcp/api.py
+backend/onyx/server/features/mcp/client.py
+backend/onyx/server/features/mcp/client_metadata.py
+backend/onyx/server/features/mcp/credentials.py
+backend/onyx/server/features/mcp/models.py
+backend/onyx/server/features/mcp/oauth.py
+backend/onyx/server/features/mcp/oauth_flow.py
+backend/onyx/server/features/mcp/ssrf.py
+
+=== SANDBOX / CODE EXECUTION ===
+backend/onyx/sandbox_proxy/addons/gate.py
+backend/onyx/sandbox_proxy/approval_cache.py
+backend/onyx/sandbox_proxy/backend.py
+backend/onyx/sandbox_proxy/ca.py
+backend/onyx/sandbox_proxy/ca_docker.py
+backend/onyx/sandbox_proxy/ca_k8s.py
+backend/onyx/sandbox_proxy/credential_injection.py
+backend/onyx/sandbox_proxy/errors.py
+backend/onyx/sandbox_proxy/identity.py
+backend/onyx/sandbox_proxy/identity_docker.py
+backend/onyx/sandbox_proxy/identity_k8s.py
+backend/onyx/sandbox_proxy/logging_utils.py
+backend/onyx/sandbox_proxy/mcp_jsonrpc.py
+backend/onyx/sandbox_proxy/request_evaluator.py
+backend/onyx/sandbox_proxy/resolvers/external_app.py
+backend/onyx/sandbox_proxy/resolvers/mcp_matching.py
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py
+backend/onyx/sandbox_proxy/resolvers/onyx_pat.py
+backend/onyx/sandbox_proxy/server.py
+backend/onyx/server/features/build/sandbox/base.py
+backend/onyx/server/features/build/sandbox/docker/dev_mode_serve.py
+backend/onyx/server/features/build/sandbox/docker/docker_sandbox_manager.py
+backend/onyx/server/features/build/sandbox/docker/internal/exec_helpers.py
+backend/onyx/server/features/build/sandbox/event_schema.py
+backend/onyx/server/features/build/sandbox/factory.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/contract.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/extract.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/filesystem.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/manifest.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/opencode_history.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/server.py
+backend/onyx/server/features/build/sandbox/image/sandbox_daemon/snapshot.py
+backend/onyx/server/features/build/sandbox/kubernetes/k8s_client.py
+backend/onyx/server/features/build/sandbox/kubernetes/kubernetes_sandbox_manager.py
+backend/onyx/server/features/build/sandbox/kubernetes/sidecar_client.py
+backend/onyx/server/features/build/sandbox/labels.py
+backend/onyx/server/features/build/sandbox/models.py
+backend/onyx/server/features/build/sandbox/nextjs_dev.py
+backend/onyx/server/features/build/sandbox/opencode/event_bus.py
+backend/onyx/server/features/build/sandbox/opencode/serve_client.py
+backend/onyx/server/features/build/sandbox/serve_transport.py
+backend/onyx/server/features/build/sandbox/session_workspace.py
+backend/onyx/server/features/build/sandbox/snapshot_manager.py
+backend/onyx/server/features/build/sandbox/sse.py
+backend/onyx/server/features/build/sandbox/user_library.py
+backend/onyx/server/features/build/sandbox/util/agent_instructions.py
+backend/onyx/server/features/build/sandbox/util/api_url_check.py
+backend/onyx/server/features/build/sandbox/util/mcp_config.py
+backend/onyx/server/features/build/sandbox/util/opencode_config.py
+
+=== EXTERNAL ACTIONS / APPROVALS ===
+backend/onyx/external_apps/credentials.py
+backend/onyx/external_apps/matching/engine.py
+backend/onyx/external_apps/matching/graphql_parsing.py
+backend/onyx/external_apps/matching/request.py
+backend/onyx/external_apps/matching/rules.py
+backend/onyx/external_apps/models.py
+backend/onyx/external_apps/presentation/decode.py
+backend/onyx/external_apps/presentation/payload_decoders.py
+backend/onyx/external_apps/providers/actions.py
+backend/onyx/external_apps/providers/base.py
+backend/onyx/external_apps/providers/github.py
+backend/onyx/external_apps/providers/gmail.py
+backend/onyx/external_apps/providers/google_base.py
+backend/onyx/external_apps/providers/google_calendar.py
+backend/onyx/external_apps/providers/google_drive.py
+backend/onyx/external_apps/providers/hubspot.py
+backend/onyx/external_apps/providers/linear.py
+backend/onyx/external_apps/providers/notion.py
+backend/onyx/external_apps/providers/registry.py
+backend/onyx/external_apps/providers/slack.py
+backend/onyx/external_apps/token_refresh.py
+backend/onyx/external_apps/token_utils.py
+backend/onyx/external_apps/url_glob.py
+backend/onyx/server/features/build/approvals/api.py
+
+=== AUTHORITY / CREDENTIAL SYMBOLS ===
+backend/onyx/tools/tool_implementations/search/search_tool.py:1272:        # search authorization/censoring boundary. Re-censor before any expanded
+backend/onyx/tools/tool_implementations/custom/custom_tool.py:76:            key.lower() == "authorization" for key in self.headers.keys()
+backend/onyx/tools/tool_constructor.py:30:    resolve_mcp_credentials,
+backend/onyx/tools/tool_constructor.py:126:    allowed_tool_ids: list[int] | None,
+backend/onyx/tools/tool_constructor.py:134:    if allowed_tool_ids is None:
+backend/onyx/tools/tool_constructor.py:138:        and tool.id not in allowed_tool_ids
+backend/onyx/tools/tool_constructor.py:152:    allowed_tool_ids: list[int] | None = None,
+backend/onyx/tools/tool_constructor.py:173:            allowed_tool_ids=allowed_tool_ids,
+backend/onyx/tools/tool_constructor.py:187:    allowed_tool_ids: list[int] | None = None,
+backend/onyx/tools/tool_constructor.py:235:        persona.tools, allowed_tool_ids
+backend/onyx/tools/tool_constructor.py:243:        # by any request that sends no allowed_tool_ids whitelist.
+backend/onyx/tools/tool_constructor.py:244:        if not db_tool_model.enabled:
+backend/onyx/tools/tool_constructor.py:247:        # If allowed_tool_ids is specified, skip tools not in the allowed list
+backend/onyx/tools/tool_constructor.py:248:        if allowed_tool_ids is not None and db_tool_model.id not in allowed_tool_ids:
+backend/onyx/tools/tool_constructor.py:427:            elif db_tool_model.passthrough_auth:
+backend/onyx/tools/tool_constructor.py:469:                mcp_credentials = resolve_mcp_credentials(mcp_server, user, db_session)
+backend/onyx/tools/tool_constructor.py:530:    # bypassing persona tool associations and allowed_tool_ids filtering
+backend/onyx/tools/tool_runner.py:53:TOOL_EXECUTION_TIMEOUT_SECONDS = 10 * 60
+backend/onyx/tools/tool_runner.py:243:    max_concurrent_tools: int | None = None,
+backend/onyx/tools/tool_runner.py:279:        max_concurrent_tools: Max number of tools to run in this batch. If set, any
+backend/onyx/tools/tool_runner.py:313:    if max_concurrent_tools is not None:
+backend/onyx/tools/tool_runner.py:314:        if max_concurrent_tools <= 0:
+backend/onyx/tools/tool_runner.py:319:        filtered_tool_calls = filtered_tool_calls[:max_concurrent_tools]
+backend/onyx/tools/tool_runner.py:434:        max_workers=max_concurrent_tools,
+backend/onyx/tools/tool_runner.py:435:        timeout=TOOL_EXECUTION_TIMEOUT_SECONDS,
+backend/onyx/tools/fake_tools/research_agent.py:481:                        max_concurrent_tools=1,
+backend/onyx/server/features/mcp/models.py:15:    EndpointPolicy,
+backend/onyx/server/features/mcp/models.py:81:    "proxy-authorization",
+backend/onyx/server/features/mcp/models.py:293:    oauth_authorization_endpoint: Optional[str] = Field(
+backend/onyx/server/features/mcp/models.py:294:        None, description="Known-provider OAuth authorization endpoint URL"
+backend/onyx/server/features/mcp/models.py:303:        None, description="Optional extra query parameters for the authorization URL"
+backend/onyx/server/features/mcp/models.py:435:            self.oauth_authorization_endpoint = None
+backend/onyx/server/features/mcp/models.py:442:            if not self.oauth_authorization_endpoint:
+backend/onyx/server/features/mcp/models.py:444:                    "oauth_authorization_endpoint is required for known-provider OAuth mode"
+backend/onyx/server/features/mcp/models.py:460:            self.oauth_authorization_endpoint = None
+backend/onyx/server/features/mcp/models.py:508:    tool_policies: Optional[dict[str, EndpointPolicy]] = Field(
+backend/onyx/server/features/mcp/models.py:511:            "Sparse per-tool Craft approval overrides keyed by tool name; "
+backend/onyx/server/features/mcp/models.py:546:    passthrough_auth: bool = False
+backend/onyx/server/features/mcp/models.py:578:        description="Ignore stored OAuth tokens and start a fresh authorization flow",
+backend/onyx/server/features/mcp/models.py:616:    status: Literal["authorization_required", "already_authenticated"]
+backend/onyx/server/features/mcp/models.py:617:    authorization_url: str | None = None
+backend/onyx/server/features/mcp/models.py:622:        if self.status == "authorization_required" and not self.authorization_url:
+backend/onyx/server/features/mcp/models.py:623:            raise ValueError("authorization_required needs an authorization_url")
+backend/onyx/server/features/mcp/models.py:626:            and self.authorization_url is not None
+backend/onyx/server/features/mcp/models.py:629:                "already_authenticated cannot include an authorization_url"
+backend/onyx/server/features/mcp/models.py:635:    authorization_url: str
+backend/onyx/server/features/mcp/models.py:646:    authorization_endpoint: str | None
+backend/onyx/server/features/mcp/models.py:649:    additional_authorization_parameters: dict[str, Any] | None
+backend/onyx/server/features/mcp/models.py:663:    authorization_server_url: str | None = None
+backend/onyx/server/features/mcp/models.py:670:    """Request payload for completing OAuth flow (authorization code exchange)."""
+backend/onyx/server/features/mcp/models.py:690:    grant_types: list[Literal["authorization_code", "refresh_token"]]
+backend/onyx/server/features/mcp/models.py:699:    authorization_server_url: str = Field(
+backend/onyx/server/features/mcp/models.py:757:    oauth_authorization_endpoint: Optional[str] = None
+backend/onyx/server/features/mcp/models.py:769:    tool_policies: Optional[dict[str, EndpointPolicy]] = Field(
+backend/onyx/server/features/mcp/models.py:772:            "Stored per-tool Craft approval overrides (sparse; unlisted tools "
+backend/onyx/server/features/mcp/models.py:815:    oauth_authorization_endpoint: Optional[str] = None
+backend/onyx/server/features/mcp/oauth_flow.py:20:    build_oauth_authorization_url,
+backend/onyx/server/features/mcp/oauth_flow.py:27:from onyx.oauth.authorization_attempt import (
+backend/onyx/server/features/mcp/oauth_flow.py:29:    generate_authorization_state,
+backend/onyx/server/features/mcp/oauth_flow.py:48:    run_with_authorization_handoff,
+backend/onyx/server/features/mcp/oauth_flow.py:79:        not mcp_server.oauth_authorization_endpoint
+backend/onyx/server/features/mcp/oauth_flow.py:85:            "Known-provider OAuth requires oauth_authorization_endpoint, "
+backend/onyx/server/features/mcp/oauth_flow.py:98:        authorization_url=mcp_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/oauth_flow.py:116:        authorization_endpoint=mcp_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/oauth_flow.py:119:        additional_authorization_parameters=mcp_server.oauth_additional_auth_params,
+backend/onyx/server/features/mcp/oauth_flow.py:152:        authorization_server_url=context.auth_server_url if context else None,
+backend/onyx/server/features/mcp/oauth_flow.py:167:            "MCP server configuration changed while authorization was pending.",
+backend/onyx/server/features/mcp/oauth_flow.py:177:            "MCP connection headers changed while authorization was pending.",
+backend/onyx/server/features/mcp/oauth_flow.py:198:    excluded_headers = DENYLISTED_MCP_HEADERS | {"authorization"}
+backend/onyx/server/features/mcp/oauth_flow.py:239:    state = generate_authorization_state()
+backend/onyx/server/features/mcp/oauth_flow.py:243:    authorization_url = build_oauth_authorization_url(
+backend/onyx/server/features/mcp/oauth_flow.py:264:    return OAuthAuthorizationRedirect(authorization_url)
+backend/onyx/server/features/mcp/oauth_flow.py:278:    """Return the explicit outcome of probing or beginning authorization."""
+backend/onyx/server/features/mcp/oauth_flow.py:280:    async def persist_authorization_request(
+backend/onyx/server/features/mcp/oauth_flow.py:281:        authorization: MCPPendingOAuthAuthorization, context: OAuthContext
+backend/onyx/server/features/mcp/oauth_flow.py:296:            state=authorization.state,
+backend/onyx/server/features/mcp/oauth_flow.py:301:                code_verifier=authorization.code_verifier,
+backend/onyx/server/features/mcp/oauth_flow.py:314:        authorization_request_handler=persist_authorization_request,
+backend/onyx/server/features/mcp/oauth_flow.py:321:            if key.lower() != "authorization"
+backend/onyx/server/features/mcp/oauth_flow.py:333:                authorization = await run_with_authorization_handoff(
+backend/onyx/server/features/mcp/oauth_flow.py:341:                if authorization is not None:
+backend/onyx/server/features/mcp/oauth_flow.py:342:                    return OAuthAuthorizationRedirect(authorization.authorization_url)
+backend/onyx/server/features/mcp/oauth_flow.py:361:            authorization = await run_with_authorization_handoff(
+backend/onyx/server/features/mcp/oauth_flow.py:368:            if authorization is not None:
+backend/onyx/server/features/mcp/oauth_flow.py:369:                return OAuthAuthorizationRedirect(authorization.authorization_url)
+backend/onyx/server/features/mcp/oauth_flow.py:378:        "OAuth auto-discovery did not produce an authorization redirect.",
+backend/onyx/server/features/mcp/api.py:30:    EndpointPolicy,
+backend/onyx/server/features/mcp/api.py:65:    user_can_access_mcp_server,
+backend/onyx/server/features/mcp/api.py:92:    resolve_mcp_credentials,
+backend/onyx/server/features/mcp/api.py:119:    complete_mcp_oauth_authorization,
+backend/onyx/server/features/mcp/api.py:149:MCP_TOOL_DEFAULT_POLICY = EndpointPolicy.ASK
+backend/onyx/server/features/mcp/api.py:309:    authorization = config_data.get("headers", {}).get("Authorization", "")
+backend/onyx/server/features/mcp/api.py:310:    if authorization:
+backend/onyx/server/features/mcp/api.py:311:        return authorization.rsplit(" ", 1)[-1]
+backend/onyx/server/features/mcp/api.py:442:        grant_types=["authorization_code", "refresh_token"],
+backend/onyx/server/features/mcp/api.py:659:    elif not user_can_access_mcp_server(user, server_id, db):
+backend/onyx/server/features/mcp/api.py:824:                authorization_url=None,
+backend/onyx/server/features/mcp/api.py:839:            status="authorization_required",
+backend/onyx/server/features/mcp/api.py:840:            authorization_url=oauth_result.url,
+backend/onyx/server/features/mcp/api.py:874:            status = "authorization_required"
+backend/onyx/server/features/mcp/api.py:882:        authorization_url=oauth_url,
+backend/onyx/server/features/mcp/api.py:921:            "MCP OAuth authorization was denied or failed.",
+backend/onyx/server/features/mcp/api.py:930:    if not user_can_access_mcp_server(
+backend/onyx/server/features/mcp/api.py:942:            "MCP OAuth connection changed while authorization was pending.",
+backend/onyx/server/features/mcp/api.py:957:            "Restart authorization and try again.",
+backend/onyx/server/features/mcp/api.py:967:            "MCP OAuth client registration changed while authorization was pending.",
+backend/onyx/server/features/mcp/api.py:970:    await complete_mcp_oauth_authorization(
+backend/onyx/server/features/mcp/api.py:993:        message=f"OAuth authorization completed successfully for {mcp_server.name}",
+backend/onyx/server/features/mcp/api.py:1087:    resolved = resolve_mcp_credentials(mcp_server, user, db_session)
+backend/onyx/server/features/mcp/api.py:1293:        oauth_authorization_endpoint=db_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:1520:            passthrough_auth=False,
+backend/onyx/server/features/mcp/api.py:1582:    elif not user_can_access_mcp_server(user, server_id, db):
+backend/onyx/server/features/mcp/api.py:1589:    credentials = resolve_mcp_credentials(mcp_server, user, db)
+backend/onyx/server/features/mcp/api.py:1720:        request.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:1721:        "oauth_authorization_endpoint",
+backend/onyx/server/features/mcp/api.py:1903:                or request.oauth_authorization_endpoint
+backend/onyx/server/features/mcp/api.py:1904:                != mcp_server.oauth_authorization_endpoint
+backend/onyx/server/features/mcp/api.py:1988:            oauth_authorization_endpoint=request.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:2026:            oauth_authorization_endpoint=request.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:2415:            oauth_authorization_endpoint=mcp_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:2540:        oauth_authorization_endpoint=mcp_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/api.py:2624:            if policy != MCP_TOOL_DEFAULT_POLICY
+backend/onyx/server/features/mcp/api.py:2661:    # 500, hiding an authorization failure behind a server error.
+backend/onyx/server/features/mcp/client_metadata.py:14:AUTHORIZATION_CODE_GRANT = "authorization_code"
+backend/onyx/server/features/mcp/credentials.py:77:        if key.lower() != "authorization"
+backend/onyx/server/features/mcp/credentials.py:232:def resolve_mcp_credentials(
+backend/onyx/server/features/mcp/credentials.py:301:        credentials = resolve_mcp_credentials(
+backend/onyx/server/features/mcp/oauth.py:43:from onyx.oauth.authorization_attempt import generate_authorization_state
+backend/onyx/server/features/mcp/oauth.py:182:    refresh token on the first authorization)."""
+backend/onyx/server/features/mcp/oauth.py:264:        or not mcp_server.oauth_authorization_endpoint
+backend/onyx/server/features/mcp/oauth.py:268:    parsed = urlparse(mcp_server.oauth_authorization_endpoint)
+backend/onyx/server/features/mcp/oauth.py:271:        authorization_endpoint=mcp_server.oauth_authorization_endpoint,
+backend/onyx/server/features/mcp/oauth.py:359:    async def set_authorization_result(
+backend/onyx/server/features/mcp/oauth.py:404:                        "MCP OAuth client registration changed while authorization "
+backend/onyx/server/features/mcp/oauth.py:422:                        "MCP OAuth client registration changed while authorization "
+backend/onyx/server/features/mcp/oauth.py:435:                        "MCP connection headers changed while authorization was "
+backend/onyx/server/features/mcp/oauth.py:521:                if key.lower() != "authorization"
+backend/onyx/server/features/mcp/oauth.py:615:    def __init__(self, authorization: MCPPendingOAuthAuthorization) -> None:
+backend/onyx/server/features/mcp/oauth.py:616:        super().__init__("MCP OAuth browser authorization is required")
+backend/onyx/server/features/mcp/oauth.py:617:        self.authorization = authorization
+backend/onyx/server/features/mcp/oauth.py:620:def _authorization_handoffs(
+backend/onyx/server/features/mcp/oauth.py:629:            for handoff in _authorization_handoffs(nested_error)
+backend/onyx/server/features/mcp/oauth.py:634:async def run_with_authorization_handoff(
+backend/onyx/server/features/mcp/oauth.py:646:        return error.authorization
+backend/onyx/server/features/mcp/oauth.py:653:        handoffs = _authorization_handoffs(matching_errors)
+backend/onyx/server/features/mcp/oauth.py:657:                "MCP OAuth discovery produced multiple authorization redirects.",
+backend/onyx/server/features/mcp/oauth.py:659:        return handoffs[0].authorization
+backend/onyx/server/features/mcp/oauth.py:667:    cannot begin interactive authorization.
+backend/onyx/server/features/mcp/oauth.py:678:        authorization_request_handler: AuthorizationRequestHandler | None = None,
+backend/onyx/server/features/mcp/oauth.py:689:        self.authorization_request_handler = authorization_request_handler
+backend/onyx/server/features/mcp/oauth.py:696:    def build_resumable_authorization_request(
+backend/onyx/server/features/mcp/oauth.py:703:                "No redirect URIs provided for authorization code grant"
+backend/onyx/server/features/mcp/oauth.py:707:            raise OAuthFlowError("No client info available for authorization")
+backend/onyx/server/features/mcp/oauth.py:710:        authorization_endpoint = (
+backend/onyx/server/features/mcp/oauth.py:711:            str(oauth_metadata.authorization_endpoint)
+backend/onyx/server/features/mcp/oauth.py:712:            if oauth_metadata and oauth_metadata.authorization_endpoint
+backend/onyx/server/features/mcp/oauth.py:714:                self.context.get_authorization_base_url(self.context.server_url),
+backend/onyx/server/features/mcp/oauth.py:719:        state = generate_authorization_state()
+backend/onyx/server/features/mcp/oauth.py:720:        authorization_params = {
+backend/onyx/server/features/mcp/oauth.py:729:            authorization_params["resource"] = self.context.get_resource_url()
+backend/onyx/server/features/mcp/oauth.py:731:            authorization_params["scope"] = self.context.client_metadata.scope
+backend/onyx/server/features/mcp/oauth.py:733:        separator = "&" if "?" in authorization_endpoint else "?"
+backend/onyx/server/features/mcp/oauth.py:734:        authorization_url = ensure_offline_access_auth_params(
+backend/onyx/server/features/mcp/oauth.py:735:            f"{authorization_endpoint}{separator}{urlencode(authorization_params)}"
+backend/onyx/server/features/mcp/oauth.py:738:            authorization_url=authorization_url,
+backend/onyx/server/features/mcp/oauth.py:743:    async def _perform_authorization_code_grant(self) -> tuple[str, str]:
+backend/onyx/server/features/mcp/oauth.py:750:        handler = self.authorization_request_handler
+backend/onyx/server/features/mcp/oauth.py:754:        authorization = self.build_resumable_authorization_request()
+backend/onyx/server/features/mcp/oauth.py:755:        await handler(authorization, self.context)
+backend/onyx/server/features/mcp/oauth.py:756:        raise OAuthAuthorizationRequired(authorization)
+backend/onyx/server/features/mcp/oauth.py:758:    async def complete_authorization_code_exchange(
+backend/onyx/server/features/mcp/oauth.py:760:        authorization_code: str,
+backend/onyx/server/features/mcp/oauth.py:774:        token_request = await self._exchange_token_authorization_code(
+backend/onyx/server/features/mcp/oauth.py:775:            authorization_code,
+backend/onyx/server/features/mcp/oauth.py:820:            await storage.set_authorization_result(tokens, client_info)
+backend/onyx/server/features/mcp/oauth.py:986:    authorization_request_handler: AuthorizationRequestHandler | None = None,
+backend/onyx/server/features/mcp/oauth.py:1014:            grant_types=["authorization_code", "refresh_token"],
+backend/onyx/server/features/mcp/oauth.py:1021:        authorization_request_handler=authorization_request_handler,
+backend/onyx/server/features/mcp/oauth.py:1037:async def complete_mcp_oauth_authorization(
+backend/onyx/server/features/mcp/oauth.py:1041:    authorization_code: str,
+backend/onyx/server/features/mcp/oauth.py:1056:        context.auth_server_url = flow.authorization_server_url
+backend/onyx/server/features/mcp/oauth.py:1062:    await provider.complete_authorization_code_exchange(
+backend/onyx/server/features/mcp/oauth.py:1063:        authorization_code,
+backend/onyx/sandbox_proxy/credential_injection.py:3:`CredentialInjectionDispatcher` walks a registered list of `CredentialResolver`s
+backend/onyx/sandbox_proxy/credential_injection.py:88:class CredentialInjectionDispatcher:
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py:28:    user_can_access_mcp_server,
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py:51:    resolve_mcp_credentials,
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py:112:                    "This MCP request could not be verified by the approval "
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py:163:            if not user_can_access_mcp_server(user, server.id, db):
+backend/onyx/sandbox_proxy/resolvers/mcp_server.py:170:                creds = resolve_mcp_credentials(server, user, db)
+backend/onyx/sandbox_proxy/resolvers/mcp_matching.py:3:The credential resolver and the approval evaluator must agree, exactly, on which
+backend/onyx/sandbox_proxy/addons/gate.py:1:"""Gate addon: enforces approval policy on identified sandbox egress.
+backend/onyx/sandbox_proxy/addons/gate.py:28:from onyx.db.enums import ApprovalDecidedVia, ApprovalDecision, EndpointPolicy
+backend/onyx/sandbox_proxy/addons/gate.py:34:    actions_requiring_approval,
+backend/onyx/sandbox_proxy/addons/gate.py:36:from onyx.sandbox_proxy import approval_cache
+backend/onyx/sandbox_proxy/addons/gate.py:38:    CredentialInjectionDispatcher,
+backend/onyx/sandbox_proxy/addons/gate.py:50:    approval_decided_args,
+backend/onyx/sandbox_proxy/addons/gate.py:52:    egress_approval_matched_args,
+backend/onyx/sandbox_proxy/addons/gate.py:66:from onyx.server.features.build.db import action_approval
+backend/onyx/sandbox_proxy/addons/gate.py:186:    Produced by a grant source in ``_resolve_approval_grant``. Carries how to
+backend/onyx/sandbox_proxy/addons/gate.py:211:    def add(self, tenant_id: str, approval_id: UUID) -> None:
+backend/onyx/sandbox_proxy/addons/gate.py:212:        self._by_tenant.setdefault(tenant_id, set()).add(approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:214:    def remove(self, tenant_id: str, approval_id: UUID) -> None:
+backend/onyx/sandbox_proxy/addons/gate.py:218:        parked.discard(approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:228:    """mitmproxy addon that gates external-app requests on user approval."""
+backend/onyx/sandbox_proxy/addons/gate.py:236:        credential_dispatcher: CredentialInjectionDispatcher,
+backend/onyx/sandbox_proxy/addons/gate.py:245:        # Invariant: `_persist_approval_row` is the only writer;
+backend/onyx/sandbox_proxy/addons/gate.py:393:        applied_approval_id = await self._apply_approval_grant(ctx, matched_actions)
+backend/onyx/sandbox_proxy/addons/gate.py:394:        if applied_approval_id is not None:
+backend/onyx/sandbox_proxy/addons/gate.py:400:                    flow, ctx, matched_actions, approval_id=applied_approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:404:                    "approval_dispatch_error tenant=%s sandbox=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:418:        approval_id: UUID | None = None
+backend/onyx/sandbox_proxy/addons/gate.py:420:            approval_id = self._persist_approval_row(ctx, matched_actions)
+backend/onyx/sandbox_proxy/addons/gate.py:422:                await self._apply_approval_grant(
+backend/onyx/sandbox_proxy/addons/gate.py:423:                    ctx, matched_actions, approval_id=approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:427:                self._parked.remove(ctx.tenant_id, approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:430:                decision = await self._await_decision(approval_id, ctx, matched_actions)
+backend/onyx/sandbox_proxy/addons/gate.py:434:                    flow, ctx, matched_actions, approval_id=approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:444:                    *egress_approval_matched_args(
+backend/onyx/sandbox_proxy/addons/gate.py:445:                        flow, ctx, matched_actions, EndpointPolicy.ASK, approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:451:                "approval_unhandled_error tenant=%s sandbox=%s session=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:452:                "approval=%s app_name=%r action_type=%s session_id=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:456:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:460:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:463:            if approval_id is not None:
+backend/onyx/sandbox_proxy/addons/gate.py:464:                self._terminalize_after_unhandled_error(approval_id, ctx.tenant_id)
+backend/onyx/sandbox_proxy/addons/gate.py:472:        approval_id: UUID | None = None,
+backend/onyx/sandbox_proxy/addons/gate.py:483:        if approval_id is None:
+backend/onyx/sandbox_proxy/addons/gate.py:486:                flow, ctx, matched_actions, EndpointPolicy.ASK
+backend/onyx/sandbox_proxy/addons/gate.py:490:            args = egress_approval_matched_args(
+backend/onyx/sandbox_proxy/addons/gate.py:491:                flow, ctx, matched_actions, EndpointPolicy.ASK, approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:599:        # approval pipeline in `request()`.
+backend/onyx/sandbox_proxy/addons/gate.py:629:        if matched_actions.governing_action.policy is EndpointPolicy.DENY:
+backend/onyx/sandbox_proxy/addons/gate.py:634:                    flow, sandbox, matched_actions, EndpointPolicy.DENY
+backend/onyx/sandbox_proxy/addons/gate.py:640:        if matched_actions.governing_action.policy is EndpointPolicy.ALWAYS:
+backend/onyx/sandbox_proxy/addons/gate.py:656:                        flow, sandbox, matched_actions, EndpointPolicy.ALWAYS
+backend/onyx/sandbox_proxy/addons/gate.py:665:                        flow, sandbox, matched_actions, EndpointPolicy.ALWAYS
+backend/onyx/sandbox_proxy/addons/gate.py:691:                    flow, sandbox, matched_actions, EndpointPolicy.ASK
+backend/onyx/sandbox_proxy/addons/gate.py:700:            "approval_match tenant=%s sandbox=%s session=%s host=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:712:    def _resolve_approval_grant(
+backend/onyx/sandbox_proxy/addons/gate.py:715:        """Resolve a gated request to a reusable approval grant, or ``None``."""
+backend/onyx/sandbox_proxy/addons/gate.py:758:        action_types = actions_requiring_approval(matched_actions.actions)
+backend/onyx/sandbox_proxy/addons/gate.py:765:            if approval_cache.cached_session_grants_cover(
+backend/onyx/sandbox_proxy/addons/gate.py:775:                "approval_grant_cache_error tenant=%s session=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:785:        grant_source_rows = action_approval.list_session_grant_action_approvals(
+backend/onyx/sandbox_proxy/addons/gate.py:790:        granted_action_types = approval_cache.hydrate_session_grants(
+backend/onyx/sandbox_proxy/addons/gate.py:801:    async def _apply_approval_grant(
+backend/onyx/sandbox_proxy/addons/gate.py:806:        approval_id: UUID | None = None,
+backend/onyx/sandbox_proxy/addons/gate.py:810:                self._try_apply_approval_grant,
+backend/onyx/sandbox_proxy/addons/gate.py:813:                approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:817:                "approval_grant_check_error tenant=%s sandbox=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:818:                "session=%s approval=%s app_name=%r action_type=%s session_id=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:819:                "approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:823:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:827:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:831:    def _try_apply_approval_grant(
+backend/onyx/sandbox_proxy/addons/gate.py:835:        approval_id: UUID | None,
+backend/onyx/sandbox_proxy/addons/gate.py:837:        """Apply an existing approval grant to a new or already-persisted row."""
+backend/onyx/sandbox_proxy/addons/gate.py:839:            grant = self._resolve_approval_grant(db, ctx, matched_actions)
+backend/onyx/sandbox_proxy/addons/gate.py:842:            if approval_id is None:
+backend/onyx/sandbox_proxy/addons/gate.py:843:                row = action_approval.insert_action_approval(
+backend/onyx/sandbox_proxy/addons/gate.py:855:                applied_approval_id = row.approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:857:                decided = action_approval.try_record_decision(
+backend/onyx/sandbox_proxy/addons/gate.py:859:                    approval_id=approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:865:                applied_approval_id = approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:869:            "approval_decided " + APPROVAL_DECIDED_FIELDS,
+backend/onyx/sandbox_proxy/addons/gate.py:870:            *approval_decided_args(
+backend/onyx/sandbox_proxy/addons/gate.py:872:                applied_approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:881:                self._notify_approval_grant(ctx, grant)
+backend/onyx/sandbox_proxy/addons/gate.py:884:                "approval_notify_error approval=%s error=%r approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:885:                short_log_id(applied_approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:887:                full_log_id(applied_approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:889:        return applied_approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:891:    def _persist_approval_row(
+backend/onyx/sandbox_proxy/addons/gate.py:901:            row = action_approval.insert_action_approval(
+backend/onyx/sandbox_proxy/addons/gate.py:909:            approval_id = row.approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:912:        self._parked.add(ctx.tenant_id, approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:914:            approval_cache.announce_approval(
+backend/onyx/sandbox_proxy/addons/gate.py:915:                approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:921:                "approval_announce_error approval=%s error=%r approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:922:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:924:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:928:            "approval_requested tenant=%s sandbox=%s session=%s approval=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:930:            "proxy_instance=%s session_id=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:934:            short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:942:            full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:946:            self._notify_approval_requested(approval_id, ctx, matched_actions)
+backend/onyx/sandbox_proxy/addons/gate.py:949:                "approval_notify_error approval=%s error=%r approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:950:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:952:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:955:        return approval_id
+backend/onyx/sandbox_proxy/addons/gate.py:959:        approval_id: UUID,
+backend/onyx/sandbox_proxy/addons/gate.py:965:        Owns removal of the parked-approvals entry in the `finally` block.
+backend/onyx/sandbox_proxy/addons/gate.py:969:            decision = await approval_cache.wait_for_wake(
+backend/onyx/sandbox_proxy/addons/gate.py:970:                approval_id, SANDBOX_APPROVAL_WAIT_TIMEOUT_SECONDS, cache
+backend/onyx/sandbox_proxy/addons/gate.py:974:                    "approval_decided " + APPROVAL_DECIDED_FIELDS,
+backend/onyx/sandbox_proxy/addons/gate.py:975:                    *approval_decided_args(
+backend/onyx/sandbox_proxy/addons/gate.py:977:                        approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:985:            resolved = self._claim_expired_or_read_winner(approval_id, ctx.tenant_id)
+backend/onyx/sandbox_proxy/addons/gate.py:988:                "approval_decided " + APPROVAL_DECIDED_FIELDS,
+backend/onyx/sandbox_proxy/addons/gate.py:989:                *approval_decided_args(
+backend/onyx/sandbox_proxy/addons/gate.py:991:                    approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:1002:            self._claim_expired_or_read_winner(approval_id, ctx.tenant_id)
+backend/onyx/sandbox_proxy/addons/gate.py:1005:            self._parked.remove(ctx.tenant_id, approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:1008:        self, approval_id: UUID, tenant_id: str
+backend/onyx/sandbox_proxy/addons/gate.py:1015:            claimed = action_approval.try_record_decision(
+backend/onyx/sandbox_proxy/addons/gate.py:1017:                approval_id=approval_id,
+backend/onyx/sandbox_proxy/addons/gate.py:1023:            existing = action_approval.get_action_approval(db, approval_id)
+backend/onyx/sandbox_proxy/addons/gate.py:1028:                    "approval_row_missing tenant=%s approval=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1030:                    short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1031:                    full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1070:        self, approval_id: UUID, tenant_id: str
+backend/onyx/sandbox_proxy/addons/gate.py:1079:            decision = self._claim_expired_or_read_winner(approval_id, tenant_id)
+backend/onyx/sandbox_proxy/addons/gate.py:1082:                "approval_terminalize_error tenant=%s approval=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:1083:                "operation=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1085:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1087:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1091:            approval_cache.send_wake(
+backend/onyx/sandbox_proxy/addons/gate.py:1092:                approval_id, decision, self._cache_factory(tenant_id)
+backend/onyx/sandbox_proxy/addons/gate.py:1096:                "approval_terminalize_error tenant=%s approval=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:1097:                "operation=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1099:                short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1101:                full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1109:        """Drains parked approvals on SIGTERM, bounded by caller.
+backend/onyx/sandbox_proxy/addons/gate.py:1112:        1. Terminalize each parked approval (claim EXPIRED or read the
+backend/onyx/sandbox_proxy/addons/gate.py:1117:        for tenant_id, approval_ids in self._parked.snapshot():
+backend/onyx/sandbox_proxy/addons/gate.py:1119:            for approval_id in approval_ids:
+backend/onyx/sandbox_proxy/addons/gate.py:1122:                        approval_id, tenant_id
+backend/onyx/sandbox_proxy/addons/gate.py:1125:                        approval_cache.send_wake(approval_id, decision, cache)
+backend/onyx/sandbox_proxy/addons/gate.py:1130:                            "drain_expired tenant=%s approval=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1132:                            short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1133:                            full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1137:                            "drain_forwarded tenant=%s approval=%s "
+backend/onyx/sandbox_proxy/addons/gate.py:1138:                            "decision=%s approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1140:                            short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1142:                            full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1146:                        "drain_error tenant=%s approval=%s error=%r approval_id=%s",
+backend/onyx/sandbox_proxy/addons/gate.py:1148:                        short_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1150:                        full_log_id(approval_id),
+backend/onyx/sandbox_proxy/addons/gate.py:1165:    def _notify_approval_grant(
+backend/onyx/sandbox_proxy/addons/gate.py:1190:    def _notify_approval_requested(
+backend/onyx/sandbox_proxy/addons/gate.py:1191:        self, approval_id: UUID, ctx: SessionContext, matched_actions: AllMatchedActions
+backend/onyx/sandbox_proxy/addons/gate.py:1195:        Body carries no PII; the full payload lives on the action_approval row,
+backend/onyx/sandbox_proxy/addons/gate.py:1203:                title="Craft is requesting approval",
+backend/onyx/sandbox_proxy/addons/gate.py:1205:                    "approval_id": str(approval_id),
+backend/onyx/sandbox_proxy/server.py:22:    CredentialInjectionDispatcher,
+backend/onyx/sandbox_proxy/server.py:266:            credential_dispatcher=CredentialInjectionDispatcher(resolvers),
+backend/onyx/sandbox_proxy/errors.py:50:        "This request needs to be tied to an active Craft session for approval, "
+backend/onyx/sandbox_proxy/errors.py:70:        "This action required the user's approval, but no response came back in "
+backend/onyx/sandbox_proxy/errors.py:74:        "waiting on their approval."
+backend/onyx/sandbox_proxy/approval_cache.py:1:"""Ephemeral cache signals for the approval rendezvous.
+backend/onyx/sandbox_proxy/approval_cache.py:3:The Postgres `action_approval` row is the source of truth; everything
+backend/onyx/sandbox_proxy/approval_cache.py:6:* `approval:announce:{session_id}` — proxy RPUSHes after committing the
+backend/onyx/sandbox_proxy/approval_cache.py:9:* `approval:wake:{approval_id}` — api-server RPUSHes when a decision is
+backend/onyx/sandbox_proxy/approval_cache.py:21:from onyx.external_apps.matching.engine import actions_requiring_approval
+backend/onyx/sandbox_proxy/approval_cache.py:34:# the action_approval row whose decision was recorded via SESSION_GRANT.
+backend/onyx/sandbox_proxy/approval_cache.py:39:    return f"approval:announce:{session_id}"
+backend/onyx/sandbox_proxy/approval_cache.py:42:def _wake_key(approval_id: UUID) -> str:
+backend/onyx/sandbox_proxy/approval_cache.py:43:    return f"approval:wake:{approval_id}"
+backend/onyx/sandbox_proxy/approval_cache.py:49:    return f"approval:session-grant:{session_id}:{kind.value}:{target_id}:{action_type}"
+backend/onyx/sandbox_proxy/approval_cache.py:52:def announce_approval(approval_id: UUID, session_id: UUID, cache: CacheBackend) -> None:
+backend/onyx/sandbox_proxy/approval_cache.py:53:    cache.rpush(announce_key(session_id), str(approval_id))
+backend/onyx/sandbox_proxy/approval_cache.py:63:    source_approval_id: UUID,
+backend/onyx/sandbox_proxy/approval_cache.py:75:            str(source_approval_id),
+backend/onyx/sandbox_proxy/approval_cache.py:98:        action_types = actions_requiring_approval(row.actions)
+backend/onyx/sandbox_proxy/approval_cache.py:100:        per_row.append((row.approval_id, action_types))
+backend/onyx/sandbox_proxy/approval_cache.py:103:            for source_approval_id, action_types in per_row:
+backend/onyx/sandbox_proxy/approval_cache.py:109:                    source_approval_id=source_approval_id,
+backend/onyx/sandbox_proxy/approval_cache.py:114:                "approval.session_grant_cache_hydrate_failed session_id=%s "
+backend/onyx/sandbox_proxy/approval_cache.py:153:    approval_id: UUID, timeout_s: int, cache: CacheBackend
+backend/onyx/sandbox_proxy/approval_cache.py:167:        result = await asyncio.to_thread(cache.blpop, [_wake_key(approval_id)], 1)
+backend/onyx/sandbox_proxy/approval_cache.py:181:    approval_id: UUID, decision: ApprovalDecision, cache: CacheBackend
+backend/onyx/sandbox_proxy/approval_cache.py:184:    cache.rpush(_wake_key(approval_id), decision.value)
+backend/onyx/sandbox_proxy/approval_cache.py:185:    cache.expire(_wake_key(approval_id), WAKE_TTL_S)
+backend/onyx/sandbox_proxy/logging_utils.py:7:from onyx.db.enums import EndpointPolicy
+backend/onyx/sandbox_proxy/logging_utils.py:14:_EGRESS_APPROVAL_FIELDS = f"{_EGRESS_SESSION_FIELDS} approval=%s"
+backend/onyx/sandbox_proxy/logging_utils.py:19:    "decision=%s wake=%s source=%s session_id=%s approval_id=%s"
+backend/onyx/sandbox_proxy/logging_utils.py:66:def _policy_label(policy: EndpointPolicy | str) -> str:
+backend/onyx/sandbox_proxy/logging_utils.py:67:    return policy.value if isinstance(policy, EndpointPolicy) else policy
+backend/onyx/sandbox_proxy/logging_utils.py:79:    matched_actions: AllMatchedActions, policy: EndpointPolicy | str
+backend/onyx/sandbox_proxy/logging_utils.py:103:    policy: EndpointPolicy | str,
+backend/onyx/sandbox_proxy/logging_utils.py:115:    policy: EndpointPolicy | str,
+backend/onyx/sandbox_proxy/logging_utils.py:125:def egress_approval_matched_args(
+backend/onyx/sandbox_proxy/logging_utils.py:129:    policy: EndpointPolicy | str,
+backend/onyx/sandbox_proxy/logging_utils.py:130:    approval_id: UUID,
+backend/onyx/sandbox_proxy/logging_utils.py:135:        short_log_id(approval_id),
+backend/onyx/sandbox_proxy/logging_utils.py:141:def approval_decided_args(
+backend/onyx/sandbox_proxy/logging_utils.py:143:    approval_id: UUID,
+backend/onyx/sandbox_proxy/logging_utils.py:153:        short_log_id(approval_id),
+backend/onyx/sandbox_proxy/logging_utils.py:162:        full_log_id(approval_id),
+backend/onyx/sandbox_proxy/request_evaluator.py:20:from onyx.db.enums import EndpointPolicy, GatedAppKind
+backend/onyx/sandbox_proxy/request_evaluator.py:54:MCP_TOOL_DEFAULT_POLICY = EndpointPolicy.ASK
+backend/onyx/sandbox_proxy/request_evaluator.py:147:    """Gates craft-enabled MCP servers: proxy-authoritative per-tool approvals.
+backend/onyx/sandbox_proxy/request_evaluator.py:222:                        policy=EndpointPolicy.DENY,
+backend/onyx/sandbox_proxy/request_evaluator.py:248:                policy=EndpointPolicy.DENY,
+backend/onyx/sandbox_proxy/request_evaluator.py:253:    # the batch multiplicity surfaced so the approval card doesn't understate a
+backend/onyx/sandbox_proxy/request_evaluator.py:264:            policy=stored.get(tool_name, MCP_TOOL_DEFAULT_POLICY),
+backend/onyx/sandbox_proxy/identity.py:10:  to route the approval card.
+backend/onyx/external_apps/models.py:3:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/models.py:13:    state: EndpointPolicy
+backend/onyx/external_apps/models.py:35:    default_policy: EndpointPolicy
+backend/onyx/external_apps/providers/registry.py:1:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/registry.py:143:    stored: dict[str, EndpointPolicy],
+backend/onyx/external_apps/providers/registry.py:144:) -> EndpointPolicy:
+backend/onyx/external_apps/providers/registry.py:154:    policies: dict[str, EndpointPolicy],
+backend/onyx/external_apps/providers/registry.py:155:) -> dict[str, EndpointPolicy]:
+backend/onyx/external_apps/providers/registry.py:171:    requested: dict[str, EndpointPolicy] | None,
+backend/onyx/external_apps/providers/registry.py:172:    existing: dict[str, EndpointPolicy],
+backend/onyx/external_apps/providers/registry.py:173:) -> dict[str, EndpointPolicy]:
+backend/onyx/external_apps/providers/registry.py:185:    catalog_defaults: dict[str, EndpointPolicy] = {
+backend/onyx/external_apps/providers/registry.py:201:    stored: dict[str, EndpointPolicy],
+backend/onyx/external_apps/providers/notion.py:8:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/notion.py:73:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:80:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:92:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:102:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:109:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:116:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:125:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:132:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/notion.py:205:            # configured on its settings page, not requested per-authorization.
+backend/onyx/external_apps/providers/notion.py:209:            # authorization is granted on behalf of the connecting user.
+backend/onyx/external_apps/providers/notion.py:272:                "grant_type": "authorization_code",
+backend/onyx/external_apps/providers/hubspot.py:10:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/hubspot.py:69:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/hubspot.py:79:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/hubspot.py:89:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/hubspot.py:99:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/hubspot.py:110:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:9:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/github.py:64:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:74:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:87:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:97:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:108:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:122:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:139:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:151:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:164:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/github.py:174:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/actions.py:6:from onyx.db.enums import EndpointPolicy
+backend/onyx/external_apps/providers/actions.py:122:    default_policy: EndpointPolicy = EndpointPolicy.ASK
+backend/onyx/external_apps/providers/linear.py:7:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/linear.py:46:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/linear.py:53:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/linear.py:64:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/linear.py:71:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/base.py:143:    """The authorization-code token-exchange POST, built by the provider so a
+backend/onyx/external_apps/providers/base.py:293:        """Build the authorization-code → token exchange POST. The default sends
+backend/onyx/external_apps/providers/base.py:303:                "grant_type": "authorization_code",
+backend/onyx/external_apps/providers/google_drive.py:5:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/google_drive.py:22:# approval gate prompts the user before it runs.
+backend/onyx/external_apps/providers/google_drive.py:68:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:78:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:88:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:127:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:151:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:182:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_drive.py:204:# gated by per-action ASK approval.
+backend/onyx/external_apps/providers/google_calendar.py:5:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/google_calendar.py:40:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_calendar.py:50:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/google_calendar.py:57:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/slack.py:7:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/slack.py:52:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/slack.py:64:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/slack.py:74:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/slack.py:81:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:7:from onyx.db.enums import EndpointPolicy, ExternalAppType
+backend/onyx/external_apps/providers/gmail.py:59:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:67:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:77:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:108:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:120:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:131:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:141:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:148:        default_policy=EndpointPolicy.ALWAYS,
+backend/onyx/external_apps/providers/gmail.py:196:    # base64url MIME bodies decoded for the approval card. `messages.send` holds
+backend/onyx/external_apps/matching/engine.py:10:from onyx.db.enums import POLICY_SEVERITY, EndpointPolicy, ExternalAppType, GatedAppKind
+backend/onyx/external_apps/matching/engine.py:34:    policy: EndpointPolicy
+backend/onyx/external_apps/matching/engine.py:65:    the whole approval pipeline attributes the request to.
+backend/onyx/external_apps/matching/engine.py:101:def actions_requiring_approval(actions: Iterable[ActionLike]) -> list[str]:
+backend/onyx/external_apps/matching/engine.py:102:    """Return the action types whose policy requires a user approval.
+backend/onyx/external_apps/matching/engine.py:104:    The live gate works with ``MatchedAction`` models while the approval API
+backend/onyx/external_apps/matching/engine.py:115:                policy = EndpointPolicy(action["policy"])
+backend/onyx/external_apps/matching/engine.py:123:        if policy is EndpointPolicy.ASK:
+backend/onyx/external_apps/matching/engine.py:196:            a for a in matched_actions.actions if a.policy is EndpointPolicy.DENY
+backend/onyx/external_apps/matching/engine.py:207:                policy=EndpointPolicy.ASK,
+backend/onyx/external_apps/presentation/decode.py:21:    approval is never blanked or broken.
