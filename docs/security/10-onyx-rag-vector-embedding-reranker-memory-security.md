@@ -173,3 +173,27 @@ No public reranking authorization bypass was confirmed.
 authorized/tenant-scoped candidates and retain regression coverage.
 
 **Action 10.8 status: COMPLETE.**
+
+## Action 10.9 — Context assembly and citation authorization
+
+Action 10.9 reviewed the authorization boundary after retrieval and before
+retrieved content becomes LLM context and citations.
+
+A post-expansion authorization gap was reproduced. Initial search results were
+permission-censored, but additional adjacent chunks fetched during context
+expansion did not cross that censoring boundary again.
+
+A synthetic property test demonstrated that such adjacent content could enter
+the expanded context.
+
+The search tool now re-applies post-query permission censoring to expanded
+chunks before merging, LLM context generation or citation construction.
+
+Sections whose center chunk no longer survives the permission check are dropped
+fail-closed.
+
+**H10-03: REMEDIATED.**
+
+No public end-to-end exploit is claimed by this action.
+
+**Action 10.9 status: COMPLETE.**

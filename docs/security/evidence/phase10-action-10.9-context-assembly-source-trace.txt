@@ -1,0 +1,73 @@
+=== AUTHORIZED INITIAL RETRIEVAL ===
+backend/onyx/context/search/pipeline.py:20:from onyx.context.search.retrieval.search_runner import search_chunks
+backend/onyx/context/search/pipeline.py:328:    retrieved_chunks = search_chunks(
+backend/onyx/context/search/pipeline.py:339:    censored_chunks: list[InferenceChunk] = fetch_ee_implementation_or_noop(
+backend/onyx/context/search/pipeline.py:341:        "_post_query_chunk_censoring",
+backend/onyx/context/search/pipeline.py:348:    return censored_chunks
+
+=== CONTEXT EXPANSION ===
+backend/onyx/tools/tool_implementations/search/search_utils.py:134:def _retrieve_adjacent_chunks(
+backend/onyx/tools/tool_implementations/search/search_utils.py:156:    filters = IndexFilters(access_control_list=None)
+backend/onyx/tools/tool_implementations/search/search_utils.py:178:            chunks_above = document_index.id_based_retrieval(
+backend/onyx/tools/tool_implementations/search/search_utils.py:200:            chunks_below = document_index.id_based_retrieval(
+backend/onyx/tools/tool_implementations/search/search_utils.py:356:def expand_section_with_context(
+backend/onyx/tools/tool_implementations/search/search_utils.py:390:        chunks_above_for_prompt, chunks_below_for_prompt = _retrieve_adjacent_chunks(
+backend/onyx/tools/tool_implementations/search/search_utils.py:468:        chunks_above_full, chunks_below_full = _retrieve_adjacent_chunks(
+
+=== FINAL CONTEXT / CITATION ASSEMBLY ===
+backend/onyx/tools/tool_implementations/search/search_tool.py:127:    merge_overlapping_sections,
+backend/onyx/tools/tool_implementations/search/search_tool.py:131:    convert_inference_sections_to_llm_string,
+backend/onyx/tools/tool_implementations/search/search_tool.py:1054:            empty_response, _ = convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/search/search_tool.py:1061:                    citation_mapping={},
+backend/onyx/tools/tool_implementations/search/search_tool.py:1185:        expanded_sections = run_functions_tuples_in_parallel(expansion_functions)
+backend/onyx/tools/tool_implementations/search/search_tool.py:1192:            len(expanded_sections),
+backend/onyx/tools/tool_implementations/search/search_tool.py:1195:        if not expanded_sections:
+backend/onyx/tools/tool_implementations/search/search_tool.py:1196:            expanded_sections = selected_sections
+backend/onyx/tools/tool_implementations/search/search_tool.py:1200:        merged_sections = merge_overlapping_sections(expanded_sections)
+backend/onyx/tools/tool_implementations/search/search_tool.py:1202:        docs_str, citation_mapping = convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/search/search_tool.py:1226:                citation_mapping=citation_mapping,
+backend/onyx/tools/tool_implementations/utils.py:29:def convert_inference_sections_to_llm_string(
+backend/onyx/tools/tool_implementations/utils.py:48:    citation_mapping: dict[int, str] = {}
+backend/onyx/tools/tool_implementations/utils.py:56:            citation_mapping[current_citation_id] = document_id
+backend/onyx/tools/tool_implementations/utils.py:124:        citation_mapping,
+
+=== CITATION PROCESSING ===
+backend/onyx/chat/citation_processor.py:97:        - Accepts citation number → SearchDoc mapping via update_citation_mapping()
+backend/onyx/chat/citation_processor.py:109:        processor.update_citation_mapping({1: search_doc1, 2: search_doc2})
+backend/onyx/chat/citation_processor.py:124:        processor.update_citation_mapping({1: search_doc1, 2: search_doc2})
+backend/onyx/chat/citation_processor.py:137:        processor.update_citation_mapping({1: search_doc1, 2: search_doc2})
+backend/onyx/chat/citation_processor.py:171:        self.citation_to_doc: CitationMapping = {}
+backend/onyx/chat/citation_processor.py:215:    def update_citation_mapping(
+backend/onyx/chat/citation_processor.py:217:        citation_mapping: CitationMapping,
+backend/onyx/chat/citation_processor.py:227:            citation_mapping: Dictionary mapping citation numbers (1, 2, 3, ...) to SearchDoc objects
+backend/onyx/chat/citation_processor.py:235:            self.citation_to_doc.update(citation_mapping)
+backend/onyx/chat/citation_processor.py:240:            duplicate_keys = set(citation_mapping.keys()) & set(
+backend/onyx/chat/citation_processor.py:241:                self.citation_to_doc.keys()
+backend/onyx/chat/citation_processor.py:244:                k: v for k, v in citation_mapping.items() if k not in duplicate_keys
+backend/onyx/chat/citation_processor.py:246:            self.citation_to_doc.update(non_duplicate_mapping)
+backend/onyx/chat/citation_processor.py:487:            if num not in self.citation_to_doc:
+backend/onyx/chat/citation_processor.py:491:                    list(self.citation_to_doc.keys()),
+backend/onyx/chat/citation_processor.py:496:            search_doc = self.citation_to_doc[num]
+backend/onyx/chat/citation_processor.py:622:        new documents via update_citation_mapping(). Useful when dynamically adding
+backend/onyx/chat/citation_processor.py:638:        if not self.citation_to_doc:
+backend/onyx/chat/citation_processor.py:640:        return max(self.citation_to_doc.keys()) + 1
+backend/onyx/chat/citation_utils.py:9:def update_citation_processor_from_tool_response(
+backend/onyx/chat/citation_utils.py:34:            citation_to_doc: CitationMapping = {}
+backend/onyx/chat/citation_utils.py:38:            ) in search_response.citation_mapping.items():
+backend/onyx/chat/citation_utils.py:40:                matching_doc = next(
+backend/onyx/chat/citation_utils.py:48:                if matching_doc:
+backend/onyx/chat/citation_utils.py:49:                    citation_to_doc[citation_num] = matching_doc
+backend/onyx/chat/citation_utils.py:52:            citation_processor.update_citation_mapping(citation_to_doc)
+backend/onyx/chat/citation_utils.py:101:    existing_citation_mapping: CitationMapping,
+backend/onyx/chat/citation_utils.py:102:    new_citation_mapping: CitationMapping,
+backend/onyx/chat/citation_utils.py:114:        existing_citation_mapping: Citations already processed/displayed. These mappings
+backend/onyx/chat/citation_utils.py:116:        new_citation_mapping: Citations from the current text that need to be collapsed.
+backend/onyx/chat/citation_utils.py:122:        - combined_mapping: All values from existing_citation_mapping plus the new
+backend/onyx/chat/citation_utils.py:128:        for citation_num, doc in existing_citation_mapping.items()
+backend/onyx/chat/citation_utils.py:132:    if existing_citation_mapping:
+backend/onyx/chat/citation_utils.py:133:        next_citation_num = max(existing_citation_mapping.keys()) + 1
+backend/onyx/chat/citation_utils.py:137:    # Build the mapping from old citation numbers (in new_citation_mapping) to new numbers
+backend/onyx/chat/citation_utils.py:141:    for old_num, search_doc in new_citation_mapping.items():
+backend/onyx/chat/citation_utils.py:154:                    mapped_old in new_citation_mapping
+backend/onyx/chat/citation_utils.py:155:                    and new_citation_mapping[mapped_old].document_id == doc_id
+backend/onyx/chat/citation_utils.py:213:    combined_mapping: CitationMapping = dict(existing_citation_mapping)

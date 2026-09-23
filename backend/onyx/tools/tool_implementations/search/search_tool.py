@@ -61,6 +61,7 @@ from onyx.context.search.preprocessing.access_filters import (
 )
 from onyx.context.search.utils import (
     convert_inference_sections_to_search_docs,
+    inference_section_from_chunks,
     populate_file_ids_on_sections,
 )
 from onyx.db.connector import (
@@ -133,6 +134,7 @@ from onyx.tools.tool_implementations.utils import (
 from onyx.utils.logger import setup_logger
 from onyx.utils.threadpool_concurrency import run_functions_tuples_in_parallel
 from onyx.utils.timing import log_function_time
+from onyx.utils.variable_functionality import fetch_ee_implementation_or_noop
 from shared_configs.configs import (
     DOC_EMBEDDING_CONTEXT_SIZE,
     MODEL_SERVER_HOST,
@@ -265,6 +267,77 @@ def _trim_sections_by_tokens(
     )
 
     return trimmed_sections
+
+
+def _recensor_expanded_sections(
+    sections: list[InferenceSection],
+    user: User,
+) -> list[InferenceSection]:
+    """Re-apply post-query permission censoring after context expansion.
+
+    Initial search results are censored in search_pipeline, but context expansion
+    performs additional direct ID-based chunk retrieval. Those newly fetched chunks
+    must cross the same permission boundary before entering LLM context or citations.
+    """
+    if not sections:
+        return []
+
+    # Deduplicate chunks so permission-backed sources are censored in one batch.
+    all_chunks: list[InferenceChunk] = []
+    seen_chunk_ids: set[str] = set()
+
+    for section in sections:
+        for chunk in section.chunks:
+            if chunk.unique_id not in seen_chunk_ids:
+                seen_chunk_ids.add(chunk.unique_id)
+                all_chunks.append(chunk)
+
+    censor_chunks = fetch_ee_implementation_or_noop(
+        "onyx.external_permissions.post_query_censoring",
+        "_post_query_chunk_censoring",
+        all_chunks,
+    )
+
+    censored_chunks = censor_chunks(
+        chunks=all_chunks,
+        user=user,
+    )
+
+    censored_by_id = {
+        chunk.unique_id: chunk
+        for chunk in censored_chunks
+    }
+
+    safe_sections: list[InferenceSection] = []
+
+    for section in sections:
+        # Fail closed if the section's original center chunk no longer survives
+        # permission censoring.
+        center_chunk = censored_by_id.get(
+            section.center_chunk.unique_id
+        )
+
+        if center_chunk is None:
+            continue
+
+        safe_chunks = [
+            censored_by_id[chunk.unique_id]
+            for chunk in section.chunks
+            if chunk.unique_id in censored_by_id
+        ]
+
+        if not safe_chunks:
+            continue
+
+        safe_section = inference_section_from_chunks(
+            center_chunk=center_chunk,
+            chunks=safe_chunks,
+        )
+
+        if safe_section is not None:
+            safe_sections.append(safe_section)
+
+    return safe_sections
 
 
 class SearchTool(Tool[SearchToolOverrideKwargs]):
@@ -1194,6 +1267,14 @@ class SearchTool(Tool[SearchToolOverrideKwargs]):
 
         if not expanded_sections:
             expanded_sections = selected_sections
+
+        # Expansion performs new direct ID-based chunk retrieval after the initial
+        # search authorization/censoring boundary. Re-censor before any expanded
+        # content can reach prompt construction, citation mapping, persistence or UI.
+        expanded_sections = _recensor_expanded_sections(
+            sections=expanded_sections,
+            user=self.user,
+        )
 
         # Merge sections from the same document that have adjacent or overlapping chunks
         # This prevents duplicate content and reduces token usage
