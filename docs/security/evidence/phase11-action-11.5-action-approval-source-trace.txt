@@ -1,0 +1,36 @@
+10:from onyx.db.enums import POLICY_SEVERITY, EndpointPolicy, ExternalAppType, GatedAppKind
+22:WHOLE_DOMAIN_ACTION_TYPE = "unspecified"
+62:    ``actions`` is sorted strictest-policy-first; ``governing_action`` returns the
+84:            sorted(actions, key=lambda a: POLICY_SEVERITY[a.policy], reverse=True)
+88:    def governing_action(self) -> MatchedAction:
+101:def actions_requiring_approval(actions: Iterable[ActionLike]) -> list[str]:
+123:        if policy is EndpointPolicy.ASK:
+204:                action_type=WHOLE_DOMAIN_ACTION_TYPE,
+207:                policy=EndpointPolicy.ASK,
+
+50:MCP_UNCLASSIFIABLE_ACTION_TYPE = "mcp.unclassifiable"
+54:MCP_TOOL_DEFAULT_POLICY = EndpointPolicy.ASK
+219:                        action_type=MCP_UNCLASSIFIABLE_ACTION_TYPE,
+222:                        policy=EndpointPolicy.DENY,
+242:                action_type=MCP_UNCLASSIFIABLE_ACTION_TYPE,
+248:                policy=EndpointPolicy.DENY,
+264:            policy=stored.get(tool_name, MCP_TOOL_DEFAULT_POLICY),
+
+62:    MCP_SESSION_TAG_HEADER,
+250:        # Proxy-Authorization (only place it's visible for MITM'd HTTPS).
+267:        """Capture the per-session tag from the CONNECT's Proxy-Authorization.
+291:        auth_header = flow.request.headers.get("Proxy-Authorization")
+384:        flow.request.headers.pop("Proxy-Authorization", None)
+385:        flow.request.headers.pop(MCP_SESSION_TAG_HEADER, None)
+399:                await self._dispatch_approved_request(
+413:                flow.response = http_403(SandboxProxyError.INTERNAL_ERROR)
+433:                await self._dispatch_approved_request(
+462:            flow.response = http_403(SandboxProxyError.INTERNAL_ERROR)
+466:    async def _dispatch_approved_request(
+630:            flow.response = http_403(SandboxProxyError.POLICY_DENIED)
+636:                SandboxProxyError.POLICY_DENIED.value,
+1233:        """Resolves the originating session from the Proxy-Authorization tag.
+1288:        direct_auth_header = flow.request.headers.get("Proxy-Authorization")
+1298:        mcp_header = flow.request.headers.get(MCP_SESSION_TAG_HEADER)
+1315:# Proxy-Authorization parsing
+1320:    """Extracts the basic-auth username from a `Proxy-Authorization` header.

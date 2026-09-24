@@ -87,3 +87,13 @@ user-access enforcement.
 No MCP authorization or credential bypass was confirmed.
 
 **Action 11.4 status: COMPLETE.**
+
+## Action 11.5 — Action approval and confused-deputy boundaries
+
+Action 11.5 verified strictest-policy behavior, ASK approval scope, MCP
+fail-closed policy defaults and removal of in-band session authority before
+forwarding requests.
+
+No confused-deputy or approval bypass was confirmed.
+
+**Action 11.5 status: COMPLETE.**
