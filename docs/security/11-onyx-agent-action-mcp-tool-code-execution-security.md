@@ -201,3 +201,19 @@ content minimization.
 The integrated synthetic runtime passed with Docker networking disabled.
 
 **Action 11.13 status: COMPLETE.**
+
+## Action 11.14 — Findings, regression and framework mapping
+
+Action 11.14 consolidated H11-01 through H11-04, reran ten representative
+Phase-11 security test files, and cross-mapped the resulting controls to the
+project's NIST AI RMF, NIST SSDF, OWASP GenAI/LLM, OWASP Agentic, MITRE ATLAS
+and OWASP ASVS anchors.
+
+Three findings are fully remediated. H11-02 is mitigated with its DNS
+validation-to-connect residual explicitly documented.
+
+No confirmed Phase-11 finding is left without a disposition.
+
+The mapping is engineering evidence, not formal certification.
+
+**Action 11.14 status: COMPLETE.**

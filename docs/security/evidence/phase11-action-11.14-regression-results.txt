@@ -1,0 +1,88 @@
+=== RUN tests/unit/onyx/tools/test_phase11_tool_authority_boundaries.py ===
+..[93mWARNING[0m:  09/24/2026 08:05:53 AM                 tool_runner.py  329: Tool invented_admin_tool not found in tools list
+..
+----------------------------------------------------------------------
+Ran 4 tests in 0.006s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/test_phase11_tool_authority_boundaries.py
+=== RUN tests/unit/onyx/server/features/mcp/test_phase11_mcp_security_boundaries.py ===
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.004s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/mcp/test_phase11_mcp_security_boundaries.py
+=== RUN tests/unit/onyx/external_apps/test_phase11_action_approval_boundaries.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.003s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/external_apps/test_phase11_action_approval_boundaries.py
+=== RUN tests/unit/onyx/chat/test_phase11_tool_result_security_boundary.py ===
+[94mNOTICE[0m:   09/24/2026 08:06:04 AM      variable_functionality.py   66: License enforcement is enabled (LICENSE_ENFORCEMENT_ENABLED). Enterprise Edition code is loaded, but paid features stay locked until a valid license is applied. Without a license this deployment behaves as Community Edition.
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/chat/test_phase11_tool_result_security_boundary.py
+=== RUN tests/unit/onyx/server/features/tool/test_phase11_credential_delegation.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.002s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/tool/test_phase11_credential_delegation.py
+=== RUN tests/unit/onyx/tools/tool_implementations/custom/test_phase11_custom_tool_ssrf.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/tool_implementations/custom/test_phase11_custom_tool_ssrf.py
+=== RUN tests/unit/onyx/server/features/craft/sandbox/test_phase11_code_execution_isolation.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/craft/sandbox/test_phase11_code_execution_isolation.py
+=== RUN tests/unit/onyx/tools/test_phase11_tool_trace_redaction.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/test_phase11_tool_trace_redaction.py
+=== RUN tests/unit/onyx/chat/test_phase11_agent_resource_bounds.py ===
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.013s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/chat/test_phase11_agent_resource_bounds.py
+=== RUN tests/unit/onyx/test_phase11_bounded_agent_runtime.py ===
+[94mNOTICE[0m:   09/24/2026 08:06:38 AM      variable_functionality.py   66: License enforcement is enabled (LICENSE_ENFORCEMENT_ENABLED). Enterprise Edition code is loaded, but paid features stay locked until a valid license is applied. Without a license this deployment behaves as Community Edition.
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.009s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/test_phase11_bounded_agent_runtime.py
+PHASE11_REGRESSION_GATE=PASS
+H11_01_STATUS=REMEDIATED
+H11_02_STATUS=MITIGATED_WITH_RESIDUAL
+H11_03_STATUS=REMEDIATED
+H11_04_STATUS=REMEDIATED
+CONFIRMED_FINDINGS_OR_HARDENINGS=4
+FULLY_REMEDIATED_PHASE11_FINDINGS=3
+MITIGATED_WITH_RESIDUAL_PHASE11_FINDINGS=1
+UNADDRESSED_CONFIRMED_PHASE11_FINDINGS=0
+BOUNDED_AGENT_RUNTIME=PASS
+FORMAL_COMPLIANCE_CERTIFICATION=NOT_CLAIMED
+PRODUCTION_RUNTIME=NOT_CLAIMED
+EXTERNAL_NETWORK_REQUESTS=0
+REAL_DATA_OR_CREDENTIALS=0
+RESULT=ACTION_11_14_FINDINGS_REGRESSION_MAPPING_PASS
