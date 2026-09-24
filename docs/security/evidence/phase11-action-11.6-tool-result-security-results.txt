@@ -1,0 +1,15 @@
+[94mNOTICE[0m:   09/24/2026 07:30:26 AM      variable_functionality.py   66: License enforcement is enabled (LICENSE_ENFORCEMENT_ENABLED). Enterprise Edition code is loaded, but paid features stay locked until a valid license is applied. Without a license this deployment behaves as Community Edition.
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+TOOL_RESULT_UNTRUSTED_BOUNDARY=PASS
+TOOL_RESULT_AUTHORITY_ESCALATION_DENIAL=PASS
+TOOL_RESULT_PAYLOAD_PRESERVED_AS_DATA=PASS
+H11_01_TOOL_RESULT_BOUNDARY=REMEDIATED
+REAL_MODEL_COMPROMISE=NOT_CLAIMED
+HTTP_REQUESTS=0
+EXTERNAL_NETWORK_REQUESTS=0
+REAL_DATA_OR_CREDENTIALS=0
+RESULT=ACTION_11_6_TOOL_RESULT_TRUST_PASS

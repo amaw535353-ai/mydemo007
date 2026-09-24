@@ -97,3 +97,16 @@ forwarding requests.
 No confused-deputy or approval bypass was confirmed.
 
 **Action 11.5 status: COMPLETE.**
+
+## Action 11.6 — Tool-result trust and indirect prompt injection
+
+Action 11.6 identified a generic instruction-integrity gap: arbitrary tool
+output was replayed directly into the next LLM cycle without a common
+instruction/data trust boundary.
+
+All replayed tool results are now explicitly labeled untrusted and unable to
+legitimately change identity, authorization, approval or credential scope.
+
+**H11-01: REMEDIATED.**
+
+**Action 11.6 status: COMPLETE.**

@@ -1,0 +1,9 @@
+625:    leaves a later TOOL_CALL_RESPONSE message in context. Some providers (e.g. Ollama)
+638:        if msg.message_type == MessageType.TOOL_CALL_RESPONSE:
+1159:                        parsed = json.loads(tool_response.llm_facing_response)
+1278:                    tool_response.llm_facing_response = incognito_memory_refusal
+1288:                    saved_response = tool_response.llm_facing_response
+1316:            # 2. N TOOL_CALL_RESPONSE messages (one per tool call)
+1354:                # Add TOOL_CALL_RESPONSE messages for each tool call
+1359:                    tool_response_message = tool_response.llm_facing_response
+1365:                        message_type=MessageType.TOOL_CALL_RESPONSE,
