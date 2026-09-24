@@ -140,3 +140,15 @@ This evidence does not claim deletion from production backups, external
 provider stores or every derived representation.
 
 **Action 12.9 status: COMPLETE.**
+
+## Action 12.10 — DLP, redaction, export and download controls
+
+Action 12.10 functionally verified synthetic-value redaction and reviewed
+administrative log and usage export authorization.
+
+The evidence supports targeted redaction and masking controls, not a claim that
+every Onyx data path is protected by a general-purpose DLP engine.
+
+No reviewed export-authorization or redaction bypass was confirmed.
+
+**Action 12.10 status: COMPLETE.**

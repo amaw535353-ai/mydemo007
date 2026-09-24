@@ -1,0 +1,61 @@
+=== APPLICATION REDACTION ===
+from collections.abc import Iterable
+
+REDACTED_VALUE = "[REDACTED]"
+_MINIMUM_REDACTED_VALUE_LENGTH = 3
+
+
+def scrub_sensitive_values(message: str, values: Iterable[str | None]) -> str:
+    """Replace known sensitive values without corrupting common short text."""
+    sensitive_values = sorted(
+        {
+            value
+            for value in values
+            if value and len(value) >= _MINIMUM_REDACTED_VALUE_LENGTH
+        },
+        key=len,
+        reverse=True,
+    )
+    for value in sensitive_values:
+        message = message.replace(value, REDACTED_VALUE)
+    return message
+
+=== TRACE REDACTION / MASKING ===
+22:def mask_sensitive_data(data: Any) -> Any:
+26:    - Dictionaries: recursively masks values, redacts keys containing 'private_key' or 'authorization'
+28:    - Strings: redacts private_key patterns, Authorization Bearer tokens, truncates long strings
+35:            # Mask private keys and authorization headers
+37:                "private_key" in key.lower() or "authorization" in key.lower()
+39:                masked_dict[key] = "***REDACTED***"
+41:                masked_dict[key] = mask_sensitive_data(value)
+46:        return [mask_sensitive_data(item) for item in data]
+50:        # Mask private_key patterns
+51:        if "private_key" in data.lower():
+52:            return "***REDACTED***"
+55:        # Pattern matches "Authorization: Bearer <token>" or "authorization: bearer <token>"
+56:        if re.search(r"authorization:\s*bearer\s+\S+", data, re.IGNORECASE):
+58:                r"(authorization:\s*bearer\s+)\S+",
+59:                r"\1***REDACTED***",
+
+=== ADMIN LOG EXPORT ===
+8:from fastapi.responses import StreamingResponse
+134:@router.post("/admin/log-export")
+136:    user: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+236:@router.get("/admin/log-export/{export_id}")
+239:    _: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+265:@router.get("/admin/log-export/{export_id}/download")
+266:def download_log_export(
+268:    _: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+269:) -> StreamingResponse:
+299:    return StreamingResponse(
+
+=== ADMIN USAGE EXPORT ===
+6:from fastapi.responses import StreamingResponse
+36:@router.post("/admin/usage-report", status_code=204)
+39:    user: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+71:@router.get("/admin/usage-report/{report_name}")
+74:    _: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
+89:    return StreamingResponse(
+92:        headers={"Content-Disposition": f"attachment; filename={report_name}"},
+96:@router.get("/admin/usage-report")
+98:    _: User = Depends(require_permission(Permission.FULL_ADMIN_PANEL_ACCESS)),
