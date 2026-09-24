@@ -1,0 +1,473 @@
+=== CHAT / SESSION / SEARCH DOCUMENT DATA ===
+14:from onyx.context.search.models import InferenceSection, SavedSearchDoc
+15:from onyx.context.search.models import SearchDoc as ServerSearchDoc
+18:    ChatMessage,
+19:    ChatMessage__SearchDoc,
+20:    ChatSession,
+21:    ChatSessionSharedStatus,
+26:from onyx.db.models import SearchDoc as DBSearchDoc
+31:from onyx.server.query_and_chat.models import ChatMessageDetail
+48:) -> ChatSession:
+49:    stmt = select(ChatSession).where(ChatSession.id == chat_session_id)
+53:            joinedload(ChatSession.persona).options(
+60:            joinedload(ChatSession.project),
+64:        stmt = stmt.where(ChatSession.shared_status == ChatSessionSharedStatus.PUBLIC)
+70:                or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+89:) -> Sequence[ChatSession]:
+90:    stmt = select(ChatSession).where(ChatSession.slack_thread_id == slack_thread_id)
+93:            or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+103:            select(ChatSession.id).where(
+104:                ChatSession.user_id == user_id,
+105:                ChatSession.incognito_record_mode.is_not(None),
+115:    return ChatSession.incognito_record_mode.is_(
+117:    ) | ChatSession.incognito_record_mode.in_(persisting)
+133:) -> list[ChatSession]:
+135:        select(ChatSession)
+136:        .where(ChatSession.user_id == user_id)
+137:        .where(ChatSession.onyxbot_flow.is_(False))
+138:        .order_by(desc(ChatSession.time_updated))
+145:        stmt = stmt.where(ChatSession.incognito_record_mode.is_(None))
+151:        stmt = stmt.where(ChatSession.deleted == deleted)
+154:        stmt = stmt.where(ChatSession.time_updated < before)
+157:        stmt = stmt.where(ChatSession.project_id == project_id)
+159:        stmt = stmt.where(ChatSession.project_id.is_(None))
+178:                select(ChatMessage.chat_session_id)
+179:                .where(ChatMessage.chat_session_id.in_(session_ids))
+180:                .where(ChatMessage.message_type != MessageType.SYSTEM)
+201:        db_session.query(DBSearchDoc)
+202:        .outerjoin(ChatMessage__SearchDoc)
+203:        .filter(ChatMessage__SearchDoc.chat_message_id.is_(None))
+217:            select(ChatMessage.id, ChatMessage.files).where(
+218:                ChatMessage.chat_session_id == chat_session_id,
+233:    # Delete ChatMessage records - CASCADE constraints will automatically handle:
+234:    # - ChatMessage__StandardAnswer relationship records
+236:        delete(ChatMessage).where(ChatMessage.chat_session_id == chat_session_id)
+253:    incognito_record_mode: IncognitoRecordMode | None = None,
+255:) -> ChatSession:
+256:    chat_session = ChatSession(
+268:        incognito_record_mode=incognito_record_mode,
+281:) -> ChatSession:
+294:    if chat_session.incognito_record_mode is not None:
+326:    sharing_status: ChatSessionSharedStatus | None = None,
+327:) -> ChatSession:
+339:        chat_session.incognito_record_mode
+350:def delete_all_chat_sessions_for_user(
+356:        db_session.query(ChatSession)
+357:        .filter(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+365:            delete(ChatSession).where(
+366:                ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False)
+371:            update(ChatSession)
+372:            .where(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+379:def delete_chat_session(
+398:        db_session.execute(delete(ChatSession).where(ChatSession.id == chat_session_id))
+431:        func.max(ChatMessage.time_sent), ChatSession.time_created
+434:        select(ChatSession.user_id, ChatSession.id)
+435:        .outerjoin(ChatMessage, ChatMessage.chat_session_id == ChatSession.id)
+436:        .group_by(ChatSession.id, ChatSession.user_id)
+457:) -> ChatMessage:
+458:    stmt = select(ChatMessage).where(ChatMessage.id == chat_message_id)
+482:) -> ChatSession:
+488:    stmt = select(ChatMessage).where(ChatMessage.id == message_id)
+506:) -> Sequence[ChatMessage]:
+513:        select(ChatMessage)
+514:        .where(ChatMessage.chat_session_id.in_(chat_session_ids))
+515:        .order_by(nullsfirst(ChatMessage.parent_message_id))
+525:    source_session = db_session.get(ChatSession, slack_chat_session_id)
+526:    if source_session and source_session.incognito_record_mode is not None:
+559:    Link SearchDocs to a ChatMessage by creating entries in the chat_message__search_doc junction table.
+567:        chat_message_search_doc = ChatMessage__SearchDoc(
+577:    Link SearchDocs to a ToolCall by creating entries in the tool_call__search_doc junction table.
+584:    from onyx.db.models import ToolCall__SearchDoc
+587:        tool_call_search_doc = ToolCall__SearchDoc(
+600:) -> list[ChatMessage]:
+608:        select(ChatMessage)
+609:        .where(ChatMessage.chat_session_id == chat_session_id)
+610:        .order_by(nullsfirst(ChatMessage.parent_message_id))
+615:            selectinload(ChatMessage.chat_message_feedbacks),
+616:            selectinload(ChatMessage.search_docs),
+624:            selectinload(ChatMessage.tool_calls).selectinload(
+638:) -> ChatMessage:
+640:        root_message: ChatMessage | None = (
+641:            db_session.query(ChatMessage)
+643:                ChatMessage.chat_session_id == chat_session_id,
+644:                ChatMessage.parent_message_id.is_(None),
+656:        new_root_message = ChatMessage(
+675:) -> ChatMessage:
+677:    empty_message = ChatMessage(
+693:        db_session.query(ChatMessage).filter(ChatMessage.id == parent_message).first()
+710:) -> list[ChatMessage]:
+717:    reserved: list[ChatMessage] = []
+719:        msg = ChatMessage(
+736:        db_session.query(ChatMessage)
+737:        .filter(ChatMessage.id == parent_message_id)
+759:        user_message_id: Primary key of the ``USER``-type ``ChatMessage`` whose
+762:            ``ChatMessage`` to prefer. Must be a direct child of ``user_message_id``.
+769:    user_msg = db_session.get(ChatMessage, user_message_id)
+775:    assistant_msg = db_session.get(ChatMessage, preferred_assistant_message_id)
+792:    parent_message: ChatMessage,
+802:) -> ChatMessage:
+805:        existing_message = db_session.query(ChatMessage).get(reserved_message_id)
+820:        new_chat_message = ChatMessage(
+844:    chat_message: ChatMessage,
+865:    server_search_doc: ServerSearchDoc,
+868:) -> DBSearchDoc:
+869:    db_search_doc = DBSearchDoc(
+915:def get_db_search_doc_by_id(doc_id: int, db_session: Session) -> DBSearchDoc | None:
+917:    search_doc = db_session.query(DBSearchDoc).filter(DBSearchDoc.id == doc_id).first()
+923:) -> DBSearchDoc | None:
+924:    """Get SearchDoc by document_id field. There are no safety checks here like user permission etc., use with caution"""
+926:        db_session.query(DBSearchDoc)
+927:        .filter(DBSearchDoc.document_id == document_id)
+934:    db_search_doc: DBSearchDoc,
+936:) -> SavedSearchDoc:
+937:    return SavedSearchDoc(
+964:    chat_message: ChatMessage,
+966:) -> ChatMessageDetail:
+997:    chat_msg_detail = ChatMessageDetail(
+1030:        update(ChatSession)
+1031:        .where(ChatSession.id == chat_session_id)
+1045:) -> DBSearchDoc:
+1046:    """Create a SearchDoc in the database from an InferenceSection."""
+1048:    db_search_doc = DBSearchDoc(
+1082:    saved_search_doc: SavedSearchDoc,
+1083:) -> DBSearchDoc:
+1084:    """Convert SavedSearchDoc (server model) into DB SearchDoc with correct field mapping."""
+1085:    return DBSearchDoc(
+1097:        # SavedSearchDoc.score exists and defaults to 0.0
+1121:) -> ChatMessage:
+1123:        db_session.query(ChatMessage)
+1125:            ChatMessage.id == chat_message_id,
+1126:            ChatMessage.chat_session_id == chat_session_id,
+1148:            db_session.query(ChatMessage)
+1149:            .filter(ChatMessage.id == chat_message.parent_message_id)
+
+=== MEMORY / PERSONALIZATION ===
+18:class UserInfo(BaseModel):
+25:    organization_profile: dict[str, str] = Field(default_factory=dict)
+34:class UserMemoryContext(BaseModel):
+38:    user_info: UserInfo
+39:    user_preferences: str | None = None
+42:    def without_memories(self) -> "UserMemoryContext":
+44:        return UserMemoryContext(
+47:            user_preferences=self.user_preferences,
+60:        for label, value in self.user_info.organization_profile.items():
+62:        if self.user_preferences:
+63:            result.append(f"User preferences: {self.user_preferences}")
+80:def get_memories(user: User, db_session: Session) -> UserMemoryContext:
+93:    user_info = UserInfo(
+97:        organization_profile=profile_views.fields,
+102:    user_preferences = None
+103:    if user.user_preferences:
+104:        user_preferences = user.user_preferences
+107:        select(Memory).where(Memory.user_id == user.id).order_by(Memory.id.asc())
+109:    memories = tuple(memory.memory_text for memory in memory_rows if memory.memory_text)
+111:    return UserMemoryContext(
+114:        user_preferences=user_preferences,
+121:    memory_text: str,
+133:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+141:            memory_text=memory_text,
+160:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+167:        memory.memory_text = new_text
+
+=== USER FILES / FILE CONTENT ===
+backend/onyx/db/user_file.py:12:    user_file_ids: list[str],
+backend/onyx/db/user_file.py:16:    Return a list of (user_file_id, chunk_count) tuples.
+backend/onyx/db/user_file.py:17:    If a user_file_id is not found in the database, it will be returned with a chunk_count of 0.
+backend/onyx/db/user_file.py:20:        UserFile.id.in_(user_file_ids)
+backend/onyx/db/user_file.py:25:    # Create a dictionary of user_file_id to chunk_count
+backend/onyx/db/user_file.py:32:        (user_file_id, chunk_counts.get(user_file_id, 0))
+backend/onyx/db/user_file.py:33:        for user_file_id in user_file_ids
+backend/onyx/db/user_file.py:37:def calculate_user_files_token_count(file_ids: list[UUID], db_session: Session) -> int:
+backend/onyx/db/user_file.py:42:    if file_ids:
+backend/onyx/db/user_file.py:45:            .filter(UserFile.id.in_(file_ids))
+backend/onyx/db/user_file.py:55:    user_file_ids: list[str],
+backend/onyx/db/user_file.py:59:    user_file_uuid_ids = [UUID(user_file_id) for user_file_id in user_file_ids]
+backend/onyx/db/user_file.py:60:    stmt = select(Project__UserFile.user_file_id, Project__UserFile.project_id).where(
+backend/onyx/db/user_file.py:61:        Project__UserFile.user_file_id.in_(user_file_uuid_ids)
+backend/onyx/db/user_file.py:65:    user_file_id_to_project_ids: dict[str, list[int]] = {
+backend/onyx/db/user_file.py:66:        user_file_id: [] for user_file_id in user_file_ids
+backend/onyx/db/user_file.py:68:    for user_file_id, project_id in rows:
+backend/onyx/db/user_file.py:69:        user_file_id_to_project_ids[str(user_file_id)].append(project_id)
+backend/onyx/db/user_file.py:71:    return user_file_id_to_project_ids
+backend/onyx/db/user_file.py:75:    user_file_ids: list[str],
+backend/onyx/db/user_file.py:81:        .where(UserFile.id.in_(user_file_ids))
+backend/onyx/db/user_file.py:92:    user_file_ids: list[UUID],
+backend/onyx/db/user_file.py:96:    if not user_file_ids:
+backend/onyx/db/user_file.py:101:        .filter(UserFile.id.in_(user_file_ids))
+backend/onyx/db/user_file.py:108:    user_file_id: UUID | str, db_session: Session
+backend/onyx/db/user_file.py:111:    even be a UserFile id (e.g. a storage file_id) — those resolve to None."""
+backend/onyx/db/user_file.py:112:    return db_session.query(UserFile).filter(UserFile.id == user_file_id).first()
+backend/onyx/db/user_file.py:115:def get_file_id_by_user_file_id(user_file_id: str, db_session: Session) -> str | None:
+backend/onyx/db/user_file.py:116:    """Resolve a `UserFile.id` to its underlying `FileRecord.file_id`.
+backend/onyx/db/user_file.py:119:    caller is already passing a storage `file_id`), so the caller can fall
+backend/onyx/db/user_file.py:122:    user_file = get_user_file_by_id(user_file_id, db_session)
+backend/onyx/db/user_file.py:124:        return user_file.file_id
+backend/onyx/db/user_file.py:128:def get_file_ids_by_user_file_ids(
+backend/onyx/db/user_file.py:129:    user_file_ids: list[UUID], db_session: Session
+backend/onyx/db/user_file.py:131:    user_files = db_session.query(UserFile).filter(UserFile.id.in_(user_file_ids)).all()
+backend/onyx/db/user_file.py:132:    return [user_file.file_id for user_file in user_files]
+backend/onyx/db/user_file.py:136:    user_file_ids: list[str],
+backend/onyx/db/user_file.py:158:        .filter(UserFile.id.in_(user_file_ids))
+backend/onyx/db/user_file.py:174:            select(UserFile.user_id)
+backend/onyx/db/user_file.py:182:def get_user_file_ids_for_user_batch(
+backend/onyx/db/user_file.py:196:        UserFile.user_id == user_id,
+backend/onyx/db/user_file.py:198:        UserFile.incognito.is_(False),
+backend/onyx/db/user_file.py:208:def get_max_user_file_id_for_user(db_session: Session, user_id: UUID) -> str | None:
+backend/onyx/db/user_file.py:213:            UserFile.user_id == user_id,
+backend/onyx/db/user_file.py:222:def filter_existing_user_file_ids(
+backend/onyx/db/user_file.py:231:            UserFile.user_id == user_id,
+backend/onyx/db/user_file.py:246:def mark_user_file_reconcile_pending(db_session: Session, user_file_id: UUID) -> None:
+backend/onyx/db/user_file.py:251:        .where(UserFile.id == user_file_id)
+backend/onyx/db/user_file.py:257:def clear_user_file_reconcile_pending(db_session: Session, user_file_id: UUID) -> None:
+backend/onyx/db/user_file.py:261:        .where(UserFile.id == user_file_id)
+backend/onyx/db/user_file.py:286:                    UserFile.user_id.in_(user_ids),
+backend/onyx/db/file_content.py:5:from onyx.db.models import FileContent
+backend/onyx/db/file_content.py:8:def get_file_content_by_file_id(
+backend/onyx/db/file_content.py:9:    file_id: str,
+backend/onyx/db/file_content.py:11:) -> FileContent:
+backend/onyx/db/file_content.py:12:    record = db_session.query(FileContent).filter_by(file_id=file_id).first()
+backend/onyx/db/file_content.py:15:            f"File content for file_id {file_id} does not exist or was deleted"
+backend/onyx/db/file_content.py:20:def get_file_content_by_file_id_optional(
+backend/onyx/db/file_content.py:21:    file_id: str,
+backend/onyx/db/file_content.py:23:) -> FileContent | None:
+backend/onyx/db/file_content.py:24:    return db_session.query(FileContent).filter_by(file_id=file_id).first()
+backend/onyx/db/file_content.py:28:    file_id: str,
+backend/onyx/db/file_content.py:32:) -> FileContent:
+backend/onyx/db/file_content.py:34:    race conditions when concurrent calls target the same file_id."""
+backend/onyx/db/file_content.py:35:    stmt = insert(FileContent).values(
+backend/onyx/db/file_content.py:36:        file_id=file_id,
+backend/onyx/db/file_content.py:41:        index_elements=[FileContent.file_id],
+backend/onyx/db/file_content.py:50:    return db_session.get(FileContent, file_id)  # ty: ignore[invalid-return-type]
+backend/onyx/db/file_content.py:53:def transfer_file_content_file_id(
+backend/onyx/db/file_content.py:54:    old_file_id: str,
+backend/onyx/db/file_content.py:55:    new_file_id: str,
+backend/onyx/db/file_content.py:58:    """Move a file_content row from old_file_id to new_file_id in-place.
+backend/onyx/db/file_content.py:62:    new_file_id already exists in file_record (FK target)."""
+backend/onyx/db/file_content.py:64:        db_session.query(FileContent)
+backend/onyx/db/file_content.py:65:        .filter_by(file_id=old_file_id)
+backend/onyx/db/file_content.py:66:        .update({"file_id": new_file_id})
+backend/onyx/db/file_content.py:70:            f"File content for file_id {old_file_id} does not exist or was deleted"
+backend/onyx/db/file_content.py:74:def delete_file_content_by_file_id(
+backend/onyx/db/file_content.py:75:    file_id: str,
+backend/onyx/db/file_content.py:78:    db_session.query(FileContent).filter_by(file_id=file_id).delete()
+backend/onyx/db/file_record.py:20:                    FileRecord.file_id.like(f"{QUERY_REPORT_NAME_PREFIX}-%"),
+backend/onyx/db/file_record.py:29:def get_filerecord_by_file_id_optional(
+backend/onyx/db/file_record.py:30:    file_id: str,
+backend/onyx/db/file_record.py:33:    return db_session.query(FileRecord).filter_by(file_id=file_id).first()
+backend/onyx/db/file_record.py:45:def get_filerecord_by_file_id(
+backend/onyx/db/file_record.py:46:    file_id: str,
+backend/onyx/db/file_record.py:49:    filestore = db_session.query(FileRecord).filter_by(file_id=file_id).first()
+backend/onyx/db/file_record.py:53:            f"File by id {file_id} does not exist or was deleted"
+backend/onyx/db/file_record.py:59:def get_filerecords_by_file_ids(
+backend/onyx/db/file_record.py:60:    file_ids: list[str],
+backend/onyx/db/file_record.py:65:    if not file_ids:
+backend/onyx/db/file_record.py:68:        db_session.scalars(select(FileRecord).where(FileRecord.file_id.in_(file_ids)))
+backend/onyx/db/file_record.py:82:        .where(FileRecord.file_id.in_(file_sizes.keys()))
+backend/onyx/db/file_record.py:86:        .values(file_size=case(file_sizes, value=FileRecord.file_id))
+backend/onyx/db/file_record.py:97:        db_session.query(FileRecord).filter(FileRecord.file_id.like(f"{prefix}%")).all()
+backend/onyx/db/file_record.py:101:def delete_filerecord_by_file_id(
+backend/onyx/db/file_record.py:102:    file_id: str,
+backend/onyx/db/file_record.py:105:    db_session.query(FileRecord).filter_by(file_id=file_id).delete()
+backend/onyx/db/file_record.py:109:    file_id: str,
+backend/onyx/db/file_record.py:118:        FileRecord.file_id == file_id,
+backend/onyx/db/file_record.py:123:def get_staged_file_ids_by_index_attempt_id(
+backend/onyx/db/file_record.py:127:    """Return every `INDEXING_STAGING` file_id tagged with this attempt."""
+backend/onyx/db/file_record.py:130:            select(FileRecord.file_id)
+backend/onyx/db/file_record.py:133:                FileRecord.file_metadata["index_attempt_id"].as_string()
+backend/onyx/db/file_record.py:140:def get_staged_file_ids_for_cc_pair_excluding_attempt(
+backend/onyx/db/file_record.py:146:    """Return `INDEXING_STAGING` file_ids for this cc_pair eligible for
+backend/onyx/db/file_record.py:164:            select(FileRecord.file_id)
+backend/onyx/db/file_record.py:167:                FileRecord.file_metadata["cc_pair_id"].as_string() == str(cc_pair_id)
+backend/onyx/db/file_record.py:169:            .where(FileRecord.file_metadata["tenant_id"].as_string() == tenant_id)
+backend/onyx/db/file_record.py:171:                FileRecord.file_metadata["index_attempt_id"].as_string()
+backend/onyx/db/file_record.py:175:                FileRecord.file_metadata["index_attempt_id"]
+backend/onyx/db/file_record.py:184:    file_id: str,
+backend/onyx/db/file_record.py:191:    file_metadata: dict | None = None,
+backend/onyx/db/file_record.py:195:    race conditions when concurrent calls target the same file_id.
+backend/onyx/db/file_record.py:203:        file_metadata = {
+backend/onyx/db/file_record.py:204:            **(file_metadata or {}),
+backend/onyx/db/file_record.py:208:        file_id=file_id,
+backend/onyx/db/file_record.py:212:        file_metadata=file_metadata,
+backend/onyx/db/file_record.py:218:        index_elements=[FileRecord.file_id],
+backend/onyx/db/file_record.py:223:            "file_metadata": stmt.excluded.file_metadata,
+backend/onyx/db/file_record.py:231:    return db_session.get(FileRecord, file_id)  # ty: ignore[invalid-return-type]
+backend/onyx/db/file_record.py:234:def get_incognito_file_ids(session_id: str, db_session: Session) -> list[str]:
+backend/onyx/db/file_record.py:238:            select(FileRecord.file_id).where(
+backend/onyx/db/file_record.py:239:                FileRecord.file_metadata[INCOGNITO_SESSION_METADATA_KEY].astext
+backend/onyx/db/file_record.py:246:def get_session_ids_with_incognito_files(
+backend/onyx/db/file_record.py:256:        select(FileRecord.file_metadata[INCOGNITO_SESSION_METADATA_KEY].astext)
+backend/onyx/db/file_record.py:258:        .where(FileRecord.file_metadata.has_key(INCOGNITO_SESSION_METADATA_KEY))
+
+=== CREDENTIAL / OAUTH DATA ===
+backend/onyx/db/credentials.py:53:                Credential.user_id == user.id,
+backend/onyx/db/credentials.py:54:                Credential.user_id.is_(None),
+backend/onyx/db/credentials.py:61:    return stmt.where(Credential.user_id == user.id)
+backend/onyx/db/credentials.py:207:        credential_json=credential_data.credential_json,
+backend/onyx/db/credentials.py:208:        user_id=user.id,
+backend/onyx/db/credentials.py:223:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+backend/onyx/db/credentials.py:240:    credential_json: dict[str, Any],
+backend/onyx/db/credentials.py:252:    # Get existing credential_json and merge with new values
+backend/onyx/db/credentials.py:254:        credential.credential_json.get_value(apply_mask=False)
+backend/onyx/db/credentials.py:255:        if credential.credential_json
+backend/onyx/db/credentials.py:258:    credential.credential_json = {  # ty: ignore[invalid-assignment]
+backend/onyx/db/credentials.py:260:        **credential_json,
+backend/onyx/db/credentials.py:263:    credential.user_id = user.id
+backend/onyx/db/credentials.py:265:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+backend/onyx/db/credentials.py:280:    credential.credential_json = (  # ty: ignore[invalid-assignment]
+backend/onyx/db/credentials.py:281:        credential_data.credential_json
+backend/onyx/db/credentials.py:283:    credential.user_id = user.id if user is not None else None
+backend/onyx/db/credentials.py:286:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+backend/onyx/db/credentials.py:291:def update_credential_json(
+backend/onyx/db/credentials.py:293:    credential_json: dict[str, Any],
+backend/onyx/db/credentials.py:301:    credential.credential_json = credential_json  # ty: ignore[invalid-assignment]
+backend/onyx/db/credentials.py:303:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+backend/onyx/db/credentials.py:308:def backend_update_credential_json(
+backend/onyx/db/credentials.py:310:    credential_json: dict[str, Any],
+backend/onyx/db/credentials.py:314:    credential.credential_json = credential_json  # ty: ignore[invalid-assignment]
+backend/onyx/db/credentials.py:415:        credential_json_value = (
+backend/onyx/db/credentials.py:416:            first_credential.credential_json.get_value(apply_mask=False)
+backend/onyx/db/credentials.py:417:            if first_credential.credential_json
+backend/onyx/db/credentials.py:420:        if credential_json_value != {} or first_credential.user is not None:
+backend/onyx/db/credentials.py:426:        credential_json={},
+backend/onyx/db/credentials.py:427:        user_id=None,
+backend/onyx/db/oauth_config.py:7:from onyx.db.models import OAuthConfig, OAuthUserToken, Tool
+backend/onyx/db/oauth_config.py:21:    client_secret: str,
+backend/onyx/db/oauth_config.py:32:        client_secret=client_secret,
+backend/onyx/db/oauth_config.py:60:    client_secret: str | None = None,
+backend/onyx/db/oauth_config.py:64:    clear_client_secret: bool = False,
+backend/onyx/db/oauth_config.py:69:    NOTE: If client_id or client_secret are None, existing values are preserved.
+backend/onyx/db/oauth_config.py:70:    To clear these values, set clear_client_id or clear_client_secret to True.
+backend/onyx/db/oauth_config.py:90:    if clear_client_secret:
+backend/onyx/db/oauth_config.py:91:        oauth_config.client_secret = ""  # ty: ignore[invalid-assignment]
+backend/onyx/db/oauth_config.py:92:    elif client_secret is not None:
+backend/onyx/db/oauth_config.py:93:        oauth_config.client_secret = client_secret  # ty: ignore[invalid-assignment]
+backend/onyx/db/oauth_config.py:124:    oauth_config_id: int, user_id: UUID, db_session: Session
+backend/onyx/db/oauth_config.py:125:) -> OAuthUserToken | None:
+backend/onyx/db/oauth_config.py:128:        select(OAuthUserToken).where(
+backend/onyx/db/oauth_config.py:129:            OAuthUserToken.oauth_config_id == oauth_config_id,
+backend/onyx/db/oauth_config.py:130:            OAuthUserToken.user_id == user_id,
+backend/onyx/db/oauth_config.py:136:    user_id: UUID, db_session: Session
+backend/onyx/db/oauth_config.py:137:) -> list[OAuthUserToken]:
+backend/onyx/db/oauth_config.py:141:    stmt = select(OAuthUserToken).where(OAuthUserToken.user_id == user_id)
+backend/onyx/db/oauth_config.py:147:    oauth_config_id: int, user_id: UUID, token_data: dict, db_session: Session
+backend/onyx/db/oauth_config.py:148:) -> OAuthUserToken:
+backend/onyx/db/oauth_config.py:150:    existing_token = get_user_oauth_token(oauth_config_id, user_id, db_session)
+backend/onyx/db/oauth_config.py:154:        existing_token.token_data = token_data  # ty: ignore[invalid-assignment]
+backend/onyx/db/oauth_config.py:159:        new_token = OAuthUserToken(
+backend/onyx/db/oauth_config.py:161:            user_id=user_id,
+backend/onyx/db/oauth_config.py:162:            token_data=token_data,
+backend/onyx/db/oauth_config.py:169:def delete_user_oauth_token(
+backend/onyx/db/oauth_config.py:170:    oauth_config_id: int, user_id: UUID, db_session: Session
+backend/onyx/db/oauth_config.py:173:    user_token = get_user_oauth_token(oauth_config_id, user_id, db_session)
+backend/onyx/db/oauth_config.py:176:            f"OAuth token for user {user_id} and config {oauth_config_id} does not exist"
+
+=== LLM / PROVIDER DATA ===
+backend/onyx/llm/tracing_wrap.py:6:no-op when an outer `generation_span` is already active — callers that
+backend/onyx/llm/tracing_wrap.py:7:explicitly wrap their calls (via `llm_generation_span`) continue to work and
+backend/onyx/llm/tracing_wrap.py:35:_PROMPT_PARAM_NAME = "prompt"
+backend/onyx/llm/tracing_wrap.py:39:def _outer_generation_span_active() -> bool:
+backend/onyx/llm/tracing_wrap.py:40:    """Return True when an outer caller has already opened a generation_span.
+backend/onyx/llm/tracing_wrap.py:65:def _validate_prompt_param(fn: Callable[..., Any]) -> inspect.Signature:
+backend/onyx/llm/tracing_wrap.py:66:    """Return the signature of ``fn``, asserting it can accept a ``prompt``.
+backend/onyx/llm/tracing_wrap.py:69:    signature can't possibly carry a ``prompt`` surfaces a clear error at
+backend/onyx/llm/tracing_wrap.py:74:    - a named ``prompt`` parameter (the expected shape), or
+backend/onyx/llm/tracing_wrap.py:80:    receive a prompt at all (e.g. a fixed unrelated parameter list) are
+backend/onyx/llm/tracing_wrap.py:85:    has_prompt = _PROMPT_PARAM_NAME in sig.parameters
+backend/onyx/llm/tracing_wrap.py:90:    if not (has_prompt or accepts_var_keyword or accepts_var_positional):
+backend/onyx/llm/tracing_wrap.py:95:            f"subclass overrides must either keep the 'prompt' parameter "
+backend/onyx/llm/tracing_wrap.py:101:def _extract_prompt_and_tools(
+backend/onyx/llm/tracing_wrap.py:107:    """Bind ``args`` / ``kwargs`` against ``sig`` and return ``(prompt, tools)``.
+backend/onyx/llm/tracing_wrap.py:128:    """Wrap a concrete ``LLM.invoke`` implementation with a fallback generation_span."""
+backend/onyx/llm/tracing_wrap.py:132:    sig = _validate_prompt_param(invoke_fn)
+backend/onyx/llm/tracing_wrap.py:136:        if _outer_generation_span_active():
+backend/onyx/llm/tracing_wrap.py:140:        from onyx.tracing.llm_utils import llm_generation_span, record_llm_response
+backend/onyx/llm/tracing_wrap.py:142:        prompt, tools = _extract_prompt_and_tools(sig, self, args, kwargs)
+backend/onyx/llm/tracing_wrap.py:143:        with llm_generation_span(
+backend/onyx/llm/tracing_wrap.py:144:            self, flow=LLMFlow.UNTAGGED_INVOKE, input_messages=prompt, tools=tools
+backend/onyx/llm/tracing_wrap.py:158:                record_llm_response(span, response)
+backend/onyx/llm/tracing_wrap.py:168:    """Wrap a concrete ``LLM.stream`` implementation with a fallback generation_span.
+backend/onyx/llm/tracing_wrap.py:185:    sig = _validate_prompt_param(stream_fn)
+backend/onyx/llm/tracing_wrap.py:191:        if _outer_generation_span_active():
+backend/onyx/llm/tracing_wrap.py:196:        from onyx.tracing.llm_utils import llm_generation_span, record_llm_span_output
+backend/onyx/llm/tracing_wrap.py:198:        prompt, tools = _extract_prompt_and_tools(sig, self, args, kwargs)
+backend/onyx/llm/tracing_wrap.py:199:        with llm_generation_span(
+backend/onyx/llm/tracing_wrap.py:200:            self, flow=LLMFlow.UNTAGGED_STREAM, input_messages=prompt, tools=tools
+backend/onyx/llm/tracing_wrap.py:235:                    record_llm_span_output(
+backend/onyx/tracing/llm_utils.py:11:from onyx.tracing.framework.create import generation_span, get_current_span
+backend/onyx/tracing/llm_utils.py:28:def llm_generation_span(
+backend/onyx/tracing/llm_utils.py:31:    input_messages: Sequence[Any] | Any | None = None,
+backend/onyx/tracing/llm_utils.py:36:    with generation_span(
+backend/onyx/tracing/llm_utils.py:43:        if input_messages is not None and span.content_mode == TraceContentMode.FULL:
+backend/onyx/tracing/llm_utils.py:44:            if isinstance(input_messages, Sequence) and not isinstance(
+backend/onyx/tracing/llm_utils.py:45:                input_messages, (str, bytes)
+backend/onyx/tracing/llm_utils.py:47:                normalized_messages = input_messages
+backend/onyx/tracing/llm_utils.py:49:                normalized_messages = [input_messages]
+backend/onyx/tracing/llm_utils.py:63:    input_messages: Sequence[Any] | Any | None = None,
+backend/onyx/tracing/llm_utils.py:73:    :func:`llm_generation_span` instead — it pulls model and provider straight
+backend/onyx/tracing/llm_utils.py:81:    with generation_span(
+backend/onyx/tracing/llm_utils.py:89:        if input_messages is not None and span.content_mode == TraceContentMode.FULL:
+backend/onyx/tracing/llm_utils.py:90:            if isinstance(input_messages, Sequence) and not isinstance(
+backend/onyx/tracing/llm_utils.py:91:                input_messages, (str, bytes)
+backend/onyx/tracing/llm_utils.py:93:                normalized_messages = input_messages
+backend/onyx/tracing/llm_utils.py:95:                normalized_messages = [input_messages]
+backend/onyx/tracing/llm_utils.py:114:def record_llm_response(
+backend/onyx/tracing/llm_utils.py:145:def record_llm_span_output(
+backend/onyx/tracing/llm_utils.py:193:    prompt_tokens = getattr(usage, "prompt_tokens", None)  # ods: ignore[getattr]
+backend/onyx/tracing/llm_utils.py:207:    if prompt_tokens is not None:
+backend/onyx/tracing/llm_utils.py:208:        usage_dict["input_tokens"] = prompt_tokens
+
+=== TELEMETRY ===
+9:from onyx.configs.app_configs import DISABLE_TELEMETRY, ENTERPRISE_EDITION_ENABLED
+30:_DANSWER_TELEMETRY_ENDPOINT = "https://telemetry.onyx.app/anonymous_telemetry"
+34:# Cap each telemetry POST so a slow or unreachable endpoint cannot pin a sender
+62:    # the telemetry case, but if this is used generally it should be handled.
+77:def _get_or_generate_instance_domain() -> str | None:  #
+89:                _CACHED_INSTANCE_DOMAIN = first_user.email.split("@")[-1]
+97:def optional_telemetry(
+100:    user_id: str | None = None,
+106:    if DISABLE_TELEMETRY:
+113:        def telemetry_logic() -> bool:
+115:                customer_uuid = (
+120:                payload = {
+125:                    "user_id": user_id,
+126:                    "customer_uuid": customer_uuid,
+130:                    payload["instance_domain"] = _get_or_generate_instance_domain()
+131:                response = requests.post(
+134:                    json=payload,
+144:            return telemetry_logic()
+150:            target=lambda: current_context.run(telemetry_logic), daemon=True
+160:def mt_cloud_telemetry(
+183:        module="onyx.utils.telemetry",
+184:        attribute="event_telemetry",
+189:def _get_tenant_id_for_user_identify(user_email: str) -> str | None:
+193:            attribute="get_tenant_id_for_email",
+194:            fallback=lambda _email: POSTGRES_DEFAULT_SCHEMA,
+195:        )(user_email)
+197:        logger.exception("Failed to resolve tenant id for user %s", user_email)
+205:    email: str,
+226:    resolved_tenant_id = tenant_id or _get_tenant_id_for_user_identify(email)
+227:    properties: dict[str, str] = {"email": email}
+232:        module="onyx.utils.telemetry",
+
+=== INCOGNITO / CONTENT-FREE DATA FLOW ===
+backend/onyx/chat/incognito.py:11:change cannot alter a session under way. Only FULL_HISTORY may write
+backend/onyx/chat/incognito.py:12:conversation content into ``chat_message`` rows. USAGE_ONLY writes
+backend/onyx/chat/incognito.py:73:    authorize against a revoked setting for the cache TTL.
+backend/onyx/chat/incognito.py:105:    second api_server can hold the pre-save mode for the cache TTL, and this
+backend/onyx/chat/incognito.py:158:            delete_incognito_generated_files(session_id, db_session)
+backend/onyx/chat/incognito.py:170:    Only Bifrost honors a per-request retention switch. FULL_HISTORY sends
+backend/onyx/chat/incognito.py:206:        return {"store": False}
+backend/onyx/chat/incognito.py:209:        return {"extra_body": {"provider": {"data_collection": "deny"}}}
+backend/onyx/chat/incognito.py:229:def content_free_file_descriptors(
+backend/onyx/chat/incognito.py:243:def delete_incognito_generated_files(
+backend/onyx/chat/incognito_context.py:3:USAGE_ONLY must carry the live conversation outside Postgres, so it lives in
+backend/onyx/chat/incognito_context.py:4:Redis: one value per session, a sliding TTL that starts over on every save,
+backend/onyx/chat/incognito_context.py:31:INCOGNITO_CONTEXT_TTL_SECONDS = 3600
+backend/onyx/chat/incognito_context.py:33:_TOMBSTONE_TTL_SECONDS = INCOGNITO_CONTEXT_TTL_SECONDS
+backend/onyx/chat/incognito_context.py:36:_MAX_CONTEXT_MESSAGES = 200
+backend/onyx/chat/incognito_context.py:37:_MAX_CONTEXT_BYTES = 1_000_000
+backend/onyx/chat/incognito_context.py:81:    USAGE_ONLY content must never reach Postgres, so the Postgres cache
+backend/onyx/chat/incognito_context.py:150:        for message in context.messages[-_MAX_CONTEXT_MESSAGES:]
+backend/onyx/chat/incognito_context.py:153:    while len(body) > _MAX_CONTEXT_BYTES and len(trimmed) > 1:
+backend/onyx/chat/incognito_context.py:165:            str(INCOGNITO_CONTEXT_TTL_SECONDS).encode(),
+backend/onyx/chat/incognito_context.py:233:    client.set(_context_key(chat_session_id), _TOMBSTONE, ex=_TOMBSTONE_TTL_SECONDS)
