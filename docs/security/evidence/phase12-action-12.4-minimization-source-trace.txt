@@ -1,0 +1,65 @@
+=== INCOGNITO POLICY ===
+backend/onyx/chat/incognito.py:9:its mode on a metadata-only ``chat_session`` row at creation, and downstream
+backend/onyx/chat/incognito.py:11:change cannot alter a session under way. Only FULL_HISTORY may write
+backend/onyx/chat/incognito.py:12:conversation content into ``chat_message`` rows. USAGE_ONLY writes
+backend/onyx/chat/incognito.py:13:content-free rows and must carry the live conversation outside Postgres
+backend/onyx/chat/incognito.py:29:from onyx.db.enums import IncognitoRecordMode, record_mode_persists_content
+backend/onyx/chat/incognito.py:58:    return record_mode_persists_content(mode)
+backend/onyx/chat/incognito.py:170:    Only Bifrost honors a per-request retention switch. FULL_HISTORY sends
+backend/onyx/chat/incognito.py:178:    if record_mode_persists_content(mode):
+backend/onyx/chat/incognito.py:193:    """Request-body params a content-free turn must carry, by provider.
+backend/onyx/chat/incognito.py:198:    if record_mode_persists_content(mode):
+backend/onyx/chat/incognito.py:232:    """Descriptors safe to persist for a content-free turn. Linkage ids and
+backend/onyx/db/chat.py:16:from onyx.db.enums import IncognitoRecordMode, record_mode_persists_content
+backend/onyx/db/chat.py:335:    # A title is conversation-derived, so a content-free session never stores
+backend/onyx/db/chat.py:338:    if description is not None and record_mode_persists_content(
+
+=== EPHEMERAL CONTEXT BOUNDS ===
+31:INCOGNITO_CONTEXT_TTL_SECONDS = 3600
+33:_TOMBSTONE_TTL_SECONDS = INCOGNITO_CONTEXT_TTL_SECONDS
+36:_MAX_CONTEXT_MESSAGES = 200
+37:_MAX_CONTEXT_BYTES = 1_000_000
+50:_TOMBSTONE = b"tombstone"
+53:if cur == 'tombstone' then
+96:    """The value's version and JSON body, or (0, None) for a tombstone or a
+150:        for message in context.messages[-_MAX_CONTEXT_MESSAGES:]
+153:    while len(body) > _MAX_CONTEXT_BYTES and len(trimmed) > 1:
+165:            str(INCOGNITO_CONTEXT_TTL_SECONDS).encode(),
+193:    """Whether this session's teardown tombstone is still present.
+229:    """End the session now: tombstone the context so an in-flight turn cannot
+230:    recreate it (a missing key reads as version zero), and delete the buffered
+236:        client.delete(*buffered)
+
+=== PROVIDER RETENTION SUPPRESSION ===
+91:BIFROST_DISABLE_CONTENT_LOGGING_HEADER = "x-bf-disable-content-logging"
+94:PORTKEY_DEBUG_HEADER = "x-portkey-debug"
+97:LITELLM_PROXY_REDACTION_HEADER = "x-litellm-enable-message-redaction"
+182:    if provider == LlmProviderNames.PORTKEY.value:
+183:        return {PORTKEY_DEBUG_HEADER: "false"}
+206:        return {"store": False}
+209:        return {"extra_body": {"provider": {"data_collection": "deny"}}}
+
+=== CONTENT-FREE FILE METADATA ===
+225-        model_kwargs=incognito_llm_extra_body(mode, provider),
+226-    )
+227-
+228-
+229:def content_free_file_descriptors(
+230-    file_descriptors: list[FileDescriptor],
+231-) -> list[FileDescriptor]:
+232-    """Descriptors safe to persist for a content-free turn. Linkage ids and
+233-    type survive for the file-reader tool and teardown. The content-derived
+234-    filename does not."""
+235-    return [
+236-        FileDescriptor(
+237-            id=fd["id"], type=fd["type"], user_file_id=fd.get("user_file_id")
+238-        )
+239-        for fd in file_descriptors
+240-    ]
+241-
+242-
+243-def delete_incognito_generated_files(
+244-    chat_session_id: UUID, db_session: Session
+245-) -> bool:
+246-    """Delete the blobs the session's tools saved. True when none remain.
+247-

@@ -62,3 +62,16 @@ externally reachable consumers remain candidates for direct negative testing.
 No cross-user privacy bypass was confirmed by this action.
 
 **Action 12.3 status: COMPLETE.**
+
+## Action 12.4 — Collection, minimization and purpose boundaries
+
+Action 12.4 verified multiple content-minimization properties in incognito
+operation, including bounded ephemeral context, provider retention-suppression
+requests, filename/title minimization and image removal.
+
+Provider compliance with requested retention settings is not independently
+claimed.
+
+No collection-overreach finding was confirmed by this action.
+
+**Action 12.4 status: COMPLETE.**
