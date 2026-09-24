@@ -1,0 +1,390 @@
+=== CHAT STORAGE / DELETION ===
+18:    ChatMessage,
+19:    ChatMessage__SearchDoc,
+20:    ChatSession,
+21:    ChatSessionSharedStatus,
+31:from onyx.server.query_and_chat.models import ChatMessageDetail
+48:) -> ChatSession:
+49:    stmt = select(ChatSession).where(ChatSession.id == chat_session_id)
+53:            joinedload(ChatSession.persona).options(
+60:            joinedload(ChatSession.project),
+64:        stmt = stmt.where(ChatSession.shared_status == ChatSessionSharedStatus.PUBLIC)
+70:                or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+89:) -> Sequence[ChatSession]:
+90:    stmt = select(ChatSession).where(ChatSession.slack_thread_id == slack_thread_id)
+93:            or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+103:            select(ChatSession.id).where(
+104:                ChatSession.user_id == user_id,
+105:                ChatSession.incognito_record_mode.is_not(None),
+115:    return ChatSession.incognito_record_mode.is_(
+117:    ) | ChatSession.incognito_record_mode.in_(persisting)
+133:) -> list[ChatSession]:
+135:        select(ChatSession)
+136:        .where(ChatSession.user_id == user_id)
+137:        .where(ChatSession.onyxbot_flow.is_(False))
+138:        .order_by(desc(ChatSession.time_updated))
+145:        stmt = stmt.where(ChatSession.incognito_record_mode.is_(None))
+151:        stmt = stmt.where(ChatSession.deleted == deleted)
+154:        stmt = stmt.where(ChatSession.time_updated < before)
+157:        stmt = stmt.where(ChatSession.project_id == project_id)
+159:        stmt = stmt.where(ChatSession.project_id.is_(None))
+178:                select(ChatMessage.chat_session_id)
+179:                .where(ChatMessage.chat_session_id.in_(session_ids))
+180:                .where(ChatMessage.message_type != MessageType.SYSTEM)
+202:        .outerjoin(ChatMessage__SearchDoc)
+203:        .filter(ChatMessage__SearchDoc.chat_message_id.is_(None))
+211:def delete_messages_and_files_from_chat_session(
+217:            select(ChatMessage.id, ChatMessage.files).where(
+218:                ChatMessage.chat_session_id == chat_session_id,
+233:    # Delete ChatMessage records - CASCADE constraints will automatically handle:
+234:    # - ChatMessage__StandardAnswer relationship records
+236:        delete(ChatMessage).where(ChatMessage.chat_session_id == chat_session_id)
+255:) -> ChatSession:
+256:    chat_session = ChatSession(
+281:) -> ChatSession:
+326:    sharing_status: ChatSessionSharedStatus | None = None,
+327:) -> ChatSession:
+350:def delete_all_chat_sessions_for_user(
+351:    user: User, db_session: Session, hard_delete: bool = HARD_DELETE_CHATS
+356:        db_session.query(ChatSession)
+357:        .filter(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+361:    if hard_delete:
+363:            delete_messages_and_files_from_chat_session(chat_session.id, db_session)
+365:            delete(ChatSession).where(
+366:                ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False)
+371:            update(ChatSession)
+372:            .where(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+384:    hard_delete: bool = HARD_DELETE_CHATS,
+396:    if hard_delete:
+397:        delete_messages_and_files_from_chat_session(chat_session_id, db_session)
+398:        db_session.execute(delete(ChatSession).where(ChatSession.id == chat_session_id))
+431:        func.max(ChatMessage.time_sent), ChatSession.time_created
+434:        select(ChatSession.user_id, ChatSession.id)
+435:        .outerjoin(ChatMessage, ChatMessage.chat_session_id == ChatSession.id)
+436:        .group_by(ChatSession.id, ChatSession.user_id)
+457:) -> ChatMessage:
+458:    stmt = select(ChatMessage).where(ChatMessage.id == chat_message_id)
+482:) -> ChatSession:
+488:    stmt = select(ChatMessage).where(ChatMessage.id == message_id)
+506:) -> Sequence[ChatMessage]:
+513:        select(ChatMessage)
+514:        .where(ChatMessage.chat_session_id.in_(chat_session_ids))
+515:        .order_by(nullsfirst(ChatMessage.parent_message_id))
+525:    source_session = db_session.get(ChatSession, slack_chat_session_id)
+559:    Link SearchDocs to a ChatMessage by creating entries in the chat_message__search_doc junction table.
+567:        chat_message_search_doc = ChatMessage__SearchDoc(
+600:) -> list[ChatMessage]:
+608:        select(ChatMessage)
+609:        .where(ChatMessage.chat_session_id == chat_session_id)
+610:        .order_by(nullsfirst(ChatMessage.parent_message_id))
+615:            selectinload(ChatMessage.chat_message_feedbacks),
+616:            selectinload(ChatMessage.search_docs),
+624:            selectinload(ChatMessage.tool_calls).selectinload(
+638:) -> ChatMessage:
+640:        root_message: ChatMessage | None = (
+641:            db_session.query(ChatMessage)
+643:                ChatMessage.chat_session_id == chat_session_id,
+644:                ChatMessage.parent_message_id.is_(None),
+656:        new_root_message = ChatMessage(
+675:) -> ChatMessage:
+677:    empty_message = ChatMessage(
+693:        db_session.query(ChatMessage).filter(ChatMessage.id == parent_message).first()
+710:) -> list[ChatMessage]:
+717:    reserved: list[ChatMessage] = []
+719:        msg = ChatMessage(
+736:        db_session.query(ChatMessage)
+737:        .filter(ChatMessage.id == parent_message_id)
+759:        user_message_id: Primary key of the ``USER``-type ``ChatMessage`` whose
+762:            ``ChatMessage`` to prefer. Must be a direct child of ``user_message_id``.
+769:    user_msg = db_session.get(ChatMessage, user_message_id)
+775:    assistant_msg = db_session.get(ChatMessage, preferred_assistant_message_id)
+792:    parent_message: ChatMessage,
+802:) -> ChatMessage:
+805:        existing_message = db_session.query(ChatMessage).get(reserved_message_id)
+820:        new_chat_message = ChatMessage(
+844:    chat_message: ChatMessage,
+964:    chat_message: ChatMessage,
+966:) -> ChatMessageDetail:
+997:    chat_msg_detail = ChatMessageDetail(
+1030:        update(ChatSession)
+1031:        .where(ChatSession.id == chat_session_id)
+1121:) -> ChatMessage:
+1123:        db_session.query(ChatMessage)
+1125:            ChatMessage.id == chat_message_id,
+1126:            ChatMessage.chat_session_id == chat_session_id,
+1148:            db_session.query(ChatMessage)
+1149:            .filter(ChatMessage.id == chat_message.parent_message_id)
+
+=== MEMORY STORAGE ===
+15:MAX_MEMORIES_PER_USER = 10
+25:    organization_profile: dict[str, str] = Field(default_factory=dict)
+39:    user_preferences: str | None = None
+47:            user_preferences=self.user_preferences,
+60:        for label, value in self.user_info.organization_profile.items():
+62:        if self.user_preferences:
+63:            result.append(f"User preferences: {self.user_preferences}")
+97:        organization_profile=profile_views.fields,
+102:    user_preferences = None
+103:    if user.user_preferences:
+104:        user_preferences = user.user_preferences
+107:        select(Memory).where(Memory.user_id == user.id).order_by(Memory.id.asc())
+109:    memories = tuple(memory.memory_text for memory in memory_rows if memory.memory_text)
+114:        user_preferences=user_preferences,
+121:    memory_text: str,
+126:    If the user already has MAX_MEMORIES_PER_USER memories, the oldest
+133:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+136:        if len(existing) >= MAX_MEMORIES_PER_USER:
+141:            memory_text=memory_text,
+160:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+167:        memory.memory_text = new_text
+
+=== FILE STORAGE ===
+backend/onyx/db/file_content.py:4:from onyx.db.file_record import FileRecordNotFoundError
+backend/onyx/db/file_content.py:5:from onyx.db.models import FileContent
+backend/onyx/db/file_content.py:11:) -> FileContent:
+backend/onyx/db/file_content.py:12:    record = db_session.query(FileContent).filter_by(file_id=file_id).first()
+backend/onyx/db/file_content.py:14:        raise FileRecordNotFoundError(
+backend/onyx/db/file_content.py:23:) -> FileContent | None:
+backend/onyx/db/file_content.py:24:    return db_session.query(FileContent).filter_by(file_id=file_id).first()
+backend/onyx/db/file_content.py:29:    lobj_oid: int,
+backend/onyx/db/file_content.py:32:) -> FileContent:
+backend/onyx/db/file_content.py:35:    stmt = insert(FileContent).values(
+backend/onyx/db/file_content.py:37:        lobj_oid=lobj_oid,
+backend/onyx/db/file_content.py:41:        index_elements=[FileContent.file_id],
+backend/onyx/db/file_content.py:43:            "lobj_oid": stmt.excluded.lobj_oid,
+backend/onyx/db/file_content.py:50:    return db_session.get(FileContent, file_id)  # ty: ignore[invalid-return-type]
+backend/onyx/db/file_content.py:64:        db_session.query(FileContent)
+backend/onyx/db/file_content.py:74:def delete_file_content_by_file_id(
+backend/onyx/db/file_content.py:78:    db_session.query(FileContent).filter_by(file_id=file_id).delete()
+backend/onyx/db/file_record.py:8:from onyx.db.models import FileRecord, IndexAttempt
+backend/onyx/db/file_record.py:15:) -> list[FileRecord]:
+backend/onyx/db/file_record.py:18:            select(FileRecord).where(
+backend/onyx/db/file_record.py:20:                    FileRecord.file_id.like(f"{QUERY_REPORT_NAME_PREFIX}-%"),
+backend/onyx/db/file_record.py:21:                    FileRecord.file_type == FileType.CSV,
+backend/onyx/db/file_record.py:22:                    FileRecord.file_origin == FileOrigin.QUERY_HISTORY_CSV,
+backend/onyx/db/file_record.py:32:) -> FileRecord | None:
+backend/onyx/db/file_record.py:33:    return db_session.query(FileRecord).filter_by(file_id=file_id).first()
+backend/onyx/db/file_record.py:36:class FileRecordNotFoundError(RuntimeError):
+backend/onyx/db/file_record.py:48:) -> FileRecord:
+backend/onyx/db/file_record.py:49:    filestore = db_session.query(FileRecord).filter_by(file_id=file_id).first()
+backend/onyx/db/file_record.py:52:        raise FileRecordNotFoundError(
+backend/onyx/db/file_record.py:62:) -> list[FileRecord]:
+backend/onyx/db/file_record.py:68:        db_session.scalars(select(FileRecord).where(FileRecord.file_id.in_(file_ids)))
+backend/onyx/db/file_record.py:81:        update(FileRecord)
+backend/onyx/db/file_record.py:82:        .where(FileRecord.file_id.in_(file_sizes.keys()))
+backend/onyx/db/file_record.py:85:        .where(FileRecord.file_size.is_(None))
+backend/onyx/db/file_record.py:86:        .values(file_size=case(file_sizes, value=FileRecord.file_id))
+backend/onyx/db/file_record.py:93:) -> list[FileRecord]:
+backend/onyx/db/file_record.py:95:        return db_session.query(FileRecord).all()
+backend/onyx/db/file_record.py:97:        db_session.query(FileRecord).filter(FileRecord.file_id.like(f"{prefix}%")).all()
+backend/onyx/db/file_record.py:101:def delete_filerecord_by_file_id(
+backend/onyx/db/file_record.py:105:    db_session.query(FileRecord).filter_by(file_id=file_id).delete()
+backend/onyx/db/file_record.py:117:    db_session.query(FileRecord).filter(
+backend/onyx/db/file_record.py:118:        FileRecord.file_id == file_id,
+backend/onyx/db/file_record.py:119:        FileRecord.file_origin == from_origin,
+backend/onyx/db/file_record.py:120:    ).update({FileRecord.file_origin: to_origin})
+backend/onyx/db/file_record.py:130:            select(FileRecord.file_id)
+backend/onyx/db/file_record.py:131:            .where(FileRecord.file_origin == FileOrigin.INDEXING_STAGING)
+backend/onyx/db/file_record.py:133:                FileRecord.file_metadata["index_attempt_id"].as_string()
+backend/onyx/db/file_record.py:164:            select(FileRecord.file_id)
+backend/onyx/db/file_record.py:165:            .where(FileRecord.file_origin == FileOrigin.INDEXING_STAGING)
+backend/onyx/db/file_record.py:167:                FileRecord.file_metadata["cc_pair_id"].as_string() == str(cc_pair_id)
+backend/onyx/db/file_record.py:169:            .where(FileRecord.file_metadata["tenant_id"].as_string() == tenant_id)
+backend/onyx/db/file_record.py:171:                FileRecord.file_metadata["index_attempt_id"].as_string()
+backend/onyx/db/file_record.py:175:                FileRecord.file_metadata["index_attempt_id"]
+backend/onyx/db/file_record.py:189:    object_key: str,
+backend/onyx/db/file_record.py:191:    file_metadata: dict | None = None,
+backend/onyx/db/file_record.py:193:) -> FileRecord:
+backend/onyx/db/file_record.py:203:        file_metadata = {
+backend/onyx/db/file_record.py:204:            **(file_metadata or {}),
+backend/onyx/db/file_record.py:207:    stmt = insert(FileRecord).values(
+backend/onyx/db/file_record.py:212:        file_metadata=file_metadata,
+backend/onyx/db/file_record.py:214:        object_key=object_key,
+backend/onyx/db/file_record.py:218:        index_elements=[FileRecord.file_id],
+backend/onyx/db/file_record.py:223:            "file_metadata": stmt.excluded.file_metadata,
+backend/onyx/db/file_record.py:225:            "object_key": stmt.excluded.object_key,
+backend/onyx/db/file_record.py:231:    return db_session.get(FileRecord, file_id)  # ty: ignore[invalid-return-type]
+backend/onyx/db/file_record.py:238:            select(FileRecord.file_id).where(
+backend/onyx/db/file_record.py:239:                FileRecord.file_metadata[INCOGNITO_SESSION_METADATA_KEY].astext
+backend/onyx/db/file_record.py:256:        select(FileRecord.file_metadata[INCOGNITO_SESSION_METADATA_KEY].astext)
+backend/onyx/db/file_record.py:258:        .where(FileRecord.file_metadata.has_key(INCOGNITO_SESSION_METADATA_KEY))
+
+=== CONNECTOR CREDENTIAL STORAGE ===
+53:                Credential.user_id == user.id,
+54:                Credential.user_id.is_(None),
+61:    return stmt.where(Credential.user_id == user.id)
+207:        credential_json=credential_data.credential_json,
+208:        user_id=user.id,
+223:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+224:    db_session.expire(credential)
+240:    credential_json: dict[str, Any],
+252:    # Get existing credential_json and merge with new values
+254:        credential.credential_json.get_value(apply_mask=False)
+255:        if credential.credential_json
+258:    credential.credential_json = {  # ty: ignore[invalid-assignment]
+260:        **credential_json,
+263:    credential.user_id = user.id
+265:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+266:    db_session.expire(credential)
+280:    credential.credential_json = (  # ty: ignore[invalid-assignment]
+281:        credential_data.credential_json
+283:    credential.user_id = user.id if user is not None else None
+286:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+287:    db_session.expire(credential)
+291:def update_credential_json(
+293:    credential_json: dict[str, Any],
+301:    credential.credential_json = credential_json  # ty: ignore[invalid-assignment]
+303:    # Expire to ensure credential_json is reloaded as SensitiveValue from DB
+304:    db_session.expire(credential)
+308:def backend_update_credential_json(
+310:    credential_json: dict[str, Any],
+314:    credential.credential_json = credential_json  # ty: ignore[invalid-assignment]
+318:def _delete_credential_internal(
+371:def delete_credential_for_user(
+385:    _delete_credential_internal(credential, credential_id, db_session, force)
+388:def delete_credential(
+401:    _delete_credential_internal(credential, credential_id, db_session, force)
+415:        credential_json_value = (
+416:            first_credential.credential_json.get_value(apply_mask=False)
+417:            if first_credential.credential_json
+420:        if credential_json_value != {} or first_credential.user is not None:
+426:        credential_json={},
+427:        user_id=None,
+
+=== OAUTH STORAGE ===
+7:from onyx.db.models import OAuthConfig, OAuthUserToken, Tool
+21:    client_secret: str,
+32:        client_secret=client_secret,
+60:    client_secret: str | None = None,
+64:    clear_client_secret: bool = False,
+69:    NOTE: If client_id or client_secret are None, existing values are preserved.
+70:    To clear these values, set clear_client_id or clear_client_secret to True.
+90:    if clear_client_secret:
+91:        oauth_config.client_secret = ""  # ty: ignore[invalid-assignment]
+92:    elif client_secret is not None:
+93:        oauth_config.client_secret = client_secret  # ty: ignore[invalid-assignment]
+103:def delete_oauth_config(oauth_config_id: int, db_session: Session) -> None:
+124:    oauth_config_id: int, user_id: UUID, db_session: Session
+125:) -> OAuthUserToken | None:
+128:        select(OAuthUserToken).where(
+129:            OAuthUserToken.oauth_config_id == oauth_config_id,
+130:            OAuthUserToken.user_id == user_id,
+136:    user_id: UUID, db_session: Session
+137:) -> list[OAuthUserToken]:
+141:    stmt = select(OAuthUserToken).where(OAuthUserToken.user_id == user_id)
+147:    oauth_config_id: int, user_id: UUID, token_data: dict, db_session: Session
+148:) -> OAuthUserToken:
+150:    existing_token = get_user_oauth_token(oauth_config_id, user_id, db_session)
+154:        existing_token.token_data = token_data  # ty: ignore[invalid-assignment]
+159:        new_token = OAuthUserToken(
+161:            user_id=user_id,
+162:            token_data=token_data,
+169:def delete_user_oauth_token(
+170:    oauth_config_id: int, user_id: UUID, db_session: Session
+173:    user_token = get_user_oauth_token(oauth_config_id, user_id, db_session)
+176:            f"OAuth token for user {user_id} and config {oauth_config_id} does not exist"
+
+=== ENCRYPTION MIGRATIONS ===
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:1:"""encrypt oauth account token storage
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:20:    # Preserve existing token text losslessly as UTF-8 bytes.
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:22:    # Application-level re-encryption is intentionally separate from the
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:23:    # schema migration because authenticated encryption requires the runtime
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:28:        "access_token",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:32:        postgresql_using="convert_to(access_token, 'UTF8')",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:37:        "refresh_token",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:41:        postgresql_using="convert_to(refresh_token, 'UTF8')",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:51:    encrypted_count = bind.execute(
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:57:                substring(access_token from 1 for 10)
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:60:                    refresh_token IS NOT NULL
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:61:                    AND substring(refresh_token from 1 for 10)
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:68:    if encrypted_count:
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:70:            "Cannot downgrade oauth_account token columns while "
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:71:            "ONYXAEAD1 ciphertext is present. Restore the token values "
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:78:        "access_token",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:82:        postgresql_using="convert_from(access_token, 'UTF8')",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:87:        "refresh_token",
+backend/alembic/versions/919019aead01_encrypt_oauth_account_tokens.py:91:        postgresql_using="convert_from(refresh_token, 'UTF8')",
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:1:"""encrypt external app credentials
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:7:Moves the external-app credential columns from JSONB to encrypted ``LargeBinary``,
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:8:matching ``credential.credential_json`` (revision ``0a98909f2757``):
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:9:- ``external_app.organization_credentials``
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:10:- ``external_app_user_credential.user_credentials``
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:12:The feature is not yet in production, so existing (staging) credential data is
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:14:encrypted write path from the start, with no plaintext rows left at rest and no
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:15:dependency on application encryption code. Per-user credential rows are deleted
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:16:(users reconnect); app config rows are kept but their org credentials are reset
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:32:    # Per-user credential rows are nothing but credentials — drop them; users
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:34:    op.execute("DELETE FROM external_app_user_credential")
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:35:    op.drop_column("external_app_user_credential", "user_credentials")
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:37:        "external_app_user_credential",
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:38:        sa.Column("user_credentials", sa.LargeBinary(), nullable=False),
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:42:    # credentials; admins re-enter client_id/secret. The server_default backfills
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:45:    # every insert carries an app-encrypted value rather than relying on the DB.
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:46:    op.drop_column("external_app", "organization_credentials")
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:50:            "organization_credentials",
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:56:    op.alter_column("external_app", "organization_credentials", server_default=None)
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:60:    # Drop the encrypted columns and recreate empty JSONB columns. Credential
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:62:    op.drop_column("external_app_user_credential", "user_credentials")
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:64:        "external_app_user_credential",
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:66:            "user_credentials",
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:73:    op.drop_column("external_app", "organization_credentials")
+backend/alembic/versions/b4950827c0dd_encrypt_external_app_credentials.py:77:            "organization_credentials",
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:1:"""add encrypted key value store with telemetry secrets
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:24:    sa.column("encrypted_value", sa.LargeBinary),
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:27:encrypted_key_value_store = sa.table(
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:28:    "encrypted_key_value_store",
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:39:        "encrypted_key_value_store",
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:43:    # Both columns are Fernet-encrypted LargeBinary under the same key, so the
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:46:        key_value_store.c.key, key_value_store.c.encrypted_value
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:49:        key_value_store.c.encrypted_value.is_not(None),
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:52:        pg_insert(encrypted_key_value_store)
+backend/alembic/versions/f6b0949ea33d_copy_telemetry_secrets_to_encrypted_kv.py:61:    op.drop_table("encrypted_key_value_store")
+
+=== USER DELETE RETENTION EXCEPTION ===
+"""retain user usage after user deletion
+
+Revision ID: 0d9c7b6a5e4f
+Revises: f57f35403f6c
+Create Date: 2026-07-28 00:00:00.000000
+
+"""
+
+from alembic import op
+import sqlalchemy as sa
+
+
+revision = "0d9c7b6a5e4f"
+down_revision = "f57f35403f6c"
+branch_labels = None
+depends_on = None
+
+
+def upgrade() -> None:
+    # CASCADE erased a deleted user's spend history, so historical org totals
+    # shrank on every offboard. API-key principals are user rows too, so
+    # deleting a key erased its spend as well.
+    op.drop_constraint("user_usage_user_id_fkey", "user_usage", type_="foreignkey")
+    op.alter_column("user_usage", "user_id", existing_type=sa.UUID(), nullable=True)
+    op.create_foreign_key(
+        "user_usage_user_id_fkey",
+        "user_usage",
+        "user",
+        ["user_id"],
+        ["id"],
+        ondelete="SET NULL",
+    )
+
+
+def downgrade() -> None:
+    op.drop_constraint("user_usage_user_id_fkey", "user_usage", type_="foreignkey")
+    # Orphaned rows cannot satisfy the NOT NULL constraint being restored.
+    op.execute("DELETE FROM user_usage WHERE user_id IS NULL")
+    op.alter_column("user_usage", "user_id", existing_type=sa.UUID(), nullable=False)
+    op.create_foreign_key(
+        "user_usage_user_id_fkey",
+        "user_usage",
+        "user",
+        ["user_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )

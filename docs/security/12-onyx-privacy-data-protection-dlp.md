@@ -75,3 +75,17 @@ claimed.
 No collection-overreach finding was confirmed by this action.
 
 **Action 12.4 status: COMPLETE.**
+
+## Action 12.5 — Sensitive storage, secrets and PII inventory
+
+Action 12.5 inventoried user/account data, chat content, persistent memory,
+file/blob representations, connector credentials, OAuth data and telemetry
+identifiers.
+
+A deliberate retention exception was recorded for later testing: historical
+user-usage rows survive user deletion with their user foreign key nulled.
+
+This is not yet classified as a privacy defect; Action 12.9 will verify the
+actual retained fields and deletion semantics.
+
+**Action 12.5 status: COMPLETE.**
