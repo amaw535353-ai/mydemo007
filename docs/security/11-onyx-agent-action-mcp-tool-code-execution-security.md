@@ -65,3 +65,15 @@ external actions, sandboxing, networking and code-execution surfaces.
 The inventory is a discovery artifact rather than a vulnerability claim.
 
 **Action 11.2 status: COMPLETE.**
+
+## Action 11.3 — Tool authority, selection and dispatch
+
+Action 11.3 verified that executable tool authority comes from the
+application-constructed tool set rather than arbitrary model-requested names.
+
+Unknown tools are dropped and execution capacity can bound the tool batch.
+
+The first synthetic harness run omitted the required emitter; correcting the
+harness allowed the intended security properties to execute successfully.
+
+**Action 11.3 status: COMPLETE.**

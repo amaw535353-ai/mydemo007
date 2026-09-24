@@ -1,0 +1,36 @@
+30:    resolve_mcp_credentials,
+126:    allowed_tool_ids: list[int] | None,
+134:    if allowed_tool_ids is None:
+138:        and tool.id not in allowed_tool_ids
+152:    allowed_tool_ids: list[int] | None = None,
+173:            allowed_tool_ids=allowed_tool_ids,
+187:    allowed_tool_ids: list[int] | None = None,
+235:        persona.tools, allowed_tool_ids
+243:        # by any request that sends no allowed_tool_ids whitelist.
+244:        if not db_tool_model.enabled:
+247:        # If allowed_tool_ids is specified, skip tools not in the allowed list
+248:        if allowed_tool_ids is not None and db_tool_model.id not in allowed_tool_ids:
+304:                        owner_user_id=user.id,
+408:                if user.is_anonymous:
+428:                if user.is_anonymous:
+445:                        user_id=user.id,
+446:                        user_email="anonymous" if user.is_anonymous else user.email,
+469:                mcp_credentials = resolve_mcp_credentials(mcp_server, user, db_session)
+497:                    user_email=user.email,
+530:    # bypassing persona tool associations and allowed_tool_ids filtering
+
+53:TOOL_EXECUTION_TIMEOUT_SECONDS = 10 * 60
+243:    max_concurrent_tools: int | None = None,
+279:        max_concurrent_tools: Max number of tools to run in this batch. If set, any
+302:    tools_by_name = {tool.name: tool for tool in tools}
+305:    filtered_tool_calls: list[ToolCallKickoff] = []
+307:        if tool_call.tool_name not in tools_by_name:
+308:            logger.warning("Tool %s not found in tools list", tool_call.tool_name)
+310:        filtered_tool_calls.append(tool_call)
+313:    if max_concurrent_tools is not None:
+314:        if max_concurrent_tools <= 0:
+319:        filtered_tool_calls = filtered_tool_calls[:max_concurrent_tools]
+344:    for tool_call in filtered_tool_calls:
+345:        tool = tools_by_name[tool_call.tool_name]
+434:        max_workers=max_concurrent_tools,
+435:        timeout=TOOL_EXECUTION_TIMEOUT_SECONDS,
