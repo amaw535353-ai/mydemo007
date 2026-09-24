@@ -110,3 +110,15 @@ legitimately change identity, authorization, approval or credential scope.
 **H11-01: REMEDIATED.**
 
 **Action 11.6 status: COMPLETE.**
+
+## Action 11.7 — Custom / external credential delegation
+
+Action 11.7 traced custom-tool and external-app credential authority to trusted
+authenticated user or sandbox identity.
+
+OAuth configuration linking and incompatible custom Authorization/passthrough
+configuration have explicit gates.
+
+No credential-delegation bypass was confirmed.
+
+**Action 11.7 status: COMPLETE.**
