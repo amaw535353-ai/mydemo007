@@ -114,3 +114,14 @@ messages remain explicit privacy-sensitive secondary-data boundaries.
 No unauthorized observability disclosure was confirmed by this static action.
 
 **Action 12.7 status: COMPLETE.**
+
+## Action 12.8 — Connector, tool, MCP and provider egress
+
+Action 12.8 mapped external model, custom-tool and MCP boundaries and verified
+outbound URL validation, redirect suppression, MCP header filtering, SSRF-aware
+transport construction and bounded MCP call timing.
+
+All verification was offline; no real external provider or tool endpoint was
+contacted.
+
+**Action 12.8 status: COMPLETE.**

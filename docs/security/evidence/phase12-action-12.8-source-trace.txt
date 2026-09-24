@@ -1,0 +1,61 @@
+=== CUSTOM TOOL EGRESS ===
+45:from onyx.utils.url import validate_outbound_http_url
+55:    return validate_outbound_http_url(
+208:        request_body = llm_kwargs.get(REQUEST_BODY)
+222:        response = requests.request(
+225:            json=request_body,
+226:            headers=self.headers,
+227:            allow_redirects=False,
+
+=== MCP TOOL EGRESS ===
+14:from onyx.server.features.mcp.client import call_mcp_tool
+17:    filter_request_mcp_headers,
+18:    merge_mcp_headers,
+167:            request_headers = filter_request_mcp_headers(
+182:            headers = merge_mcp_headers(request_headers, managed_headers)
+249:                            headers["Authorization"] = refreshed_header
+262:            tool_result = call_mcp_tool(
+266:                connection_headers=headers,
+
+=== MCP TRANSPORT ===
+25:from onyx.configs.app_configs import MCP_TOOL_CALL_TIMEOUT_SECONDS
+27:from onyx.server.features.mcp.ssrf import mcp_ssrf_httpx_client_factory
+99:#         server_url: str,
+103:#         self.server_url = server_url
+125:    server_url: str,
+146:            server_url,
+147:            headers=auth_headers,
+149:            httpx_client_factory=mcp_ssrf_httpx_client_factory,
+165:                read_timeout_seconds=timedelta(seconds=MCP_TOOL_CALL_TIMEOUT_SECONDS),
+187:    server_url: str,
+194:        function, server_url, connection_headers, transport, auth, **kwargs
+211:    server_url: str,
+218:        function, server_url, connection_headers, transport, auth, **kwargs
+256:    server_url: str,
+266:        server_url,
+274:    server_url: str,
+281:        server_url,
+304:    server_url: str,
+314:        server_url,
+326:    server_url: str,
+337:        server_url,
+
+=== MCP CREDENTIAL HANDLING ===
+149:        if api_token := data.get("api_token"):
+150:            substitutions["api_key"] = api_token
+164:            return {"Authorization": f"Bearer {self.user_oauth_token}"}
+171:        access_token = tokens.get("access_token")
+172:        if not token_type or not access_token:
+174:        return {"Authorization": f"{token_type} {access_token}"}
+184:    def build_headers(self) -> dict[str, str]:
+193:            # Names only — header values are credentials.
+195:                "Stored MCP credential headers contained denylisted headers "
+205:        ``build_headers``, so no caller-supplied header can work around it."""
+259:                user.oauth_accounts[0].access_token if user.oauth_accounts else None
+
+=== MODEL PROVIDER EGRESS ===
+387:        api_key=llm_provider.api_key,
+388:        api_base=llm_provider.api_base,
+505:        model_provider=provider,
+508:        api_key=api_key,
+509:        api_base=api_base,
