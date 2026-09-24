@@ -136,3 +136,15 @@ SSRF policy and do not automatically follow redirects.
 A DNS validation-to-connect race remains explicitly recorded as residual risk.
 
 **Action 11.8 status: COMPLETE.**
+
+## Action 11.9 — Code execution and filesystem isolation
+
+Action 11.9 verified container privilege reduction, resource limits, absence of
+a sandbox Docker-socket mount, filesystem traversal containment and bounded
+Python file staging/execution properties.
+
+No host escape was confirmed.
+
+Production kernel/container escape testing is not claimed.
+
+**Action 11.9 status: COMPLETE.**

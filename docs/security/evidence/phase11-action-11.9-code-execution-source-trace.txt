@@ -1,0 +1,92 @@
+26:- ``--security-opt no-new-privileges``
+34:- only the dedicated sandbox bridge network — never compose's default
+35:  network. ``onyx-craft-api`` is the supported API endpoint on that bridge;
+96:    SANDBOX_PROXY_INJECTED_PLACEHOLDER,
+321:    only on Compose's default network. Sandboxes can resolve the dedicated
+428:        "GH_TOKEN": SANDBOX_PROXY_INJECTED_PLACEHOLDER,
+435:    Always-set fields. Security-critical ones (cap_drop, security_opt,
+436:    privileged, user) live here so omitting them fails type-check.
+445:    cap_drop: list[str]
+447:    privileged: bool
+449:    network: str
+452:    volumes: dict[str, dict[str, str]]
+453:    tmpfs: dict[str, str]
+454:    mem_limit: str
+455:    nano_cpus: int
+479:    network: str,
+503:    - **Cap-dropped non-root**: ``user=1000:1000``, ``cap_drop=ALL``,
+504:      ``security_opt=no-new-privileges``, ``privileged=False``.
+505:    - **Single network**: joins only the caller-supplied ``network`` (the
+507:      network; the dedicated API alias is supported there, while postgres,
+518:    - ``ONYX_PAT`` is replaced with ``SANDBOX_PROXY_INJECTED_PLACEHOLDER``;
+528:      ``--reuid``/``--regid`` under ``cap_drop=ALL``; CHOWN repairs the
+545:    default network.
+557:            "join the craft bridge network, so default-network DNS will fail. Use the "
+575:    security_opts = ["no-new-privileges:true"]
+582:    volumes: dict[str, dict[str, str]] = {
+598:        volumes[proxy_ca_volume_name] = {
+611:        # under cap_drop=ALL. CHOWN: repair /workspace/sessions mount-point
+634:        "cap_drop": ["ALL"],
+636:        "privileged": False,
+638:        "network": network,
+641:        "volumes": volumes,
+642:        "tmpfs": {SANDBOX_TMP_PATH: SANDBOX_TMPFS_OPTIONS},
+643:        "mem_limit": memory_limit,
+644:        "nano_cpus": int(cpu_limit * 1_000_000_000),
+677:        self._network_name = SANDBOX_DOCKER_NETWORK
+692:            "DockerSandboxManager initialized: socket=%s image=%s network=%s "
+696:            self._network_name,
+749:    def _ensure_sandbox_network(self) -> None:
+751:            self._docker.networks.get(self._network_name)
+755:        logger.info("Creating sandbox network: %s.", self._network_name)
+758:        self._docker.networks.create(
+759:            self._network_name,
+770:            self._docker.volumes.get(volume_name)
+775:        self._docker.volumes.create(
+860:                SANDBOX_PROXY_INJECTED_PLACEHOLDER if SANDBOX_PROXY_HOST else onyx_pat
+868:            self._ensure_sandbox_network()
+995:            network=self._network_name,
+1041:            volume = self._docker.volumes.get(volume_name)
+1120:            # CAP_DAC_OVERRIDE (cap_drop=ALL), root cannot write to
+1573:        network. Host-run dev mode may override this with a localhost-published
+1990:        api_server joins the sandbox bridge network in the compose file, so it
+1991:        can resolve the container by name on the sandbox network. If the manager
+1992:        runs outside that network, deployers can override via a
+
+12:_USER_LIBRARY_LINK_TARGET = Path("/workspace/managed/user_library")
+25:        raise FilesystemPathError("path traversal is not allowed")
+31:def _is_managed_user_library_link(entry: Path) -> bool:
+32:    if not entry.is_symlink() or entry.name != "user_library":
+40:def _is_user_library_request(relative_path: Path, session_root: Path) -> bool:
+42:        "user_library",
+43:    ) and _is_managed_user_library_link(session_root / "user_library")
+46:def _resolved_user_library_root() -> Path | None:
+55:    if resolved.is_dir() and resolved.is_relative_to(versions_root):
+64:    allow_user_library: bool,
+74:    if resolved.is_relative_to(session_root_resolved):
+77:    if allow_user_library:
+78:        user_library_root = _resolved_user_library_root()
+79:        if user_library_root is not None and resolved.is_relative_to(user_library_root):
+89:        stat_result = entry.lstat() if entry.is_symlink() else entry.stat()
+103:    if session_root.is_symlink():
+106:    allow_user_library = _is_user_library_request(relative_path, session_root)
+111:        allow_user_library=allow_user_library,
+121:        is_managed_user_library = (
+123:            and _is_managed_user_library_link(entry_path_on_disk)
+125:        child_allow_user_library = allow_user_library or is_managed_user_library
+130:                allow_user_library=child_allow_user_library,
+136:            and is_managed_user_library
+
+backend/onyx/tools/tool_implementations/python/python_tool.py:15:    CODE_INTERPRETER_DEFAULT_TIMEOUT_MS,
+backend/onyx/tools/tool_implementations/python/python_tool.py:17:    CODE_INTERPRETER_MAX_STAGED_BYTES,
+backend/onyx/tools/tool_implementations/python/python_tool.py:18:    CODE_INTERPRETER_MAX_STAGED_FILES,
+backend/onyx/tools/tool_implementations/python/python_tool.py:59:def _safe_code_interpreter_filename(filename: str) -> str:
+backend/onyx/tools/tool_implementations/python/python_tool.py:78:    safe_filename = _safe_code_interpreter_filename(filename)
+backend/onyx/tools/tool_implementations/python/python_tool.py:103:    return filename in code or _safe_code_interpreter_filename(filename) in code
+backend/onyx/tools/tool_implementations/python/python_tool.py:203:            f"to per-execution limits ({CODE_INTERPRETER_MAX_STAGED_FILES} files / "
+backend/onyx/tools/tool_implementations/python/python_tool.py:204:            f"{CODE_INTERPRETER_MAX_STAGED_BYTES} bytes); files referenced in the "
+backend/onyx/tools/tool_implementations/python/python_tool.py:394:                max_files=CODE_INTERPRETER_MAX_STAGED_FILES,
+backend/onyx/tools/tool_implementations/python/python_tool.py:395:                max_bytes=CODE_INTERPRETER_MAX_STAGED_BYTES,
+backend/onyx/tools/tool_implementations/python/python_tool.py:420:                    timeout_ms=CODE_INTERPRETER_DEFAULT_TIMEOUT_MS,
+backend/onyx/tools/tool_implementations/bash/bash_tool.py:10:    CODE_INTERPRETER_DEFAULT_TIMEOUT_MS,
+backend/onyx/tools/tool_implementations/bash/bash_tool.py:170:                    timeout_ms=CODE_INTERPRETER_DEFAULT_TIMEOUT_MS,
