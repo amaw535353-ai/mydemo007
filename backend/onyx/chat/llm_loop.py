@@ -35,7 +35,10 @@ from onyx.chat.prompt_utils import (
     process_prompt_template,
 )
 from onyx.configs.app_configs import INTEGRATION_TESTS_MODE
-from onyx.configs.chat_configs import MAX_LLM_CYCLES
+from onyx.configs.chat_configs import (
+    MAX_LLM_CYCLES,
+    MAX_TOOL_CALLS_PER_CYCLE,
+)
 from onyx.configs.constants import DocumentSource, MessageType
 from onyx.configs.model_configs import GEN_AI_INPUT_TOKEN_SAFETY_MARGIN
 from onyx.context.search.models import SearchDoc, SearchDocsResponse
@@ -1135,7 +1138,7 @@ def run_llm_loop(
                 user_info=None,  # TODO, this is part of memories right now, might want to separate it out
                 citation_mapping=citation_mapping,
                 next_citation_num=citation_processor.get_next_citation_number(),
-                max_concurrent_tools=None,
+                max_concurrent_tools=MAX_TOOL_CALLS_PER_CYCLE,
                 skip_search_query_expansion=has_called_search_tool,
                 chat_files=chat_files,
                 url_snippet_map=extract_url_snippet_map(gathered_documents or []),

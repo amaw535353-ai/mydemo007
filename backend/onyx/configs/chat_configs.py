@@ -11,6 +11,22 @@ MAX_CHUNKS_FED_TO_CHAT = int(os.environ.get("MAX_CHUNKS_FED_TO_CHAT") or 25)
 # tool-heavy MCPs that legitimately need more turns.
 MAX_LLM_CYCLES: int = int(os.environ.get("MAX_LLM_CYCLES") or 6)
 
+# Application-level ceiling on otherwise-valid parallel tool calls produced by
+# one LLM cycle. The runner already knows how to enforce a cap; make the
+# production call site use it instead of passing None. Clamp operator input to
+# the authorized concurrency ceiling so configuration cannot silently remove
+# the resource bound.
+MAX_TOOL_CALLS_PER_CYCLE: int = max(
+    0,
+    min(
+        10,
+        int(
+            os.environ.get("MAX_TOOL_CALLS_PER_CYCLE")
+            or 10
+        ),
+    ),
+)
+
 # 1 / (1 + DOC_TIME_DECAY * doc-age-in-years), set to 0 to have no decay
 # Capped in Vespa at 0.5
 DOC_TIME_DECAY = float(

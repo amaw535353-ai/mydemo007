@@ -165,3 +165,18 @@ Tool-specific exception strings and stack traces remain explicit residual
 review areas.
 
 **Action 11.10 status: COMPLETE.**
+
+## Action 11.11 — Tool chaining and resource exhaustion
+
+Action 11.11 verified that the LLM cycle itself is finite, but identified an
+application-level resource gap: the production LLM loop passed no tool fan-out
+cap to a runner that already supported one.
+
+Per-cycle tool execution is now capped at 10 calls.
+
+**H11-04: REMEDIATED.**
+
+The resulting agent path has finite cycle, per-cycle fan-out and per-tool
+execution bounds.
+
+**Action 11.11 status: COMPLETE.**

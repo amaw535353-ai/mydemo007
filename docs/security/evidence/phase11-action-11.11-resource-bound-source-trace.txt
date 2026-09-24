@@ -1,0 +1,36 @@
+=== AGENT CYCLE BOUND ===
+backend/onyx/configs/chat_configs.py:12:MAX_LLM_CYCLES: int = int(os.environ.get("MAX_LLM_CYCLES") or 6)
+backend/onyx/chat/llm_loop.py:38:from onyx.configs.chat_configs import MAX_LLM_CYCLES
+backend/onyx/chat/llm_loop.py:325:# Override via the MAX_LLM_CYCLES env var when running with tool-heavy MCPs
+backend/onyx/chat/llm_loop.py:734:    out_of_cycles: bool,
+backend/onyx/chat/llm_loop.py:747:    if just_ran_web_search and has_open_url_tool and not out_of_cycles:
+backend/onyx/chat/llm_loop.py:753:        is_last_cycle=out_of_cycles,
+backend/onyx/chat/llm_loop.py:896:        for llm_cycle_count in range(MAX_LLM_CYCLES):
+backend/onyx/chat/llm_loop.py:898:            out_of_cycles = llm_cycle_count == MAX_LLM_CYCLES - 1
+backend/onyx/chat/llm_loop.py:906:            elif out_of_cycles or ran_image_gen:
+backend/onyx/chat/llm_loop.py:1021:                out_of_cycles=out_of_cycles,
+
+=== TOOL FANOUT ===
+backend/onyx/chat/llm_loop.py:1138:                max_concurrent_tools=None,
+backend/onyx/tools/tool_runner.py:53:TOOL_EXECUTION_TIMEOUT_SECONDS = 10 * 60
+backend/onyx/tools/tool_runner.py:264:    max_concurrent_tools: int | None = None,
+backend/onyx/tools/tool_runner.py:300:        max_concurrent_tools: Max number of tools to run in this batch. If set, any
+backend/onyx/tools/tool_runner.py:326:    filtered_tool_calls: list[ToolCallKickoff] = []
+backend/onyx/tools/tool_runner.py:331:        filtered_tool_calls.append(tool_call)
+backend/onyx/tools/tool_runner.py:334:    if max_concurrent_tools is not None:
+backend/onyx/tools/tool_runner.py:335:        if max_concurrent_tools <= 0:
+backend/onyx/tools/tool_runner.py:340:        filtered_tool_calls = filtered_tool_calls[:max_concurrent_tools]
+backend/onyx/tools/tool_runner.py:365:    for tool_call in filtered_tool_calls:
+backend/onyx/tools/tool_runner.py:455:        max_workers=max_concurrent_tools,
+backend/onyx/tools/tool_runner.py:456:        timeout=TOOL_EXECUTION_TIMEOUT_SECONDS,
+
+=== CRAFT TURN HARD CAPS ===
+33:    soft budget == TURN_SOFT_BUDGET_FRACTION x hard cap, per origin
+98:INTERACTIVE_TURN_HARD_CAP_SECONDS = 30 * 60
+99:SCHEDULED_RUN_HARD_CAP_SECONDS = 60 * 60
+104:TURN_SOFT_BUDGET_FRACTION = 0.4
+105:INTERACTIVE_TURN_SOFT_BUDGET_SECONDS = int(
+106:    TURN_SOFT_BUDGET_FRACTION * INTERACTIVE_TURN_HARD_CAP_SECONDS
+109:    TURN_SOFT_BUDGET_FRACTION * SCHEDULED_RUN_HARD_CAP_SECONDS
+124:ACTIVE_TURN_TTL_SECONDS = INTERACTIVE_TURN_HARD_CAP_SECONDS + TURN_RECLAIM_SLACK_SECONDS
+136:PROMPT_SLOT_KEEP_ALIVE_MAX_SECONDS = INTERACTIVE_TURN_HARD_CAP_SECONDS
