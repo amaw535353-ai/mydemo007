@@ -102,3 +102,15 @@ That is recorded as a privacy-sensitive provider-egress surface rather than an
 unauthorized disclosure finding.
 
 **Action 12.6 status: COMPLETE.**
+
+## Action 12.7 — Logs, traces, telemetry and error disclosure
+
+Action 12.7 verified incognito external-trace suppression, sensitive trace
+masking and the telemetry disable gate.
+
+External tracing, telemetry event payloads and persisted background error
+messages remain explicit privacy-sensitive secondary-data boundaries.
+
+No unauthorized observability disclosure was confirmed by this static action.
+
+**Action 12.7 status: COMPLETE.**

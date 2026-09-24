@@ -1,0 +1,139 @@
+=== INCOGNITO TRACE SUPPRESSION ===
+from onyx.db.enums import IncognitoRecordMode
+from shared_configs.contextvars import get_current_incognito_record_mode
+
+
+def suppresses_external_traces() -> bool:
+    """External tracing processors must check this at trace start and drop the
+    whole trace, spans included, when True."""
+    mode = IncognitoRecordMode.from_context_value(get_current_incognito_record_mode())
+    return mode is not None and not mode.emits_external_traces
+
+=== TRACE MASKING ===
+19:    return f"{s[:head]}...{tail_part}[TRUNCATED {len(s)} chars to {MASKING_LENGTH}]"
+22:def mask_sensitive_data(data: Any) -> Any:
+26:    - Dictionaries: recursively masks values, redacts keys containing 'private_key' or 'authorization'
+28:    - Strings: redacts private_key patterns, Authorization Bearer tokens, truncates long strings
+35:            # Mask private keys and authorization headers
+37:                "private_key" in key.lower() or "authorization" in key.lower()
+39:                masked_dict[key] = "***REDACTED***"
+41:                masked_dict[key] = mask_sensitive_data(value)
+46:        return [mask_sensitive_data(item) for item in data]
+50:        # Mask private_key patterns
+51:        if "private_key" in data.lower():
+52:            return "***REDACTED***"
+55:        # Pattern matches "Authorization: Bearer <token>" or "authorization: bearer <token>"
+56:        if re.search(r"authorization:\s*bearer\s+\S+", data, re.IGNORECASE):
+58:                r"(authorization:\s*bearer\s+)\S+",
+59:                r"\1***REDACTED***",
+
+=== EXTERNAL TRACE PROCESSORS ===
+backend/onyx/tracing/braintrust_tracing_processor.py:9:from onyx.tracing.incognito import suppresses_external_traces
+backend/onyx/tracing/braintrust_tracing_processor.py:72:        self._first_input: Dict[str, Any] = {}
+backend/onyx/tracing/braintrust_tracing_processor.py:73:        self._last_output: Dict[str, Any] = {}
+backend/onyx/tracing/braintrust_tracing_processor.py:83:        if suppresses_external_traces():
+backend/onyx/tracing/braintrust_tracing_processor.py:120:        # Get the first input and last output for this specific trace
+backend/onyx/tracing/braintrust_tracing_processor.py:121:        trace_first_input = self._first_input.pop(trace.trace_id, None)
+backend/onyx/tracing/braintrust_tracing_processor.py:122:        trace_last_output = self._last_output.pop(trace.trace_id, None)
+backend/onyx/tracing/braintrust_tracing_processor.py:123:        span.log(input=trace_first_input, output=trace_last_output)
+backend/onyx/tracing/braintrust_tracing_processor.py:131:                "output_type": span.span_data.output_type,
+backend/onyx/tracing/braintrust_tracing_processor.py:137:            "input": span.span_data.input,
+backend/onyx/tracing/braintrust_tracing_processor.py:138:            "output": span.span_data.output,
+backend/onyx/tracing/braintrust_tracing_processor.py:158:            prompt_tokens = usage.get("input_tokens")
+backend/onyx/tracing/braintrust_tracing_processor.py:163:            completion_tokens = usage.get("output_tokens")
+backend/onyx/tracing/braintrust_tracing_processor.py:172:        if "cache_read_input_tokens" in usage:
+backend/onyx/tracing/braintrust_tracing_processor.py:173:            metrics["prompt_cached_tokens"] = usage["cache_read_input_tokens"]
+backend/onyx/tracing/braintrust_tracing_processor.py:174:        if "cache_creation_input_tokens" in usage:
+backend/onyx/tracing/braintrust_tracing_processor.py:176:                "cache_creation_input_tokens"
+backend/onyx/tracing/braintrust_tracing_processor.py:188:            cache_read = int(usage.get("cache_read_input_tokens") or 0)
+backend/onyx/tracing/braintrust_tracing_processor.py:189:            cache_creation = int(usage.get("cache_creation_input_tokens") or 0)
+backend/onyx/tracing/braintrust_tracing_processor.py:190:            input_tokens = int(prompt_tokens or 0)
+backend/onyx/tracing/braintrust_tracing_processor.py:191:            output_tokens = int(completion_tokens or 0)
+backend/onyx/tracing/braintrust_tracing_processor.py:192:            input_cents, output_cents = compute_cost_cents(
+backend/onyx/tracing/braintrust_tracing_processor.py:195:                prompt_tokens=input_tokens,
+backend/onyx/tracing/braintrust_tracing_processor.py:196:                completion_tokens=output_tokens,
+backend/onyx/tracing/braintrust_tracing_processor.py:202:            cost_cents = input_cents + output_cents
+backend/onyx/tracing/braintrust_tracing_processor.py:226:            "input": span.span_data.input,
+backend/onyx/tracing/braintrust_tracing_processor.py:227:            "output": span.span_data.output,
+backend/onyx/tracing/braintrust_tracing_processor.py:280:        input_ = event.get("input")
+backend/onyx/tracing/braintrust_tracing_processor.py:281:        output = event.get("output")
+backend/onyx/tracing/braintrust_tracing_processor.py:282:        # Store first input and last output per trace_id
+backend/onyx/tracing/braintrust_tracing_processor.py:284:        if trace_id not in self._first_input and input_ is not None:
+backend/onyx/tracing/braintrust_tracing_processor.py:285:            self._first_input[trace_id] = input_
+backend/onyx/tracing/braintrust_tracing_processor.py:287:        if output is not None:
+backend/onyx/tracing/braintrust_tracing_processor.py:288:            self._last_output[trace_id] = output
+backend/onyx/tracing/langfuse_tracing_processor.py:24:from onyx.tracing.incognito import suppresses_external_traces
+backend/onyx/tracing/langfuse_tracing_processor.py:59:        self._first_input: dict[str, Any] = {}
+backend/onyx/tracing/langfuse_tracing_processor.py:60:        self._last_output: dict[str, Any] = {}
+backend/onyx/tracing/langfuse_tracing_processor.py:118:            from onyx.tracing.masking import mask_sensitive_data
+backend/onyx/tracing/langfuse_tracing_processor.py:120:            return mask_sensitive_data(data)
+backend/onyx/tracing/langfuse_tracing_processor.py:131:            input_tokens = int(
+backend/onyx/tracing/langfuse_tracing_processor.py:132:                usage.get("input_tokens") or usage.get("prompt_tokens") or 0
+backend/onyx/tracing/langfuse_tracing_processor.py:134:            output_tokens = int(
+backend/onyx/tracing/langfuse_tracing_processor.py:135:                usage.get("output_tokens") or usage.get("completion_tokens") or 0
+backend/onyx/tracing/langfuse_tracing_processor.py:137:            cache_read = int(usage.get("cache_read_input_tokens") or 0)
+backend/onyx/tracing/langfuse_tracing_processor.py:138:            cache_creation = int(usage.get("cache_creation_input_tokens") or 0)
+backend/onyx/tracing/langfuse_tracing_processor.py:143:                not input_tokens and not output_tokens and flow not in IMAGE_FLOWS
+backend/onyx/tracing/langfuse_tracing_processor.py:147:            input_cents, output_cents = compute_cost_cents(
+backend/onyx/tracing/langfuse_tracing_processor.py:150:                prompt_tokens=input_tokens,
+backend/onyx/tracing/langfuse_tracing_processor.py:151:                completion_tokens=output_tokens,
+backend/onyx/tracing/langfuse_tracing_processor.py:157:            cost_cents = input_cents + output_cents
+backend/onyx/tracing/langfuse_tracing_processor.py:166:        if suppresses_external_traces():
+backend/onyx/tracing/langfuse_tracing_processor.py:211:                trace_first_input = self._first_input.pop(trace.trace_id, None)
+backend/onyx/tracing/langfuse_tracing_processor.py:212:                trace_last_output = self._last_output.pop(trace.trace_id, None)
+backend/onyx/tracing/langfuse_tracing_processor.py:215:                # Update the root span with input/output and end it
+backend/onyx/tracing/langfuse_tracing_processor.py:217:                    input=self._mask_if_enabled(trace_first_input),
+backend/onyx/tracing/langfuse_tracing_processor.py:218:                    output=self._mask_if_enabled(trace_last_output),
+backend/onyx/tracing/langfuse_tracing_processor.py:305:                            "output_type": data.output_type,
+backend/onyx/tracing/langfuse_tracing_processor.py:334:            input_data: Optional[Any] = None
+backend/onyx/tracing/langfuse_tracing_processor.py:335:            output_data: Optional[Any] = None
+backend/onyx/tracing/langfuse_tracing_processor.py:338:                input_data = data.input
+backend/onyx/tracing/langfuse_tracing_processor.py:339:                output_data = data.output
+backend/onyx/tracing/langfuse_tracing_processor.py:344:                    "input": self._mask_if_enabled(input_data),
+backend/onyx/tracing/langfuse_tracing_processor.py:345:                    "output": self._mask_if_enabled(output_data),
+backend/onyx/tracing/langfuse_tracing_processor.py:366:                input_data = data.input
+backend/onyx/tracing/langfuse_tracing_processor.py:367:                output_data = data.output
+backend/onyx/tracing/langfuse_tracing_processor.py:369:                    input=self._mask_if_enabled(input_data),
+backend/onyx/tracing/langfuse_tracing_processor.py:370:                    output=self._mask_if_enabled(output_data),
+backend/onyx/tracing/langfuse_tracing_processor.py:374:                # Agent spans don't have direct input/output
+backend/onyx/tracing/langfuse_tracing_processor.py:386:            # Store first input and last output per trace_id
+backend/onyx/tracing/langfuse_tracing_processor.py:389:                if trace_id not in self._first_input and input_data is not None:
+backend/onyx/tracing/langfuse_tracing_processor.py:390:                    self._first_input[trace_id] = input_data
+backend/onyx/tracing/langfuse_tracing_processor.py:392:                if output_data is not None:
+backend/onyx/tracing/langfuse_tracing_processor.py:393:                    self._last_output[trace_id] = output_data
+backend/onyx/tracing/langfuse_tracing_processor.py:428:        prompt_tokens = usage.get("prompt_tokens") or usage.get("input_tokens")
+backend/onyx/tracing/langfuse_tracing_processor.py:430:            details["input"] = int(prompt_tokens)
+backend/onyx/tracing/langfuse_tracing_processor.py:432:        completion_tokens = usage.get("completion_tokens") or usage.get("output_tokens")
+backend/onyx/tracing/langfuse_tracing_processor.py:434:            details["output"] = int(completion_tokens)
+backend/onyx/tracing/langfuse_tracing_processor.py:438:        elif details.get("input") and details.get("output"):
+backend/onyx/tracing/langfuse_tracing_processor.py:439:            details["total"] = details["input"] + details["output"]
+backend/onyx/tracing/langfuse_tracing_processor.py:442:        if "cache_read_input_tokens" in usage:
+backend/onyx/tracing/langfuse_tracing_processor.py:443:            details["cache_read_input_tokens"] = int(usage["cache_read_input_tokens"])
+backend/onyx/tracing/langfuse_tracing_processor.py:444:        if "cache_creation_input_tokens" in usage:
+backend/onyx/tracing/langfuse_tracing_processor.py:445:            details["cache_creation_input_tokens"] = int(
+backend/onyx/tracing/langfuse_tracing_processor.py:446:                usage["cache_creation_input_tokens"]
+
+=== TELEMETRY ===
+9:from onyx.configs.app_configs import DISABLE_TELEMETRY, ENTERPRISE_EDITION_ENABLED
+30:_DANSWER_TELEMETRY_ENDPOINT = "https://telemetry.onyx.app/anonymous_telemetry"
+77:def _get_or_generate_instance_domain() -> str | None:  #
+100:    user_id: str | None = None,
+106:    if DISABLE_TELEMETRY:
+115:                customer_uuid = (
+121:                    "data": data,
+125:                    "user_id": user_id,
+126:                    "customer_uuid": customer_uuid,
+130:                    payload["instance_domain"] = _get_or_generate_instance_domain()
+131:                response = requests.post(
+189:def _get_tenant_id_for_user_identify(user_email: str) -> str | None:
+226:    resolved_tenant_id = tenant_id or _get_tenant_id_for_user_identify(email)
+
+=== BACKGROUND ERROR PERSISTENCE ===
+1:from sqlalchemy.exc import IntegrityError
+3:from onyx.db.background_error import create_background_error
+16:    # try to write to the db, but handle IntegrityError specifically
+19:            create_background_error(db_session, message, cc_pair_id)
+20:    except IntegrityError as e:
+23:            f"Failed to create background error: {str(e)}. Original message: {message}"
+31:    # if we get here from an IntegrityError, try to write the error message to the db
+35:            create_background_error(db_session, error_message, None)
