@@ -190,3 +190,14 @@ telemetry and resource-exhaustion attack paths.
 Nine representative Phase 11 negative-security test files executed and passed.
 
 **Action 11.12 status: COMPLETE.**
+
+## Action 11.13 — Bounded synthetic agent runtime
+
+Action 11.13 executed an integrated repository-code scenario spanning bounded
+tool dispatch, untrusted tool-result handling, MCP header authority, managed
+credential precedence, action approval, custom-action SSRF prevention and trace
+content minimization.
+
+The integrated synthetic runtime passed with Docker networking disabled.
+
+**Action 11.13 status: COMPLETE.**

@@ -1,0 +1,18 @@
+[94mNOTICE[0m:   09/24/2026 08:05:39 AM      variable_functionality.py   66: License enforcement is enabled (LICENSE_ENFORCEMENT_ENABLED). Enterprise Edition code is loaded, but paid features stay locked until a valid license is applied. Without a license this deployment behaves as Community Edition.
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.010s
+
+OK
+REPOSITORY_CODE_RUNTIME_EXECUTED=YES
+AGENT_TOOL_FANOUT_BOUND=PASS
+TOOL_RESULT_TRUST_BOUNDARY=PASS
+MCP_HEADER_AUTHORITY_BOUNDARY=PASS
+MANAGED_CREDENTIAL_PRECEDENCE=PASS
+STRICTEST_APPROVAL_POLICY=PASS
+CUSTOM_ACTION_METADATA_SSRF_BLOCK=PASS
+TOOL_TRACE_SECRET_MINIMIZATION=PASS
+EXTERNAL_NETWORK_REQUESTS=0
+REAL_DATA_OR_CREDENTIALS=0
+PRODUCTION_AGENT_RUNTIME=NOT_CLAIMED
+RESULT=ACTION_11_13_BOUNDED_AGENT_RUNTIME_PASS
