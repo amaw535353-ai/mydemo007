@@ -125,3 +125,18 @@ All verification was offline; no real external provider or tool endpoint was
 contacted.
 
 **Action 12.8 status: COMPLETE.**
+
+## Action 12.9 — Conversation, file and memory retention / deletion
+
+Action 12.9 verified chat hard-delete paths, file-store deletion primitives and
+user-cascade behavior for memory and chat sessions.
+
+The Action 12.5 retention exception was narrowed: UserUsage intentionally
+survives user deletion with its direct user foreign key nulled, while the
+reviewed schema contains usage/accounting fields rather than prompt, message,
+memory or file content.
+
+This evidence does not claim deletion from production backups, external
+provider stores or every derived representation.
+
+**Action 12.9 status: COMPLETE.**

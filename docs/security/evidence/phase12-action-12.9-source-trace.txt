@@ -1,0 +1,211 @@
+=== CHAT DELETION ===
+211:def delete_messages_and_files_from_chat_session(
+350:def delete_all_chat_sessions_for_user(
+351:    user: User, db_session: Session, hard_delete: bool = HARD_DELETE_CHATS
+361:    if hard_delete:
+363:            delete_messages_and_files_from_chat_session(chat_session.id, db_session)
+365:            delete(ChatSession).where(
+384:    hard_delete: bool = HARD_DELETE_CHATS,
+396:    if hard_delete:
+397:        delete_messages_and_files_from_chat_session(chat_session_id, db_session)
+398:        db_session.execute(delete(ChatSession).where(ChatSession.id == chat_session_id))
+
+=== FILE DELETION ===
+28:    delete_filerecord_by_file_id,
+163:    def delete_file(self, file_id: str, error_on_missing: bool = True) -> None:
+497:    def delete_file(
+520:                    delete_filerecord_by_file_id(file_id=file_id, db_session=db_session)
+527:                    s3_client.delete_object(
+543:                delete_filerecord_by_file_id(file_id=file_id, db_session=db_session)
+585:                delete_filerecord_by_file_id(file_id=old_file_id, db_session=db_session)
+
+=== USER / MEMORY / USAGE RELATIONSHIPS ===
+562:class Memory(Base):
+567:        PGUUID(as_uuid=True), ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+617:        ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+672:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+723:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+726:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+736:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True, nullable=True
+753:        ForeignKey("skill.id", ondelete="CASCADE"),
+757:        ForeignKey("user.id", ondelete="CASCADE"),
+776:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+790:            ondelete="CASCADE",
+809:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True, nullable=True
+841:        ForeignKey("chat_message.id", ondelete="CASCADE"), primary_key=True
+844:        ForeignKey("search_doc.id", ondelete="CASCADE"), primary_key=True
+852:        ForeignKey("tool_call.id", ondelete="CASCADE"), primary_key=True
+855:        ForeignKey("search_doc.id", ondelete="CASCADE"), primary_key=True
+882:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+885:        ForeignKey("tool.id", ondelete="CASCADE"), primary_key=True
+915:        ForeignKey("chat_message.id", ondelete="CASCADE"), primary_key=True
+1101:        ForeignKey("document.id", ondelete="SET NULL"), nullable=True, index=True
+1107:        ForeignKey("hierarchy_node.id", ondelete="SET NULL"), nullable=True, index=True
+1227:        ForeignKey("hierarchy_node.id", ondelete="SET NULL"), nullable=True, index=True
+1302:        ForeignKey("document.id", ondelete="CASCADE"),
+2108:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+2150:        ForeignKey("credential.id", ondelete="CASCADE"), nullable=False, index=True
+2154:        ForeignKey("connector.id", ondelete="CASCADE"), nullable=True
+2236:        ForeignKey("federated_connector.id", ondelete="CASCADE"), nullable=False
+2239:        ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+2259:        ForeignKey("federated_connector.id", ondelete="CASCADE"), nullable=False
+2262:        ForeignKey("document_set.id", ondelete="CASCADE"), nullable=False
+2318:        ForeignKey("search_settings.id", ondelete="SET NULL"), nullable=True
+2367:        ForeignKey("model_configuration.id", ondelete="SET NULL"), nullable=True
+2475:        ForeignKey("user.id", ondelete="SET NULL"),
+2539:        ForeignKey("targeted_reindex_job.id", ondelete="CASCADE"),
+2543:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"),
+2548:        ForeignKey("index_attempt_errors.id", ondelete="SET NULL"),
+2596:        ForeignKey("targeted_reindex_job.id", ondelete="SET NULL"),
+2623:        ForeignKey("search_settings.id", ondelete="SET NULL"),
+2761:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"),
+2767:        ForeignKey("user.id", ondelete="CASCADE"),
+2772:        ForeignKey("search_settings.id", ondelete="CASCADE"),
+2872:        ForeignKey("search_settings.id", ondelete="CASCADE"),
+2878:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"),
+2884:        ForeignKey("user.id", ondelete="CASCADE"),
+2930:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"),
+3031:        ForeignKey("index_attempt.id", ondelete="CASCADE"),
+3126:        ForeignKey("hierarchy_node.id", ondelete="CASCADE"), primary_key=True
+3138:            ondelete="CASCADE",
+3157:        ForeignKey("connector.id", ondelete="CASCADE"), primary_key=True
+3160:        ForeignKey("credential.id", ondelete="CASCADE"), primary_key=True
+3199:class ChatSession(Base):
+3216:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+3340:        ForeignKey("chat_message.id", ondelete="SET NULL"),
+3347:        ForeignKey("chat_message.id", ondelete="SET NULL"), nullable=True
+3453:        PGUUID(as_uuid=True), ForeignKey("chat_session.id", ondelete="CASCADE")
+3459:        ForeignKey("chat_message.id", ondelete="CASCADE"), nullable=True
+3463:        ForeignKey("tool_call.id", ondelete="CASCADE"), nullable=True
+3581:        PGUUID(as_uuid=True), ForeignKey("user.id", ondelete="CASCADE")
+3602:        ForeignKey("chat_message.id", ondelete="SET NULL"), nullable=True
+3627:        ForeignKey("chat_message.id", ondelete="SET NULL"), nullable=True
+3696:        ForeignKey("llm_provider.id", ondelete="CASCADE"),
+3716:    max_input_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
+3775:        ForeignKey("model_configuration.id", ondelete="CASCADE"),
+3805:        ForeignKey("model_configuration.id", ondelete="CASCADE"),
+3970:        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+3993:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+4071:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+4077:        Integer, ForeignKey("mcp_server.id", ondelete="CASCADE"), nullable=True
+4081:        Integer, ForeignKey("oauth_config.id", ondelete="SET NULL"), nullable=True
+4152:        ForeignKey("oauth_config.id", ondelete="CASCADE"), nullable=False
+4155:        ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+4205:        ForeignKey("persona_label.id", ondelete="CASCADE"), primary_key=True
+4217:        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+4223:        ForeignKey("user_group.id", ondelete="SET NULL"), nullable=True
+4233:        ForeignKey("model_configuration.id", ondelete="SET NULL"),
+4378:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+4381:        ForeignKey("user_file.id", ondelete="CASCADE"), primary_key=True
+4395:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+4398:        ForeignKey("hierarchy_node.id", ondelete="CASCADE"), primary_key=True
+4413:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+4416:        ForeignKey("document.id", ondelete="CASCADE"), primary_key=True
+4436:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+4439:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+4585:        ForeignKey("persona.id", ondelete="SET NULL"), nullable=True
+4610:        ForeignKey("discord_guild_config.id", ondelete="CASCADE"), nullable=False
+4641:        ForeignKey("persona.id", ondelete="SET NULL"), nullable=True
+4670:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+4910:        ForeignKey("file_record.file_id", ondelete="CASCADE"),
+4952:        ForeignKey("user.id", ondelete="SET NULL"),
+5028:        ForeignKey("user.id", ondelete="CASCADE"), unique=True
+5054:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True, nullable=True
+5069:        ForeignKey("user_group.id", ondelete="CASCADE"), nullable=False
+5083:        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+5152:        ForeignKey("skill.id", ondelete="CASCADE"),
+5157:        ForeignKey("user_group.id", ondelete="CASCADE"),
+5179:        ForeignKey("llm_provider.id", ondelete="CASCADE"), primary_key=True
+5182:        ForeignKey("persona.id", ondelete="CASCADE"), primary_key=True
+5201:        ForeignKey("document_set.id", ondelete="CASCADE"), primary_key=True
+5400:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"), nullable=True
+5454:        ForeignKey("connector_credential_pair.id", ondelete="CASCADE"), primary_key=True
+5487:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+5511:        ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+5742:            ondelete="CASCADE",
+5897:        ForeignKey("mcp_connection_config.id", ondelete="SET NULL"),
+5947:        ForeignKey("mcp_server.id", ondelete="CASCADE"), primary_key=True
+5950:        ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
+5972:        Integer, ForeignKey("mcp_server.id", ondelete="CASCADE"), nullable=True
+6197:    llm_cost_cents: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+6221:class UserUsage(Base):
+6233:        ForeignKey("user.id", ondelete="SET NULL"), nullable=True
+6261:    input_tokens: Mapped[int] = mapped_column(BigInteger, nullable=False)
+6262:    output_tokens: Mapped[int] = mapped_column(BigInteger, nullable=False)
+6269:    cost_cents: Mapped[float] = mapped_column(
+6377:        PGUUID(as_uuid=True), ForeignKey("user.id", ondelete="CASCADE"), nullable=True
+6468:        ForeignKey("user.id", ondelete="CASCADE"),
+6528:        ForeignKey("build_session.id", ondelete="CASCADE"),
+6594:        ForeignKey("build_session.id", ondelete="CASCADE"),
+6602:        ForeignKey("gated_app.id", ondelete="SET NULL"),
+6608:        ForeignKey("action_approval.approval_id", ondelete="SET NULL"),
+6661:        ForeignKey("build_session.id", ondelete="CASCADE"),
+6701:        ForeignKey("build_session.id", ondelete="CASCADE"),
+6740:        ForeignKey("build_session.id", ondelete="CASCADE"),
+6765:        ForeignKey("gated_app.id", ondelete="SET NULL"),
+6787:        ForeignKey("user.id", ondelete="CASCADE"),
+6884:        ForeignKey("scheduled_task.id", ondelete="CASCADE"),
+6889:        ForeignKey("build_session.id", ondelete="SET NULL"),
+6965:        ForeignKey("scheduled_task.id", ondelete="CASCADE"),
+6970:        ForeignKey("gated_app.id", ondelete="CASCADE"),
+7014:        ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+7047:        ForeignKey("user.id", ondelete="CASCADE"), unique=True, nullable=False
+7077:        ForeignKey("user_group.id", ondelete="CASCADE"), unique=True, nullable=False
+7157:        ForeignKey("user.id", ondelete="SET NULL"),
+7198:        ForeignKey("hook.id", ondelete="CASCADE"),
+7227:        ForeignKey("external_app.id", ondelete="CASCADE"),
+7232:        ForeignKey("skill.id", ondelete="CASCADE"),
+7323:        ForeignKey("external_app.id", ondelete="CASCADE"),
+7328:        ForeignKey("user.id", ondelete="CASCADE"),
+7392:        ForeignKey("external_app.id", ondelete="CASCADE"),
+7397:        ForeignKey("mcp_server.id", ondelete="CASCADE"),
+7454:        ForeignKey("gated_app.id", ondelete="CASCADE"),
+
+=== USER USAGE RETENTION MIGRATION ===
+"""retain user usage after user deletion
+
+Revision ID: 0d9c7b6a5e4f
+Revises: f57f35403f6c
+Create Date: 2026-07-28 00:00:00.000000
+
+"""
+
+from alembic import op
+import sqlalchemy as sa
+
+
+revision = "0d9c7b6a5e4f"
+down_revision = "f57f35403f6c"
+branch_labels = None
+depends_on = None
+
+
+def upgrade() -> None:
+    # CASCADE erased a deleted user's spend history, so historical org totals
+    # shrank on every offboard. API-key principals are user rows too, so
+    # deleting a key erased its spend as well.
+    op.drop_constraint("user_usage_user_id_fkey", "user_usage", type_="foreignkey")
+    op.alter_column("user_usage", "user_id", existing_type=sa.UUID(), nullable=True)
+    op.create_foreign_key(
+        "user_usage_user_id_fkey",
+        "user_usage",
+        "user",
+        ["user_id"],
+        ["id"],
+        ondelete="SET NULL",
+    )
+
+
+def downgrade() -> None:
+    op.drop_constraint("user_usage_user_id_fkey", "user_usage", type_="foreignkey")
+    # Orphaned rows cannot satisfy the NOT NULL constraint being restored.
+    op.execute("DELETE FROM user_usage WHERE user_id IS NULL")
+    op.alter_column("user_usage", "user_id", existing_type=sa.UUID(), nullable=False)
+    op.create_foreign_key(
+        "user_usage_user_id_fkey",
+        "user_usage",
+        "user",
+        ["user_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
