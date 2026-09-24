@@ -180,3 +180,13 @@ The resulting agent path has finite cycle, per-cycle fan-out and per-tool
 execution bounds.
 
 **Action 11.11 status: COMPLETE.**
+
+## Action 11.12 — Consolidated agent security attack matrix
+
+Action 11.12 consolidated tool authority, MCP, approval, indirect
+tool-result injection, delegated credentials, SSRF, sandbox execution,
+telemetry and resource-exhaustion attack paths.
+
+Nine representative Phase 11 negative-security test files executed and passed.
+
+**Action 11.12 status: COMPLETE.**

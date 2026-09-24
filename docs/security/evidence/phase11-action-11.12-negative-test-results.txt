@@ -1,0 +1,83 @@
+=== RUN tests/unit/onyx/tools/test_phase11_tool_authority_boundaries.py ===
+..[93mWARNING[0m:  09/24/2026 08:04:44 AM                 tool_runner.py  329: Tool invented_admin_tool not found in tools list
+..
+----------------------------------------------------------------------
+Ran 4 tests in 0.038s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/test_phase11_tool_authority_boundaries.py
+=== RUN tests/unit/onyx/server/features/mcp/test_phase11_mcp_security_boundaries.py ===
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.089s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/mcp/test_phase11_mcp_security_boundaries.py
+=== RUN tests/unit/onyx/external_apps/test_phase11_action_approval_boundaries.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/external_apps/test_phase11_action_approval_boundaries.py
+=== RUN tests/unit/onyx/chat/test_phase11_tool_result_security_boundary.py ===
+[94mNOTICE[0m:   09/24/2026 08:04:56 AM      variable_functionality.py   66: License enforcement is enabled (LICENSE_ENFORCEMENT_ENABLED). Enterprise Edition code is loaded, but paid features stay locked until a valid license is applied. Without a license this deployment behaves as Community Edition.
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/chat/test_phase11_tool_result_security_boundary.py
+=== RUN tests/unit/onyx/server/features/tool/test_phase11_credential_delegation.py ===
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/tool/test_phase11_credential_delegation.py
+=== RUN tests/unit/onyx/tools/tool_implementations/custom/test_phase11_custom_tool_ssrf.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.001s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/tool_implementations/custom/test_phase11_custom_tool_ssrf.py
+=== RUN tests/unit/onyx/server/features/craft/sandbox/test_phase11_code_execution_isolation.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.003s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/server/features/craft/sandbox/test_phase11_code_execution_isolation.py
+=== RUN tests/unit/onyx/tools/test_phase11_tool_trace_redaction.py ===
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/tools/test_phase11_tool_trace_redaction.py
+=== RUN tests/unit/onyx/chat/test_phase11_agent_resource_bounds.py ===
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.014s
+
+OK
+TEST_RESULT=PASS:tests/unit/onyx/chat/test_phase11_agent_resource_bounds.py
+PHASE11_ATTACK_MATRIX_REGRESSION=PASS
+TOOL_AUTHORITY_NEGATIVE_TEST=PASS
+MCP_AUTHORIZATION_NEGATIVE_TEST=PASS
+APPROVAL_CONFUSED_DEPUTY_NEGATIVE_TEST=PASS
+TOOL_RESULT_INJECTION_BOUNDARY=PASS
+CREDENTIAL_DELEGATION_BOUNDARY=PASS
+CUSTOM_ACTION_SSRF_BOUNDARY=PASS
+CODE_EXECUTION_ISOLATION_BOUNDARY=PASS
+TOOL_TRACE_SECRET_BOUNDARY=PASS
+AGENT_RESOURCE_BOUNDARY=PASS
+H11_01_REGRESSION=PASS
+H11_02_REGRESSION=PASS
+H11_03_REGRESSION=PASS
+H11_04_REGRESSION=PASS
+HTTP_REQUESTS=0
+EXTERNAL_NETWORK_REQUESTS=0
+REAL_DATA_OR_CREDENTIALS=0
+RESULT=ACTION_11_12_ATTACK_MATRIX_PASS
