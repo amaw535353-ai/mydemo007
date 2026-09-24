@@ -77,3 +77,13 @@ The first synthetic harness run omitted the required emitter; correcting the
 harness allowed the intended security properties to execute successfully.
 
 **Action 11.3 status: COMPLETE.**
+
+## Action 11.4 — MCP authentication, credential and SSRF boundaries
+
+Action 11.4 verified MCP request-header policy, managed credential precedence,
+per-user credential constraints, guarded MCP HTTP transport and sandbox-side
+user-access enforcement.
+
+No MCP authorization or credential bypass was confirmed.
+
+**Action 11.4 status: COMPLETE.**

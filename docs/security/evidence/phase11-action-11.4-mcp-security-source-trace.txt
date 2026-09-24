@@ -1,0 +1,45 @@
+76:DENYLISTED_MCP_HEADERS = {
+90:def merge_mcp_headers(*sources: dict[str, str]) -> dict[str, str]:
+170:            if lowered in DENYLISTED_MCP_HEADERS:
+215:def filter_request_mcp_headers(
+231:        and name.lower() not in DENYLISTED_MCP_HEADERS
+235:def request_mcp_headers_can_authenticate(
+252:    filtered_request_headers = filter_request_mcp_headers(
+258:    final_headers = merge_mcp_headers(filtered_request_headers, managed_headers)
+
+6:- ``ResolvedMCPCredentials.can_authenticate`` — are the effective credentials
+15:- ``user_can_authenticate`` — resolves the user's credentials and reports
+124:        and mcp_server.auth_performer == MCPAuthenticationPerformer.PER_USER
+214:    def can_authenticate(self) -> bool:
+219:        if self.auth_type == MCPAuthenticationType.PT_OAUTH:
+232:def resolve_mcp_credentials(
+251:    if mcp_server.auth_type == MCPAuthenticationType.PT_OAUTH:
+254:                f"Anonymous user cannot use PT_OAUTH MCP server {mcp_server.id}"
+259:                user.oauth_accounts[0].access_token if user.oauth_accounts else None
+270:        if mcp_server.auth_performer == MCPAuthenticationPerformer.PER_USER:
+291:def user_can_authenticate(
+301:        credentials = resolve_mcp_credentials(
+306:    return credentials.can_authenticate()
+
+backend/onyx/server/features/mcp/client.py:27:from onyx.server.features.mcp.ssrf import mcp_ssrf_httpx_client_factory
+backend/onyx/server/features/mcp/client.py:149:            httpx_client_factory=mcp_ssrf_httpx_client_factory,
+backend/onyx/server/features/mcp/ssrf.py:21:def validate_mcp_outbound_url(url: str, *, resolve_dns: bool = True) -> str:
+backend/onyx/server/features/mcp/ssrf.py:40:    ``follow_redirects=True`` httpx re-enters the transport per hop, so redirect
+backend/onyx/server/features/mcp/ssrf.py:44:        validate_mcp_outbound_url(str(request.url))
+backend/onyx/server/features/mcp/ssrf.py:80:def mcp_ssrf_httpx_client_factory(
+backend/onyx/server/features/mcp/ssrf.py:89:        follow_redirects=True,
+backend/onyx/server/features/mcp/ssrf.py:105:        follow_redirects=True,
+
+28:    user_can_access_mcp_server,
+34:    CredentialUnavailableError,
+108:            raise CredentialUnavailableError(
+109:                f"non-plumbing MCP request on {request.host} reached credential "
+121:            raise CredentialUnavailableError(
+132:            raise CredentialUnavailableError(
+154:                raise CredentialUnavailableError(
+160:                raise CredentialUnavailableError(
+163:            if not user_can_access_mcp_server(user, server.id, db):
+165:                raise CredentialUnavailableError(
+172:                raise CredentialUnavailableError(
+191:                raise CredentialUnavailableError(
+199:            raise CredentialUnavailableError(
