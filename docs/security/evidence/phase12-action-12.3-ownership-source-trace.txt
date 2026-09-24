@@ -1,0 +1,36 @@
+=== CHAT OWNERSHIP ===
+70:                or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+93:            or_(ChatSession.user_id == user_id, ChatSession.user_id.is_(None))
+104:                ChatSession.user_id == user_id,
+136:        .where(ChatSession.user_id == user_id)
+357:        .filter(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+366:                ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False)
+372:            .where(ChatSession.user_id == user_id, ChatSession.onyxbot_flow.is_(False))
+469:    if expected_user_id != user_id:
+474:        raise ValueError("Chat message does not belong to user")
+
+=== MEMORY OWNERSHIP ===
+107:        select(Memory).where(Memory.user_id == user.id).order_by(Memory.id.asc())
+112:        user_id=user.id,
+133:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+140:            user_id=user_id,
+160:            select(Memory).where(Memory.user_id == user_id).order_by(Memory.id.asc())
+
+=== CREDENTIAL OWNERSHIP ===
+46:        raise ValueError("Anonymous users are not allowed to access credentials")
+53:                Credential.user_id == user.id,
+61:    return stmt.where(Credential.user_id == user.id)
+91:def fetch_credential_by_id_for_user(
+142:    new_credential = fetch_credential_by_id_for_user(
+245:    credential = fetch_credential_by_id_for_user(credential_id, user, db_session)
+276:    credential = fetch_credential_by_id_for_user(credential_id, user, db_session)
+297:    credential = fetch_credential_by_id_for_user(credential_id, user, db_session)
+378:    credential = fetch_credential_by_id_for_user(credential_id, user, db_session)
+
+=== USER FILE SCOPE ===
+107:def get_user_file_by_id(
+122:    user_file = get_user_file_by_id(user_file_id, db_session)
+135:def fetch_user_files_with_access_relationships(
+196:        UserFile.user_id == user_id,
+213:            UserFile.user_id == user_id,
+231:            UserFile.user_id == user_id,

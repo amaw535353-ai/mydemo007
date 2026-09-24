@@ -48,3 +48,17 @@ as independent data boundaries rather than assuming the primary database is
 the only privacy-relevant store.
 
 **Action 12.2 status: COMPLETE.**
+
+## Action 12.3 — Data classification, ownership and tenant boundaries
+
+Action 12.3 classified identity, content, source, credential and operational
+data and traced the primary ownership boundaries.
+
+Chat, memory and credential paths contain explicit user-scoping controls.
+
+Low-level user-file ID helpers are not treated as authorization APIs; their
+externally reachable consumers remain candidates for direct negative testing.
+
+No cross-user privacy bypass was confirmed by this action.
+
+**Action 12.3 status: COMPLETE.**
