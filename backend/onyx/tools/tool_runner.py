@@ -52,6 +52,27 @@ GENERIC_TOOL_ERROR_MESSAGE = "Tool failed with error: {error}"
 # 10 minute timeout for tool execution to prevent indefinite hangs
 TOOL_EXECUTION_TIMEOUT_SECONDS = 10 * 60
 
+
+def _tool_args_trace_summary(
+    tool_args: dict[str, Any],
+) -> dict[str, Any]:
+    """Trace argument structure without recording arbitrary values."""
+    return {
+        "arg_count": len(tool_args),
+        "arg_names": sorted(
+            str(name)
+            for name in tool_args
+        ),
+    }
+
+
+def _tool_output_trace_summary(
+    output: str,
+) -> str:
+    """Trace output size without recording arbitrary tool output."""
+    return f"<tool output: {len(output)} chars>"
+
+
 # Mapping of tool name to the field that should be merged when multiple calls exist
 MERGEABLE_TOOL_FIELDS: dict[str, str] = {
     SearchTool.NAME: QUERIES_FIELD,
@@ -136,14 +157,14 @@ def _safe_run_single_tool(
     tool_response: ToolResponse | None = None
 
     with function_span(tool.name) as span_fn:
-        span_fn.span_data.input = str(tool_call.tool_args)
+        span_fn.span_data.input = str(_tool_args_trace_summary(tool_call.tool_args))
         try:
             tool_response = tool.run(
                 placement=tool_call.placement,
                 override_kwargs=override_kwargs,
                 **tool_call.tool_args,
             )
-            span_fn.span_data.output = tool_response.llm_facing_response
+            span_fn.span_data.output = _tool_output_trace_summary(tool_response.llm_facing_response)
         except ToolCallException as e:
             # ToolCallException is an expected error from tool execution
             # Use llm_facing_message which is specifically designed for LLM consumption
@@ -160,7 +181,7 @@ def _safe_run_single_tool(
                     data={
                         "tool_name": tool.name,
                         "tool_call_id": tool_call.tool_call_id,
-                        "tool_args": tool_call.tool_args,
+                        "tool_args": _tool_args_trace_summary(tool_call.tool_args),
                         "error": str(e),
                         "llm_facing_message": e.llm_facing_message,
                         "stack_trace": traceback.format_exc(),
@@ -181,7 +202,7 @@ def _safe_run_single_tool(
                     data={
                         "tool_name": tool.name,
                         "tool_call_id": tool_call.tool_call_id,
-                        "tool_args": tool_call.tool_args,
+                        "tool_args": _tool_args_trace_summary(tool_call.tool_args),
                         "error": str(e),
                         "stack_trace": traceback.format_exc(),
                         "error_type": type(e).__name__,
@@ -208,7 +229,7 @@ def _safe_run_single_tool(
                     data={
                         "tool_name": tool.name,
                         "tool_call_id": tool_call.tool_call_id,
-                        "tool_args": tool_call.tool_args,
+                        "tool_args": _tool_args_trace_summary(tool_call.tool_args),
                         "error": str(e),
                         "stack_trace": traceback.format_exc(),
                         "error_type": type(e).__name__,

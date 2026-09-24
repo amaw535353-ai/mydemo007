@@ -148,3 +148,20 @@ No host escape was confirmed.
 Production kernel/container escape testing is not claimed.
 
 **Action 11.9 status: COMPLETE.**
+
+## Action 11.10 — Secret and telemetry boundaries
+
+Action 11.10 confirmed that generic tool tracing recorded arbitrary tool
+argument values and complete tool-result content.
+
+Tracing now preserves structural observability while excluding arbitrary
+argument values, nested values and tool-output content.
+
+The generic error-span paths also use structural argument summaries.
+
+**H11-03: REMEDIATED.**
+
+Tool-specific exception strings and stack traces remain explicit residual
+review areas.
+
+**Action 11.10 status: COMPLETE.**
