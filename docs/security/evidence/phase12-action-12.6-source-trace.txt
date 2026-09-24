@@ -1,0 +1,36 @@
+=== RETRIEVAL ACCESS FILTERS ===
+3:from onyx.access.access import get_acl_for_user
+8:def build_access_filters_for_user(user: User, session: Session) -> list[str]:
+9:    user_acl = get_acl_for_user(user, session)
+14:    user_acl_filters = build_access_filters_for_user(user, db_session)
+21:        access_control_list=user_acl_filters,
+
+=== SEARCH PIPELINE PRIVACY BOUNDARIES ===
+22:from onyx.db.document_set import filter_document_set_names_by_user_access
+48:    bypass_acl: bool = False,
+64:    # Skipped when bypass_acl is set (system callers) or when no db_session is
+68:        and not bypass_acl
+72:        accessible_names = filter_document_set_names_by_user_access(
+110:    if bypass_acl:
+134:        access_control_list=user_acl_filters,
+135:        tenant_id=get_current_tenant_id() if MULTI_TENANT else None,
+310:        bypass_acl=chunk_search_request.bypass_acl,
+341:        "_post_query_chunk_censoring",
+
+=== PROMPT PERSONALIZATION DATA ===
+18:from onyx.prompts.prompt_utils import apply_prompt_placeholders, get_company_context
+35:    USER_INFORMATION_HEADER,
+37:    USER_MEMORIES_PROMPT,
+38:    USER_PREFERENCES_PROMPT,
+183:    company_context: str | None,
+204:                    user_email=ctx.user_info.email or "",
+209:        if ctx.user_info.organization_profile:
+212:                for label, value in ctx.user_info.organization_profile.items()
+216:                    organization_profile=formatted_profile
+220:    if company_context:
+222:            TEAM_INFORMATION_PROMPT.format(team_information=company_context.strip())
+238:                USER_PREFERENCES_PROMPT.format(user_preferences=ctx.user_preferences)
+244:                USER_MEMORIES_PROMPT.format(user_memories=formatted_memories)
+247:    return USER_INFORMATION_HEADER + "\n".join(sections)
+270:    company_context = get_company_context()
+272:        user_memory_context, company_context

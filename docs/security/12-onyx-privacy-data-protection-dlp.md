@@ -89,3 +89,16 @@ This is not yet classified as a privacy defect; Action 12.9 will verify the
 actual retained fields and deletion semantics.
 
 **Action 12.5 status: COMPLETE.**
+
+## Action 12.6 — Prompt, context and RAG privacy leakage
+
+Action 12.6 verified user ACL, document-set authorization, tenant filtering and
+post-query censoring boundaries before retrieved content reaches model context.
+
+Prompt construction intentionally exposes personalization data such as identity,
+preferences and memories to the model context when configured.
+
+That is recorded as a privacy-sensitive provider-egress surface rather than an
+unauthorized disclosure finding.
+
+**Action 12.6 status: COMPLETE.**
