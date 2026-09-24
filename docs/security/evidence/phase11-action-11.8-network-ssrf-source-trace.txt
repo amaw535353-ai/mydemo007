@@ -1,0 +1,21 @@
+191:        url = self._method_spec.build_url(self._base_url, path_params, query_params)
+194:        response = requests.request(
+
+backend/onyx/server/features/mcp/ssrf.py:12:from onyx.server.security.models import outbound_ssrf_params
+backend/onyx/server/features/mcp/ssrf.py:14:from onyx.utils.url import validate_outbound_http_url
+backend/onyx/server/features/mcp/ssrf.py:28:    params = outbound_ssrf_params(get_security_settings().ssrf_protection_level)
+backend/onyx/server/features/mcp/ssrf.py:29:    return validate_outbound_http_url(
+backend/onyx/server/security/models.py:32:    """Translated kwargs for ``validate_outbound_http_url`` on LLM-initiated /
+backend/onyx/server/security/models.py:40:def outbound_ssrf_params(level: SSRFProtectionLevel) -> OutboundSSRFParams:
+backend/onyx/server/security/models.py:41:    """Params for ``validate_outbound_http_url`` on LLM-initiated / admin-endpoint
+
+132:def destination_is_blocked(host: str, port: int) -> bool:
+276:        # inner request is re-checked in `request`, and `server_connect` is the
+280:            None, destination_is_blocked, flow.request.host, flow.request.port
+287:            flow.response = http_403(SandboxProxyError.DESTINATION_BLOCKED)
+314:    async def server_connect(self, data: server_hooks.ServerConnectionHookData) -> None:
+339:            None, destination_is_blocked, host, port
+343:                "egress_denied_internal_destination phase=server_connect host=%s port=%s",
+369:        # scheme. `server_connect` is the authoritative rebinding-proof backstop +
+372:            None, destination_is_blocked, flow.request.host, flow.request.port
+379:            flow.response = http_403(SandboxProxyError.DESTINATION_BLOCKED)

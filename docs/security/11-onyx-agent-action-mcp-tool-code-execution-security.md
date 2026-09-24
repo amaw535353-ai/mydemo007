@@ -122,3 +122,17 @@ configuration have explicit gates.
 No credential-delegation bypass was confirmed.
 
 **Action 11.7 status: COMPLETE.**
+
+## Action 11.8 — Network / URL / SSRF controls
+
+Action 11.8 identified that custom OpenAPI actions did not apply the common
+outbound SSRF policy immediately before execution.
+
+Custom actions now validate their destination using the administrator-controlled
+SSRF policy and do not automatically follow redirects.
+
+**H11-02: MITIGATED.**
+
+A DNS validation-to-connect race remains explicitly recorded as residual risk.
+
+**Action 11.8 status: COMPLETE.**

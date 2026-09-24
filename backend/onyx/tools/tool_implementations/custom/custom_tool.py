@@ -12,6 +12,8 @@ from onyx.chat.emitter import Emitter
 from onyx.configs.constants import FileOrigin
 from onyx.file_store.file_store import get_default_file_store
 from onyx.server.query_and_chat.placement import Placement
+from onyx.server.security.models import outbound_ssrf_params
+from onyx.server.security.store import get_security_settings
 from onyx.server.query_and_chat.streaming_models import (
     CustomToolArgs,
     CustomToolDelta,
@@ -40,8 +42,24 @@ from onyx.tools.tool_implementations.custom.openapi_parsing import (
 )
 from onyx.utils.headers import HeaderItemDict, header_list_to_header_dict
 from onyx.utils.logger import setup_logger
+from onyx.utils.url import validate_outbound_http_url
 
 logger = setup_logger()
+
+
+def _validate_custom_tool_outbound_url(url: str) -> str:
+    """Apply the shared outbound SSRF policy immediately before execution."""
+    params = outbound_ssrf_params(
+        get_security_settings().ssrf_protection_level
+    )
+    return validate_outbound_http_url(
+        url,
+        allow_private_network=params.allow_private_network,
+        block_loopback_and_link_local=(
+            params.block_loopback_and_link_local
+        ),
+        block_link_local_only=params.block_link_local_only,
+    )
 
 CUSTOM_TOOL_RESPONSE_ID = "custom_tool_response"
 
@@ -188,11 +206,25 @@ class CustomTool(Tool[None]):
             )
 
         request_body = llm_kwargs.get(REQUEST_BODY)
-        url = self._method_spec.build_url(self._base_url, path_params, query_params)
+        url = _validate_custom_tool_outbound_url(
+            self._method_spec.build_url(
+                self._base_url,
+                path_params,
+                query_params,
+            )
+        )
         method = self._method_spec.method
 
+        # API actions should not silently follow a server-controlled redirect
+        # to a different origin. The configured target is validated immediately
+        # before this request; redirect destinations require an explicit action
+        # configuration instead of automatic credential-bearing traversal.
         response = requests.request(
-            method, url, json=request_body, headers=self.headers
+            method,
+            url,
+            json=request_body,
+            headers=self.headers,
+            allow_redirects=False,
         )
         content_type = response.headers.get("Content-Type", "")
 
